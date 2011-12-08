@@ -31,8 +31,7 @@ public class Module {
 
     public Module(@Name("name") ceylon.language.Quoted name,
             @Name("version") ceylon.language.Quoted version,
-            @TypeInfo("ceylon.language.Nothing|ceylon.language.String") @Name("doc")
-            ceylon.language.String doc,
+            @Name("doc") java.lang.String doc,
             @TypeInfo("ceylon.language.Empty|ceylon.language.Sequence<ceylon.language.String>")
             @Name("by")
             ceylon.language.Iterable<? extends ceylon.language.String> by,
