@@ -39,6 +39,10 @@ shared class Import(
              that import the module."
         Boolean export=false) {
 
+        desc "Determines if this imported module is
+             required on demand by the module."
+        Boolean onDemand=false,
+
     //TODO finish
 
 }
