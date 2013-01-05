@@ -6,8 +6,8 @@ shared class LazyList<out Element>({Element...} elems)
         satisfies List<Element> {
     
     shared actual Integer? lastIndex {
-        value c = elems.count((Element e) => true);
-        return c > 0 then c-1 else null;
+        value size = elems.size;
+        return size>0 then size-1 else null;
     }
     
     shared actual Element? item(Integer index) {
@@ -75,9 +75,9 @@ shared class LazyList<out Element>({Element...} elems)
     
     shared actual default Boolean equals(Object that) {
         if (is List<Void> that) {
-            value s = elems.count((Element e) => true);
-            if (that.size==s) {
-                for (i in 0..s-1) {
+            value size = elems.size;
+            if (that.size==size) {
+                for (i in 0..size-1) {
                     value x = this[i];
                     value y = that[i];
                     if (exists x) {
