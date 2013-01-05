@@ -1,12 +1,12 @@
 doc "An implementation of List that wraps an `Iterable` of
-     elements. All operations on this List are performed on 
-     the Iterable."
+     elements. All operations on this `List` are performed 
+     on the underlying `Iterable`."
 by "Enrique Zamudio"
 shared class LazyList<out Element>({Element...} elems)
         satisfies List<Element> {
     
     shared actual Integer? lastIndex {
-        value c = elems.count((Element e) true);
+        value c = elems.count((Element e) => true);
         return c > 0 then c-1 else null;
     }
     
@@ -75,7 +75,7 @@ shared class LazyList<out Element>({Element...} elems)
     
     shared actual default Boolean equals(Object that) {
         if (is List<Void> that) {
-            value s = elems.count((Element e) true);
+            value s = elems.count((Element e) => true);
             if (that.size==s) {
                 for (i in 0..s-1) {
                     value x = this[i];

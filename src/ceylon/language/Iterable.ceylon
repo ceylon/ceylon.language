@@ -30,17 +30,17 @@ doc "Abstract supertype of containers whose elements may be
      Lazy operations are preferred, because they can be 
      efficiently chained. For example:
      
-         string.filter((Character c) c.letter).map((Character c) c.uppercased)
+         string.filter((Character c) => c.letter).map((Character c) => c.uppercased)
      
      is much less expensive than:
      
-         string.select((Character c) c.letter).collect((Character c) c.uppercased)
+         string.select((Character c) => c.letter).collect((Character c) => c.uppercased)
      
      Furthermore, it is always easy to produce a new 
      immutable iterable object given the view produced by a
      lazy operation. For example:
      
-         { string.filter((Character c) c.letter).map((Character c) c.uppercased)... }
+         [ string.filter((Character c) => c.letter).map((Character c) => c.uppercased)... ]
      
      Lazy operations normally return an instance of 
      `Iterable` or `Map`.
@@ -68,7 +68,7 @@ shared interface Iterable<out Element>
     shared actual default Boolean empty =>
             iterator.next() is Finished;
     
-    shared default Integer size => count((Element e) true);
+    shared default Integer size => count((Element e) => true);
     
     shared actual default Boolean contains(Object element) => 
             any(ifExists(element.equals));
