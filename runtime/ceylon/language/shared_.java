@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Method;
 @Ceylon(major = 3)
 @Method
 public final class shared_ {
-    public static Nothing shared(){
+    public static Null shared(){
         return null;
     }
     private shared_(){}

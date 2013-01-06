@@ -10,12 +10,12 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 public interface Closeable {
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo("ceylon.language::Void")
+    @TypeInfo("ceylon.language::Anything")
     java.lang.Object open();
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo("ceylon.language::Void")
+    @TypeInfo("ceylon.language::Anything")
     java.lang.Object close(@Name("exception") 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Exception") 
+    @TypeInfo("ceylon.language::Null|ceylon.language::Exception") 
     java.lang.Throwable exception);
 }

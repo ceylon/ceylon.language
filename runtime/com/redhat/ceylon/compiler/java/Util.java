@@ -104,7 +104,7 @@ public class Util {
     private static boolean classSatisfiesInterface(java.lang.Class<?> klass, String className, 
             Set<java.lang.Class<?>> alreadyVisited) {
         if(klass == null
-                || klass == ceylon.language.Void.class)
+                || klass == ceylon.language.Anything.class)
             return false;
         if ((className.equals("ceylon.language.Identifiable"))
                 && klass!=java.lang.Object.class

@@ -109,7 +109,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     	}
     }
 
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     @Override
     public Element item(@Name("key") Integer key) {
         long index = 0;

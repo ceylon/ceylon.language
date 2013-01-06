@@ -11,13 +11,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Method
 public class see_
 {
-    public static Nothing see(@Name("programElements") @Sequenced
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Void>")
+    public static Null see(@Name("programElements") @Sequenced
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
             final ceylon.language.Sequential<? extends java.lang.Object> value) {
         return null;
     }
     @Ignore
-    public static Nothing see() {
+    public static Null see() {
         return null;
     }
     private see_(){}

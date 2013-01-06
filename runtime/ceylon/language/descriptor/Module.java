@@ -40,7 +40,7 @@ public class Module {
         return by;
     }
     
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
+    @TypeInfo("ceylon.language::Null|ceylon.language::String")
     public final java.lang.String getLicense() {
         return license;
     }
@@ -67,7 +67,7 @@ public class Module {
     @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
     Sequential<? extends String> by, @Name("license")
     @Defaulted
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
+    @TypeInfo("ceylon.language::Null|ceylon.language::String")
     java.lang.String license, @Name("dependencies")
     @Sequenced
     @TypeInfo("ceylon.language::Sequential<ceylon.language.descriptor::Import>")

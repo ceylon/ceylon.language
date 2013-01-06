@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 @Method
 public final class license_
 {
-    public static Nothing license(@Name("description") java.lang.String description) {
+    public static Null license(@Name("description") java.lang.String description) {
         return null;
     }
     private license_(){}

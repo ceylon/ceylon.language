@@ -43,7 +43,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("formal"))
-    @TypeInfo("Item|ceylon.language::Nothing")
+    @TypeInfo("Item|ceylon.language::Null")
     public Item item(Object key) {
         return m.get(key);
     }
@@ -92,7 +92,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Nothing>")
+    @TypeInfo("ceylon.language::Sequential<Item|ceylon.language::Null>")
     public Sequential<? extends Item> items(Sequential<? extends Object> keys) {
         return corr$impl.items(keys);
     }
@@ -142,14 +142,14 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Entry<? extends Key, ? extends Item> getFirst() {
         return iter$impl.getFirst();
     }
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Entry<? extends Key, ? extends Item> getLast() {
         return iter$impl.getLast();
     }
@@ -196,7 +196,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("Element|ceylon.language::Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     public Entry<? extends Key, ? extends Item> find(
             Callable<? extends Boolean> selecting) {
         return iter$impl.find(selecting);
@@ -204,7 +204,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("Element|ceylon.language::Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     public Entry<? extends Key, ? extends Item> findLast(
             Callable<? extends Boolean> selecting) {
         return iter$impl.findLast(selecting);

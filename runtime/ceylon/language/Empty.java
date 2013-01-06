@@ -11,8 +11,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
 @SatisfiedTypes({
-    "ceylon.language::Sequential<ceylon.language::Bottom>",
-    "ceylon.language::ContainerWithFirstElement<ceylon.language::Bottom,ceylon.language::Nothing>",
+    "ceylon.language::Sequential<ceylon.language::Nothing>",
+    "ceylon.language::ContainerWithFirstElement<ceylon.language::Nothing,ceylon.language::Null>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Empty>",
     "ceylon.language::Cloneable<ceylon.language::Empty>"
 })
@@ -21,13 +21,13 @@ public interface Empty
     
     @Annotations(@Annotation("actual"))
     @Override
-    @TypeInfo("ceylon.language::Iterator<ceylon.language::Bottom>")
+    @TypeInfo("ceylon.language::Iterator<ceylon.language::Nothing>")
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Iterator getIterator();
     
     @Annotations(@Annotation("actual"))
     @Override
-    @TypeInfo("ceylon.language::Nothing")
+    @TypeInfo("ceylon.language::Null")
     public java.lang.Object item(@Name("key") @TypeInfo("ceylon.language::Integer")
     Integer key);
 
@@ -77,17 +77,17 @@ public interface Empty
     
     @Annotations(@Annotation("actual"))
     @Override
-    @TypeInfo("ceylon.language::Nothing")
+    @TypeInfo("ceylon.language::Null")
     public Integer getLastIndex();
 
     @Annotations(@Annotation("actual"))
     @Override
-    @TypeInfo("ceylon.language.Nothing")
+    @TypeInfo("ceylon.language.Null")
     public java.lang.Object getFirst();
 
     @Annotations(@Annotation("actual"))
     @Override
-    @TypeInfo("ceylon.language.Nothing")
+    @TypeInfo("ceylon.language.Null")
     public java.lang.Object getLast();
     
     @Annotations(@Annotation("actual"))
@@ -117,7 +117,7 @@ public interface Empty
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Integer")
     public long count(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("actual"))
@@ -128,13 +128,13 @@ public interface Empty
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Empty")
     public <Result> Iterable<? extends Result> map(@Name("collecting")
-        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Result> collecting);
     
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Empty")
     public Empty filter(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("actual"))
@@ -143,43 +143,43 @@ public interface Empty
     public <Result> Result fold(@Name("initial")
         @TypeInfo("Result") Result initial,
         @Name("accumulating")
-        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Bottom,Result,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>>")
+        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Nothing,Result,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>>")
         Callable<? extends Result> accumulating);
 
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language::Nothing")
+    @TypeInfo("ceylon.language::Null")
     public java.lang.Object find(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Empty")
     public Empty sort(@Name("comparing")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Nothing|ceylon.language::Comparison,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>>")
         Callable<? extends Comparison> comparing);
 
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Empty")
     public <Result> Sequential<? extends Result> collect(@Name("collecting")
-        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Result> collecting);
     
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Empty")
     public Empty select(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Boolean")
     public boolean any(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Boolean")
     public boolean every(@Name("selecting")
-        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Bottom,ceylon.language::Bottom,ceylon.language::Empty>>")
+        @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Nothing,ceylon.language::Nothing,ceylon.language::Empty>>")
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("actual"))

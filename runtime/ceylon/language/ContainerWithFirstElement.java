@@ -11,18 +11,18 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters({@TypeParameter(value = "Element", variance = Variance.OUT),
-	             @TypeParameter(value = "Null", variance = Variance.OUT, 
-	                            satisfies="ceylon.language::Nothing")})
+	             @TypeParameter(value = "Absent", variance = Variance.OUT, 
+	                            satisfies="ceylon.language::Null")})
 @SatisfiedTypes("ceylon.language::Category")
-public interface ContainerWithFirstElement<Element,Null> extends Category {
+public interface ContainerWithFirstElement<Element,Absent> extends Category {
     @Annotations(@Annotation("formal"))
     public boolean getEmpty();
     
 	@Annotations(@Annotation("formal"))
-	@TypeInfo(value="Null|Element", erased=true)
+	@TypeInfo(value="Absent|Element", erased=true)
     public java.lang.Object getFirst();
 
     @Annotations(@Annotation("formal"))
-    @TypeInfo(value="Null|Element", erased=true)
+    @TypeInfo(value="Absent|Element", erased=true)
     public java.lang.Object getLast();
 }

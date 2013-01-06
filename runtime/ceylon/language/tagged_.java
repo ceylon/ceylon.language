@@ -11,13 +11,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Method
 public final class tagged_
 {
-    public static Nothing tagged(@Name("tags") @Sequenced
+    public static Null tagged(@Name("tags") @Sequenced
             @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
             final ceylon.language.Sequential<? extends ceylon.language.String> tags) {
         return null;
     }
     @Ignore
-    public static Nothing tagged() {
+    public static Null tagged() {
         return null;
     }
     private tagged_(){}

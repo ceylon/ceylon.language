@@ -13,15 +13,15 @@ public final class deprecated_
 {
     private deprecated_(){}
     
-    public static Nothing deprecated(
+    public static Null deprecated(
             @Defaulted
-            @Name("reason") @TypeInfo("ceylon.language::Nothing|ceylon.language::String")
+            @Name("reason") @TypeInfo("ceylon.language::Null|ceylon.language::String")
             String reason) {
         return null;
     }
 
     @Ignore
-    public static Nothing deprecated() {
+    public static Null deprecated() {
         return deprecated($init$reason());
     }
     

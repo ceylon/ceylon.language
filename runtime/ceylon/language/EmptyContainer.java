@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 
 @Ceylon(major = 3)
-@Alias("test::ContainerWithFirstElement<ceylon.language::Bottom,ceylon.language::Nothing>")
+@Alias("test::ContainerWithFirstElement<ceylon.language::Nothing,ceylon.language::Null>")
 @Annotations({@Annotation("shared")})
 public interface EmptyContainer {
 }

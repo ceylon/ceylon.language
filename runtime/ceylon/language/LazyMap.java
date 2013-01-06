@@ -50,7 +50,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeInfo("ceylon.language::Nothing|Item")
+    @TypeInfo("ceylon.language::Null|Item")
     public Item item(@Name("key")
             @TypeInfo("ceylon.language::Object")
             final java.lang.Object key) {

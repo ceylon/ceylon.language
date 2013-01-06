@@ -17,7 +17,7 @@ public class emptyOrSingleton_ {
     @TypeInfo("ceylon.language::Sequential<Element>")
     public static <Element> Sequential<Element> emptyOrSingleton(
             @Name("element")
-            @TypeInfo("ceylon.language::Nothing|Element")
+            @TypeInfo("ceylon.language::Null|Element")
             Element element) {
         return element==null ? 
                 (Sequential)empty_.getEmpty$() : 

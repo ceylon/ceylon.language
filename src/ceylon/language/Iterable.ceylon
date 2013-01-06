@@ -57,7 +57,7 @@ doc "Abstract supertype of containers whose elements may be
 see (Collection)
 by "Gavin"
 shared interface Iterable<out Element> 
-        satisfies ContainerWithFirstElement<Element,Nothing> {
+        satisfies ContainerWithFirstElement<Element,Null> {
     
     doc "An iterator for the elements belonging to this 
          container."
@@ -408,7 +408,7 @@ shared interface Iterable<out Element>
     
 }
 
-Boolean ifExists(Boolean predicate(Object val))(Void val) {
+Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     if (exists val) {
         return predicate(val);
     }

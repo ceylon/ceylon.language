@@ -6,6 +6,6 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 
 @Ceylon(major = 3)
 @Class(extendsType="")
-@CaseTypes({"ceylon.language::Nothing", "ceylon.language::Object"})
-public abstract class Void {
+@CaseTypes({"ceylon.language::Null", "ceylon.language::Object"})
+public abstract class Anything {
 }

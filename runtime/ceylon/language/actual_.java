@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Method;
 @Ceylon(major = 3)
 @Method
 public final class actual_ {
-    public static Nothing actual(){
+    public static Null actual(){
         return null;
     }
     private actual_(){}

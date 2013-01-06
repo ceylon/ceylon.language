@@ -11,13 +11,13 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Method
 public final class by_
 {
-    public static Nothing by(@Name("authors") @Sequenced
+    public static Null by(@Name("authors") @Sequenced
             @TypeInfo("ceylon.language::Sequential<ceylon.language::String>")
             final ceylon.language.Sequential<? extends ceylon.language.String> authors) {
         return null;
     }
     @Ignore
-    public static Nothing by() {
+    public static Null by() {
         return null;
     }
     private by_(){}

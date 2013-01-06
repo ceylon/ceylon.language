@@ -16,7 +16,7 @@ public final class first_ {
     private first_() {
     }
     
-    @TypeInfo("Element|ceylon.language::Nothing")
+    @TypeInfo("Element|ceylon.language::Null")
     @TypeParameters(@TypeParameter(value="Element"))
     public static <Element> Element first(@Name("elements") 
     @Sequenced @TypeInfo("ceylon.language::Sequential<Element>")

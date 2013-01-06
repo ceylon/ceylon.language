@@ -62,14 +62,14 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst() {
         return elems.getFirst();
     }
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getLast() {
         return elems.getLast();
     }
@@ -109,7 +109,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Element findLast(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
             Callable<? extends Boolean> selecting) {
@@ -349,7 +349,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer getLastIndex() {
         long c = elems.count(new AbstractCallable<Boolean>("LazyList_lastIndex") {
             @Override
@@ -377,7 +377,7 @@ public class LazyList<Element> implements List<Element> {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("default")})
-    @TypeInfo("ceylon.language::Nothing|Element")
+    @TypeInfo("ceylon.language::Null|Element")
     public Element item(Integer key) {
         long l = key.value;
         return l==0 ? elems.getFirst() : elems.skipping(l).getFirst();

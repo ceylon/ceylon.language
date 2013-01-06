@@ -6,7 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 
 @Ceylon(major = 3)
 @Object
-@SatisfiedTypes("ceylon.language::Iterator<ceylon.language::Bottom>")
+@SatisfiedTypes("ceylon.language::Iterator<ceylon.language::Nothing>")
 public class emptyIterator_ implements Iterator {
     
     private final static emptyIterator_ emptyIterator = new emptyIterator_();

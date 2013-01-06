@@ -212,7 +212,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer getLastIndex() {
         long length = getSize();
         return (length == 0) ? null : Integer.instance(length - 1);
@@ -235,7 +235,7 @@ public abstract class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Character|ceylon.language::Nothing")
+    @TypeInfo("ceylon.language::Character|ceylon.language::Null")
     public Character item(@Name("index") Integer key) {
         return item(value, key.longValue());
     }
@@ -428,7 +428,7 @@ public abstract class String
         return new ArraySequence<Character>(chars);
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.indexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
@@ -440,7 +440,7 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastOccurrence(@Name("substring") java.lang.String substring) {
         int index = value.lastIndexOf(substring);
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
@@ -452,7 +452,7 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer firstCharacterOccurrence(@Name("character")
     @TypeInfo("ceylon.language::Character") int character) {
         int index = value.indexOf(character);
@@ -465,7 +465,7 @@ public abstract class String
         return (index >= 0) ? Integer.instance(value.codePointCount(0, index)) : null;
     }
 
-    @TypeInfo("ceylon.language::Nothing|ceylon.language::Integer")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
     public Integer lastCharacterOccurrence(@Name("character")
     @TypeInfo("ceylon.language::Character") int character) {
         int index = value.lastIndexOf(character);
