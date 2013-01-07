@@ -1,10 +1,10 @@
 doc "An annotation. This interface encodes
      constraints upon the annotation in its
      type arguments."
-shared interface ConstrainedAnnotation<out AnnotationValue, out Values, in ProgramElement>
-        //of OptionalAnnotation<AnnotationValue,ProgramElement> | SequencedAnnotation<AnnotationValue,ProgramElement>
-        satisfies Annotation<AnnotationValue>
-        given AnnotationValue satisfies Annotation<AnnotationValue>
+shared interface ConstrainedAnnotation<out Value, out Values, in ProgramElement>
+        //of OptionalAnnotation<Value,ProgramElement> | SequencedAnnotation<Value,ProgramElement>
+        satisfies Annotation<Value>
+        given Value satisfies Annotation<Value>
         given ProgramElement satisfies Annotated {
     shared Boolean occurs(Annotated programElement) {
         throw;

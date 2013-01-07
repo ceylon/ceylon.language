@@ -14,16 +14,16 @@ public final class sum_ {
     private sum_() {
     }
     
-    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Summable<Element>"))
-    @TypeInfo("Element")
-    public static <Element extends Summable<Element>>Element sum(@Name("values")
-    @TypeInfo("ceylon.language::Sequence<Element>")
-    final Sequence<? extends Element> values) {
-        Element sum = values.getFirst();
+    @TypeParameters(@TypeParameter(value="Value", satisfies="ceylon.language::Summable<Value>"))
+    @TypeInfo("Value")
+    public static <Value extends Summable<Value>>Value sum(@Name("values")
+    @TypeInfo("ceylon.language::Sequence<Value>")
+    final Sequence<? extends Value> values) {
+        Value sum = values.getFirst();
         java.lang.Object $tmp;
-        for (Iterator<? extends Element> $val$iter$0 = values.getRest().getIterator(); 
+        for (Iterator<? extends Value> $val$iter$0 = values.getRest().getIterator(); 
                 !(($tmp = $val$iter$0.next()) instanceof Finished);) {
-            sum = sum.plus((Element) $tmp);
+            sum = sum.plus((Value) $tmp);
         }
         return sum;
     }

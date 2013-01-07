@@ -15,16 +15,16 @@ public class byIncreasing_ {
     private byIncreasing_(){}
 
     @TypeParameters({@TypeParameter(value="Element"),
-            @TypeParameter(value="Ordered", satisfies="ceylon.language::Comparable<Ordered>")})
+            @TypeParameter(value="Value", satisfies="ceylon.language::Comparable<Value>")})
     @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>")
-    public static <Element,Ordered extends Comparable<? super Ordered>> Callable<? extends Comparison> byIncreasing(
+    public static <Element,Value extends Comparable<? super Value>> Callable<? extends Comparison> byIncreasing(
             @Name("comparable")
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Null|Ordered,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
-            final Callable<? extends Ordered> comparable) {
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Null|Value,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+            final Callable<? extends Value> comparable) {
         return new AbstractCallable<Comparison>("byIncreasing") {
             public Comparison $call(java.lang.Object x, java.lang.Object y) {
-                Ordered cx = comparable.$call(x);
-                Ordered cy = comparable.$call(y);
+                Value cx = comparable.$call(x);
+                Value cy = comparable.$call(y);
                 if (cx!=null && cy!=null) {
                     return cx.compare(cy);
                 }

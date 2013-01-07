@@ -1,6 +1,6 @@
 doc "An annotation that may occur multiple times
      at a single program element."
-shared interface SequencedAnnotation<out AnnotationValue, in ProgramElement>
-        satisfies ConstrainedAnnotation<AnnotationValue,AnnotationValue[],ProgramElement>
-        given AnnotationValue satisfies Annotation<AnnotationValue>
+shared interface SequencedAnnotation<out Value, in ProgramElement>
+        satisfies ConstrainedAnnotation<Value,Value[],ProgramElement>
+        given Value satisfies Annotation<Value>
         given ProgramElement satisfies Annotated {}

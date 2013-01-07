@@ -7,25 +7,25 @@
  * 
  */
 
-shared Values annotations<AnnotationValue,Values,ProgramElement>(
-              Type<ConstrainedAnnotation<AnnotationValue,Values,ProgramElement>> annotationType,
+shared Values annotations<Value,Values,ProgramElement>(
+              Type<ConstrainedAnnotation<Value,Values,ProgramElement>> annotationType,
               ProgramElement programElement)
-           given AnnotationValue satisfies ConstrainedAnnotation<AnnotationValue,Values,ProgramElement>
-           //given Values of (Object?) | (Object[])
+           given Value satisfies ConstrainedAnnotation<Value,Values,ProgramElement>
+           //given Values of (Value?) | (Value[])
            given ProgramElement satisfies Annotated { throw; }
 
-shared AnnotationValue? optionalAnnotation<AnnotationValue,ProgramElement>(
-            Type<OptionalAnnotation<AnnotationValue,ProgramElement>> annotationType,
+shared Value? optionalAnnotation<Value,ProgramElement>(
+            Type<OptionalAnnotation<Value,ProgramElement>> annotationType,
             ProgramElement programElement)
-        given AnnotationValue satisfies OptionalAnnotation<AnnotationValue,ProgramElement>
+        given Value satisfies OptionalAnnotation<Value,ProgramElement>
         given ProgramElement satisfies Annotated { 
-    return annotations<AnnotationValue,AnnotationValue?,ProgramElement>(annotationType, programElement); 
+    return annotations<Value,Value?,ProgramElement>(annotationType, programElement); 
 }
 
-shared AnnotationValue[] sequencedAnnotations<AnnotationValue,ProgramElement>(
-            Type<SequencedAnnotation<AnnotationValue,ProgramElement>> annotationType,
+shared Value[] sequencedAnnotations<Value,ProgramElement>(
+            Type<SequencedAnnotation<Value,ProgramElement>> annotationType,
             ProgramElement programElement)
-        given AnnotationValue satisfies SequencedAnnotation<AnnotationValue,ProgramElement>
+        given Value satisfies SequencedAnnotation<Value,ProgramElement>
         given ProgramElement satisfies Annotated { 
-    return annotations<AnnotationValue,AnnotationValue[],ProgramElement>(annotationType, programElement); 
+    return annotations<Value,Value[],ProgramElement>(annotationType, programElement); 
 }

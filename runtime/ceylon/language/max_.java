@@ -14,22 +14,22 @@ public final class max_ {
     private max_() {
     }
     
-    @TypeParameters({@TypeParameter(value="Element", 
-            satisfies="ceylon.language::Comparable<Element>"),
+    @TypeParameters({@TypeParameter(value="Value", 
+            satisfies="ceylon.language::Comparable<Value>"),
                      @TypeParameter(value="Absent", 
             satisfies="ceylon.language::Null")})
-    @TypeInfo(value="Absent|Element", erased=true)
-    public static <Element, Absent> 
-    Element max(@Name("values")
-    @TypeInfo(value="ceylon.language::Iterable<Element>&ceylon.language::ContainerWithFirstElement<Element,Absent>", erased=true)
-    final Iterable<? extends Element> values) {
-        Element max = (Element) values.getFirst();
+    @TypeInfo(value="Absent|Value", erased=true)
+    public static <Value, Absent> 
+    Value max(@Name("values")
+    @TypeInfo(value="ceylon.language::Iterable<Value>&ceylon.language::ContainerWithFirstElement<Value,Absent>", erased=true)
+    final Iterable<? extends Value> values) {
+        Value max = (Value) values.getFirst();
         if (max!=null) {
         	java.lang.Object $tmp;
-        	for (Iterator<? extends Element> $val$iter$0 = (Iterator<? extends Element>)values.getRest().getIterator(); 
+        	for (Iterator<? extends Value> $val$iter$0 = (Iterator<? extends Value>)values.getRest().getIterator(); 
         			!(($tmp = $val$iter$0.next()) instanceof Finished);) {
-        		final Element val = (Element) $tmp;
-        		if (((Comparable<? super Element>)val).compare(max).largerThan()) {
+        		final Value val = (Value) $tmp;
+        		if (((Comparable<? super Value>)val).compare(max).largerThan()) {
         			max = val;
         		}
         	}
