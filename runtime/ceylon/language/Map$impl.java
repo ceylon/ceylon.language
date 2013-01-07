@@ -936,7 +936,7 @@ public final class Map$impl<Key,Item> {
                     @Override @Ignore
                     public java.lang.Object next() {
                         java.lang.Object e = iter.next();
-                        return e == exhausted_.getExhausted$() ? e : new Entry(((Entry)e).getKey(),
+                        return e == finished_.getFinished$() ? e : new Entry(((Entry)e).getKey(),
                                 mapping.$call(((Entry)e).getKey(), ((Entry)e).getItem()));
                     }
                 };

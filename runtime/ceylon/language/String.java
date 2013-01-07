@@ -399,7 +399,7 @@ public abstract class String
                     result = Character.instance(codePoint);
                     offset += java.lang.Character.charCount(codePoint);
                 } else {
-                    result = exhausted_.getExhausted$();
+                    result = finished_.getFinished$();
                 }
                 return result;
             }
@@ -712,7 +712,7 @@ public abstract class String
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.getIterator();
         java.lang.Object elem = it.next();
-        if (elem != exhausted_.getExhausted$()) {
+        if (elem != finished_.getFinished$()) {
             result.append(elem);
             for (;!((elem = it.next()) instanceof Finished);) {
                 result.append(value).append(elem);
@@ -1309,7 +1309,7 @@ public abstract class String
                         lastTokenWasSeparator = false;
                         return String.instance("");
                     } else {
-                        return exhausted_.getExhausted$();
+                        return finished_.getFinished$();
                     }
                 }
 
@@ -1389,7 +1389,7 @@ public abstract class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == exhausted_.getExhausted$();
+            return getIterator().next() == finished_.getFinished$();
         }
 
         @Override
@@ -1548,7 +1548,7 @@ public abstract class String
                         pos = idx+oc.length();
                         return Integer.instance(idx);
                     }
-                    return exhausted_.getExhausted$();
+                    return finished_.getFinished$();
                 }
             }
 
@@ -1562,7 +1562,7 @@ public abstract class String
 
         @Override
         public boolean getEmpty() {
-            return getIterator().next() == exhausted_.getExhausted$();
+            return getIterator().next() == finished_.getFinished$();
         }
 
         @Override

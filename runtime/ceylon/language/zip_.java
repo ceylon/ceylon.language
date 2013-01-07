@@ -29,7 +29,7 @@ public final class zip_ {
 		Iterator<? extends Item> itemIter = items.getIterator();
 		Key key = (Key) keyIter.next();
         Item item = (Item) itemIter.next();
-		while (key != exhausted_.getExhausted$() && item != exhausted_.getExhausted$()) {
+		while (key != finished_.getFinished$() && item != finished_.getFinished$()) {
 			list.add(new Entry<Key,Item>(key, item));
 	        key = (Key) keyIter.next();
 	        item = (Item) itemIter.next();

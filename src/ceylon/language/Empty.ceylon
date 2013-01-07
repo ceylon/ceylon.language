@@ -119,5 +119,5 @@ shared object empty extends Value() satisfies Empty {}
 
 doc "An iterator that returns no elements."
 shared object emptyIterator satisfies Iterator<Nothing> {
-    next() => exhausted;
+    next() => finished;
 }

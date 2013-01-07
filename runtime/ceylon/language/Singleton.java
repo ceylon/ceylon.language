@@ -168,7 +168,7 @@ public class Singleton<Element>
 			@Override
 			public java.lang.Object next() {
 			    if (done) {
-			        return exhausted_.getExhausted$();
+			        return finished_.getFinished$();
 			    }
 			    else {
 			    	done = true;

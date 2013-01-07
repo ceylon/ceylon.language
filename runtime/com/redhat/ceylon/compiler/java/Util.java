@@ -9,7 +9,7 @@ import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.exhausted_;
+import ceylon.language.finished_;
 
 import com.redhat.ceylon.compiler.java.language.ArraySequence;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -196,7 +196,7 @@ public class Util {
         if (sequence != null) {
             Iterator<? extends T> iterator = sequence.getIterator();
             Object o; 
-            while((o = iterator.next()) != exhausted_.getExhausted$()){
+            while((o = iterator.next()) != finished_.getFinished$()){
                 list.add((T)o);
             }
         }

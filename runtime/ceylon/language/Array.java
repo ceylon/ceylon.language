@@ -373,7 +373,7 @@ public final class Array<Element> implements List<Element> {
                     return unsafeItem(idx++);
                 }
                 else {
-                    return exhausted_.getExhausted$();
+                    return finished_.getFinished$();
                 }
             }
 

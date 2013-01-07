@@ -63,7 +63,7 @@ shared interface List<out Element>
                     }
                 }
                 else {
-                    return exhausted;
+                    return finished;
                 }
             }
             shared actual String string => "listIterator";

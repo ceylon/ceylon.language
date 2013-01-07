@@ -51,7 +51,7 @@ class MyContainer() satisfies EmptyContainer {
 class MyIterator() satisfies Iterator<Integer> {
     variable value done := false;
     shared actual Integer|Finished next() {
-        value r = done then exhausted else 1;
+        value r = done then finished else 1;
         done := true;
         return r;
     }

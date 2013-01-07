@@ -266,7 +266,7 @@ shared interface Iterable<out Element>
                         value iter = outerIterable.iterator;
                         variable value i=0;
                         actual shared Element|Finished next() {
-                            return ++i>take then exhausted 
+                            return ++i>take then finished 
                                     else iter.next();
                         }
                     }
@@ -371,7 +371,7 @@ shared interface Iterable<out Element>
                                 }
                             }
                             else {
-                                return exhausted;
+                                return finished;
                             }
                         }
                     }

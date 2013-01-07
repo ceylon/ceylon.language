@@ -6,6 +6,6 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 
 @Ceylon(major = 3)
 @Class(extendsType = "ceylon.language::Basic")
-@CaseTypes("ceylon.language::exhausted")
+@CaseTypes("ceylon.language::finished")
 public abstract class Finished {
 }

@@ -17,7 +17,7 @@ public class emptyIterator_ implements Iterator {
     
     @Override
     public java.lang.Object next() {
-        return exhausted_.getExhausted$();
+        return finished_.getFinished$();
     }
 
     @Override

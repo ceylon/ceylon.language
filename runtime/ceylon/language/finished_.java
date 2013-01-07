@@ -4,16 +4,16 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 3) @Object
-public class exhausted_ extends Finished {
+public class finished_ extends Finished {
     
-    private final static exhausted_ exhausted = new exhausted_();
+    private final static finished_ finished = new finished_();
     
-    public static exhausted_ getExhausted$(){
-        return exhausted;
+    public static finished_ getFinished$(){
+        return finished;
     }
 
     @Override
     public java.lang.String toString() {
-        return "exhausted";
+        return "finished";
     }
 }

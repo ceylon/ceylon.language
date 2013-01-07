@@ -116,7 +116,7 @@ public final class process_ {
                                 String.instance((java.lang.String) entry.getValue()));
                     }
                     else {
-                        return exhausted.getExhausted();
+                        return finished.getFinished();
                     }
                 }
             };

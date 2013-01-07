@@ -491,7 +491,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	    boolean first = true;
 	    Iterator<? extends Element> iterator = getIterator();
 	    java.lang.Object elem;
-	    while((elem = iterator.next()) != exhausted_.getExhausted$()){
+	    while((elem = iterator.next()) != finished_.getFinished$()){
 	        if(first){
 	            first = false;
 	        }else{
