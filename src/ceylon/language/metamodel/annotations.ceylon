@@ -7,25 +7,25 @@
  * 
  */
 
-shared Values annotations<Value,Values,ProgramElement>(
-              Type<ConstrainedAnnotation<Value,Values,ProgramElement>> annotationType,
+shared Values annotations<AnnotationValue,Values,ProgramElement>(
+              Type<ConstrainedAnnotation<AnnotationValue,Values,ProgramElement>> annotationType,
               ProgramElement programElement)
-           given Value satisfies ConstrainedAnnotation<Value,Values,ProgramElement>
+           given AnnotationValue satisfies ConstrainedAnnotation<AnnotationValue,Values,ProgramElement>
            //given Values of (Value?) | (Value[])
            given ProgramElement satisfies Annotated { throw; }
 
-shared Value? optionalAnnotation<Value,ProgramElement>(
-            Type<OptionalAnnotation<Value,ProgramElement>> annotationType,
+shared AnnotationValue? optionalAnnotation<AnnotationValue,ProgramElement>(
+            Type<OptionalAnnotation<AnnotationValue,ProgramElement>> annotationType,
             ProgramElement programElement)
-        given Value satisfies OptionalAnnotation<Value,ProgramElement>
+        given AnnotationValue satisfies OptionalAnnotation<AnnotationValue,ProgramElement>
         given ProgramElement satisfies Annotated { 
-    return annotations<Value,Value?,ProgramElement>(annotationType, programElement); 
+    return annotations<AnnotationValue,AnnotationValue?,ProgramElement>(annotationType, programElement); 
 }
 
-shared Value[] sequencedAnnotations<Value,ProgramElement>(
-            Type<SequencedAnnotation<Value,ProgramElement>> annotationType,
+shared AnnotationValue[] sequencedAnnotations<AnnotationValue,ProgramElement>(
+            Type<SequencedAnnotation<AnnotationValue,ProgramElement>> annotationType,
             ProgramElement programElement)
-        given Value satisfies SequencedAnnotation<Value,ProgramElement>
+        given AnnotationValue satisfies SequencedAnnotation<AnnotationValue,ProgramElement>
         given ProgramElement satisfies Annotated { 
-    return annotations<Value,Value[],ProgramElement>(annotationType, programElement); 
+    return annotations<AnnotationValue,AnnotationValue[],ProgramElement>(annotationType, programElement); 
 }

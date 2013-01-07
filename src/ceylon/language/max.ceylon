@@ -1,10 +1,10 @@
 doc "Given a nonempty sequence of `Comparable` values, 
      return the largest value in the sequence."
 see (Comparable, min, largest)
-shared Absent|Value max<Value,Absent>({Value...}&ContainerWithFirstElement<Value,Absent> values) 
-        given Value satisfies Comparable<Value>
+shared Absent|Element max<Element,Absent>({Element...}&ContainerWithFirstElement<Element,Absent> values) 
+        given Element satisfies Comparable<Element>
         given Absent satisfies Null {
-    ContainerWithFirstElement<Value,Absent> cwfe = values;
+    ContainerWithFirstElement<Element,Absent> cwfe = values;
     value first = cwfe.first;
     if (exists first) {
         variable value max=first;

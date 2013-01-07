@@ -14,22 +14,22 @@ public final class min_ {
     private min_() {
     }
     
-    @TypeParameters({@TypeParameter(value="Value", 
-            satisfies="ceylon.language::Comparable<Value>"),
+    @TypeParameters({@TypeParameter(value="Element", 
+            satisfies="ceylon.language::Comparable<Element>"),
                      @TypeParameter(value="Absent", 
             satisfies="ceylon.language::Null")})
-    @TypeInfo(value="Absent|Value", erased=true)
-    public static <Value, Absent> 
-    Value min(@Name("values")
-    @TypeInfo(value="ceylon.language::Iterable<Value>&ceylon.language::ContainerWithFirstElement<Value,Absent>", erased=true)
-    final Iterable<? extends Value> values) {
-        Value min = (Value) values.getFirst();
+    @TypeInfo(value="Absent|Element", erased=true)
+    public static <Element, Absent> 
+    Element min(@Name("values")
+    @TypeInfo(value="ceylon.language::Iterable<Element>&ceylon.language::ContainerWithFirstElement<Element,Absent>", erased=true)
+    final Iterable<? extends Element> values) {
+        Element min = (Element) values.getFirst();
         if (min!=null) {
         	java.lang.Object $tmp;
-        	for (Iterator<? extends Value> $val$iter$0 = (Iterator<? extends Value>)values.getRest().getIterator(); 
+        	for (Iterator<? extends Element> $val$iter$0 = (Iterator<? extends Element>)values.getRest().getIterator(); 
         			!(($tmp = $val$iter$0.next()) instanceof Finished);) {
-        		final Value val = (Value) $tmp;
-        		if (((Comparable<? super Value>)val).compare(min).smallerThan()) {
+        		final Element val = (Element) $tmp;
+        		if (((Comparable<? super Element>)val).compare(min).smallerThan()) {
         			min = val;
         		}
         	}

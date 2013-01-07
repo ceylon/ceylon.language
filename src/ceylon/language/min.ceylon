@@ -1,10 +1,10 @@
 doc "Given a nonempty sequence of `Comparable` values, 
      return the smallest value in the sequence."
 see (Comparable, max, smallest)
-shared Absent|Value min<Value,Absent>({Value...}&ContainerWithFirstElement<Value,Absent> values) 
-        given Value satisfies Comparable<Value>
+shared Absent|Element min<Element,Absent>({Element...}&ContainerWithFirstElement<Element,Absent> values) 
+        given Element satisfies Comparable<Element>
         given Absent satisfies Null {
-    ContainerWithFirstElement<Value,Absent> cwfe = values;
+    ContainerWithFirstElement<Element,Absent> cwfe = values;
     value first = cwfe.first;
     if (exists first) {
         variable value min=first;
