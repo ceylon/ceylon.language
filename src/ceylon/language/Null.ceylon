@@ -7,3 +7,7 @@ by "Gavin"
 shared abstract class Null() 
         of null
         extends Anything() {}
+
+doc "The null value."
+by "Gavin"
+shared object null extends Null() {}
