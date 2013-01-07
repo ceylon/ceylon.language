@@ -1,7 +1,7 @@
 doc "Don't forget to document me"
 by "gavin"
 shared class Tuple<out Element, out First, out Rest>(first, rest)
-        extends Value()
+        extends Object()
         satisfies Sequence<Element> & 
                   Cloneable<Tuple<Element,First,Rest>>
         given First satisfies Element

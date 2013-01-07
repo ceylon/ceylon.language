@@ -1,8 +1,8 @@
 doc "A sequence with exactly one element."
 shared class Singleton<out Element>(Element element)
-        extends Value()
+        extends Object()
         satisfies Sequence<Element>
-        given Element satisfies Value {
+        given Element satisfies Object {
     
     doc "Returns `0`."
     shared actual Integer lastIndex => 0;
@@ -80,7 +80,7 @@ shared class Singleton<out Element>(Element element)
     doc "A `Singleton` can be equal to another `List` if 
          that `List` has only one element which is equal to 
          this `Singleton`'s element."
-    shared actual Boolean equals(Value that) {
+    shared actual Boolean equals(Object that) {
         throw;
         //if (is List<Element> that) {
         //    if (that.size!=1) {
@@ -102,7 +102,7 @@ shared class Singleton<out Element>(Element element)
     
     doc "Returns `true` if the specified element is this 
          `Singleton`'s element."
-    shared actual Boolean contains(Value element) =>
+    shared actual Boolean contains(Object element) =>
             this.element==element;
     
     doc "Returns `1` if this Singleton's element

@@ -63,7 +63,7 @@ shared interface Empty
     shared actual Iterable<Other> chain<Other>(Iterable<Other> other) => other;
     
     doc "Returns `false` for any given element."
-    shared actual Boolean contains(Value element) => false;
+    shared actual Boolean contains(Object element) => false;
     
     doc "Returns 0 for any given predicate."
     shared actual Integer count(
@@ -115,7 +115,7 @@ shared interface Empty
 doc "The value representing a sequence with no elements. The 
      instance of `{}`"
 //by "Tako Schotanus"
-shared object empty extends Value() satisfies Empty {}
+shared object empty extends Object() satisfies Empty {}
 
 doc "An iterator that returns no elements."
 shared object emptyIterator satisfies Iterator<Nothing> {

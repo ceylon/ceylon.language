@@ -18,7 +18,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::Value")
+@Class(extendsType="ceylon.language::Object")
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
@@ -532,7 +532,7 @@ public final class Array<Element> implements List<Element> {
 
     @Override
     @Ignore
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Value")
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Object")
     java.lang.Object that) {
         return $ceylon$language$List$this.equals(that);
     }
@@ -544,7 +544,7 @@ public final class Array<Element> implements List<Element> {
     }
 
     @Override
-    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Value")
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Object")
     java.lang.Object element) {
         // FIXME Very inefficient for primitive types due to boxing
         Iterator<Element> iter = getIterator();
@@ -575,7 +575,7 @@ public final class Array<Element> implements List<Element> {
     @Override
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
@@ -593,7 +593,7 @@ public final class Array<Element> implements List<Element> {
     @Override
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }

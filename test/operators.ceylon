@@ -95,7 +95,7 @@ void operators() {
     
     class X() {}
     X? xx = X();
-    Value? obj(Value? x) { return x; }
+    Object? obj(Object? x) { return x; }
     check(obj(xx else X()) is X, "something");
     check(obj(true then X()) is X, "something");
     check(obj(true then X() else X()) is X, "something");

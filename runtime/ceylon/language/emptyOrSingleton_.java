@@ -13,7 +13,7 @@ public class emptyOrSingleton_ {
 
     private emptyOrSingleton_(){}
 
-    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Value"))
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Sequential<Element>")
     public static <Element> Sequential<Element> emptyOrSingleton(
             @Name("element")

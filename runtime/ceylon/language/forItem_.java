@@ -13,9 +13,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public class forItem_ {
     private forItem_(){}
 
-    @TypeParameters({@TypeParameter(value="Item", satisfies="ceylon.language::Value"),
+    @TypeParameters({@TypeParameter(value="Item", satisfies="ceylon.language::Object"),
     		        @TypeParameter(value="Result")})
-    @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Entry<ceylon.language::Value,Item>,ceylon.language::Entry<ceylon.language::Value,Item>,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Entry<ceylon.language::Object,Item>,ceylon.language::Entry<ceylon.language::Object,Item>,ceylon.language::Empty>>")
     public static 
     <Item,Result> Callable<? extends Result> forItem(
             @Name("resulting") @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Item,Item,ceylon.language::Empty>>")

@@ -16,8 +16,8 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value = "Element",
         variance = Variance.OUT,
-        satisfies="ceylon.language::Value"))
-@Class(extendsType="ceylon.language::Value")
+        satisfies="ceylon.language::Object"))
+@Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class Singleton<Element>
         implements Sequence<Element> {

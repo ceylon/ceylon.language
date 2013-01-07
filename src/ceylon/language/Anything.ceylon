@@ -1,5 +1,5 @@
 doc "The abstract supertype of all types. A value of type 
-     `Anything` may be a definite value of type `Value`, or it 
+     `Anything` may be a definite value of type `Object`, or it 
      may be the `null` value. A method declared `void` is 
      considered to have the return type `Anything`.
      
@@ -7,4 +7,4 @@ doc "The abstract supertype of all types. A value of type
      intersection of all types, is a subtype of all types."
 by "Gavin"
 shared abstract class Anything() 
-        of Value | Null {}
+        of Object | Null {}

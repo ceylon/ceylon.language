@@ -113,17 +113,17 @@ public final class Map$impl<Key,Item> {
             }
 
             @Override
-            public <Other> Set<? extends Value> union(Set<? extends Other> set) {
+            public <Other> Set<? extends Object> union(Set<? extends Other> set) {
                 return bottom_.getNothing$();
             }
 
             @Override
-            public <Other> Set<? extends Value> intersection(Set<? extends Other> set) {
+            public <Other> Set<? extends Object> intersection(Set<? extends Other> set) {
                 return bottom_.getNothing$();
             }
 
             @Override
-            public <Other> Set<? extends Value> exclusiveUnion(Set<? extends Other> set) {
+            public <Other> Set<? extends Object> exclusiveUnion(Set<? extends Other> set) {
                 return bottom_.getNothing$();
             }
 

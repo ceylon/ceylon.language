@@ -132,11 +132,11 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Nul
         Callable<? extends Boolean> selecting);
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Value>")
+    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
     public Iterable<? extends Element> getCoalesced();
 
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Value>>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
     public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed();
 
     @Annotations(@Annotation("default"))
@@ -147,7 +147,7 @@ public interface Iterable<Element> extends ContainerWithFirstElement<Element,Nul
             Iterable<? extends Other> other);
 
     @Annotations(@Annotation("default"))
-    @TypeParameters(@TypeParameter(value="Grouping",satisfies="ceylon.language::Value"))
+    @TypeParameters(@TypeParameter(value="Grouping",satisfies="ceylon.language::Object"))
     @TypeInfo("ceylon.language::Map<Grouping,ceylon.language::Sequence<Element>>")
     public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(@Name("grouping")
             @TypeInfo("ceylon.language::Callable<Grouping,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")

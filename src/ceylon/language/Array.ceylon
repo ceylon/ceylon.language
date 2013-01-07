@@ -6,7 +6,7 @@ doc "A fixed-size array of elements. An array may have zero
      with Java, and for some performance-critical low-level 
      programming tasks."
 shared abstract class Array<Element>() 
-        extends Value()
+        extends Object()
         satisfies List<Element> &
                   Cloneable<Array<Element>> &
                   Ranged<Integer, Array<Element>> {

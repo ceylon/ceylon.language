@@ -33,13 +33,13 @@ shared void booleans() {
     
     while (true) { break; }
     
-    function obj(Value o) {
+    function obj(Object o) {
         return o;
     }
     function bool(Boolean b) {
         return b;
     }
-    Value o=obj(true);
+    Object o=obj(true);
     Boolean b=bool(false);
     
     /*Boolean bt = true;

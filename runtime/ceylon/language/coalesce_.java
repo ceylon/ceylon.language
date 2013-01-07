@@ -16,7 +16,7 @@ public final class coalesce_ {
     private coalesce_() {}
 
     @TypeParameters(@TypeParameter("Element"))
-    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Value>")
+    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
     public static <Element> Iterable<? extends Element> coalesce(
     @Name("values") @Sequenced
     @TypeInfo("ceylon.language::Sequential<Element>")

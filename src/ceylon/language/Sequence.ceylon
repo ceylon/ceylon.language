@@ -79,10 +79,10 @@ shared interface Sequence<out Element>
     shared actual formal Element[] segment(Integer from,
                                            Integer length);*/
                                            
-    /*shared formal Sequence<Value> append<Value>(Value... elements)
-            given Value abstracts Element;
+    /*shared formal Sequence<Object> append<Object>(Object... elements)
+            given Object abstracts Element;
     
-    shared formal Sequence<Value> prepend<Value>(Value... elements)
-            given Value abstracts Element;*/
+    shared formal Sequence<Object> prepend<Object>(Object... elements)
+            given Object abstracts Element;*/
 
 }

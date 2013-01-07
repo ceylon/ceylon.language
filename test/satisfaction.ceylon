@@ -1,6 +1,6 @@
 //Simple implementation of single interfaces to verify correct compilation and behavior
 class MyCategory() satisfies Category {
-    shared actual Boolean contains(Value e) {
+    shared actual Boolean contains(Object e) {
         if (is Integer e) {
             return e>0 && e<11;
         }
@@ -23,19 +23,19 @@ class MyContainerWithLastElement() satisfies ContainerWithFirstElement<Integer,N
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
-    shared actual Boolean contains(Value element) => element == 1 || element == 2;
+    shared actual Boolean contains(Object element) => element == 1 || element == 2;
 }
 class MyContainerWithoutFirstElement() satisfies ContainerWithFirstElement<Integer,Null> {
     shared actual Integer? first { return null; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
-    shared actual Boolean contains(Value element) => element == 2;
+    shared actual Boolean contains(Object element) => element == 2;
 }
 class MyContainerWithoutLastElement() satisfies ContainerWithFirstElement<Integer,Null> {
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return null; }
     shared actual Boolean empty { return false; }
-    shared actual Boolean contains(Value element) => element == 1;
+    shared actual Boolean contains(Object element) => element == 1;
 }
 class MyCloseable() satisfies Closeable {
     shared variable Boolean opened := false;
@@ -46,7 +46,7 @@ class MyContainer() satisfies EmptyContainer {
     shared actual Null first { return null; }
     shared actual Null last { return null; }
     shared actual Boolean empty = true;
-    shared actual Boolean contains(Value element) => false;
+    shared actual Boolean contains(Object element) => false;
 }
 class MyIterator() satisfies Iterator<Integer> {
     variable value done := false;
@@ -61,7 +61,7 @@ class MyIterator() satisfies Iterator<Integer> {
     shared actual Integer first = 1;
     shared actual Integer[] rest = {};
     shared actual Integer hash = 1;
-    shared actual Boolean equals(Value other) { return false; }
+    shared actual Boolean equals(Object other) { return false; }
     shared actual MySequence clone { return MySequence(); }
     shared actual Sequence<Integer> reversed { return this; }
     shared actual Integer? item(Integer index) {
@@ -104,7 +104,7 @@ class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeri
     shared actual MyNumeric positiveValue { return MyNumeric(+x); }
     shared actual MyNumeric negativeValue { return MyNumeric(-x); }
     shared actual MyNumeric power(Integer exp) { return MyNumeric(x**exp); }
-    shared actual Boolean equals(Value o) {
+    shared actual Boolean equals(Object o) {
         if (is MyNumeric o) {
             return o.x == x;
         }
@@ -114,7 +114,7 @@ class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeri
 class MyInvertable(Integer x) satisfies Invertable<MyInvertable> {
     shared actual MyInvertable negativeValue { return MyInvertable(-x); }
     shared actual MyInvertable positiveValue { return MyInvertable(+x); }
-    shared actual Boolean equals(Value o) {
+    shared actual Boolean equals(Object o) {
         if (is MyInvertable o) {
             return o.x == x;
         }

@@ -103,7 +103,7 @@ shared interface List<out Element>
          - the lists both have the element `null`, or
          - the lists both have a non-null element, and the
            two elements are equal."
-    shared actual default Boolean equals(Value that) {
+    shared actual default Boolean equals(Object that) {
         if (is List<Anything> that) {
             if (that.size==size) {
                 for (i in 0..size-1) {

@@ -1,5 +1,5 @@
 doc "The abstract supertype of all types representing 
-     definite values. Any two `Value`s may be compared
+     definite values. Any two `Object`s may be compared
      for value equality using the `==` and `!=` operators:
      
          true==false
@@ -7,7 +7,7 @@ doc "The abstract supertype of all types representing
          \"hello\"+ \" \" + \"world\"==\"hello world\"
          Singleton(\"hello world\")=={ \"hello world\" }
      
-     However, since `Null` is not a subtype of `Value`,
+     However, since `Null` is not a subtype of `Object`,
      the value `null` cannot be compared to any other value
      using `==`. Thus, value equality is not defined for 
      optional types. This neatly voids the problem of 
@@ -15,7 +15,7 @@ doc "The abstract supertype of all types representing
      which is simply illegal."
 see (Basic, Null)
 by "Gavin"
-shared abstract class Value() 
+shared abstract class Object() 
         extends Anything() {
     
     doc "Determine if two values are equal. Implementations
@@ -28,7 +28,7 @@ shared abstract class Value()
          Furthermore it is recommended that implementations
          ensure that if `x==y` then `x` and `y` have the
          same concrete class."
-    shared formal Boolean equals(Value that);
+    shared formal Boolean equals(Object that);
     
     doc "The hash value of the value, which allows the value
          to be an element of a hash-based set or key of a

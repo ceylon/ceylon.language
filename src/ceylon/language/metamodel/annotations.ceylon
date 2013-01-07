@@ -11,7 +11,7 @@ shared Values annotations<AnnotationValue,Values,ProgramElement>(
               Type<ConstrainedAnnotation<AnnotationValue,Values,ProgramElement>> annotationType,
               ProgramElement programElement)
            given AnnotationValue satisfies ConstrainedAnnotation<AnnotationValue,Values,ProgramElement>
-           //given Values of (Value?) | (Value[])
+           //given Values of (Object?) | (Object[])
            given ProgramElement satisfies Annotated { throw; }
 
 shared AnnotationValue? optionalAnnotation<AnnotationValue,ProgramElement>(

@@ -4,4 +4,4 @@ doc "The default superclass when no superclass is explicitly
      equality from `Identifiable`."
 by "Gavin"
 shared abstract class Basic()
-        extends Value() satisfies Identifiable {}
+        extends Object() satisfies Identifiable {}

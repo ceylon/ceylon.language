@@ -4,20 +4,20 @@
 // compiles, types are correct, etc.
 
 interface SetTestBase<out Element> satisfies Set<Element>
-            given Element satisfies Value {
+            given Element satisfies Object {
     shared formal Element[] elements;
 }
 
-class SetTest<Element>(Element... element) extends Value()
+class SetTest<Element>(Element... element) extends Object()
             satisfies SetTestBase<Element>
-            given Element satisfies Value {
+            given Element satisfies Object {
     shared actual Element[] elements = element.sequence;
     shared actual Integer size { return elements.size; }
     shared actual Boolean empty { return elements.empty; }
     shared actual SetTest<Element> clone { return this; }
     shared actual Iterator<Element> iterator { return elements.iterator; }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
-                given Other satisfies Value {
+                given Other satisfies Object {
         value sb = SequenceBuilder<Element|Other>();
         sb.appendAll(elements...);
         for (e in set) {
@@ -30,7 +30,7 @@ class SetTest<Element>(Element... element) extends Value()
         return SetTest(sb.sequence...);
     }
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
-                given Other satisfies Value {
+                given Other satisfies Object {
         //value sb = SequenceBuilder<Element&Other>();
         //for (e in set) {
         //    if (e is Element) {
@@ -46,7 +46,7 @@ class SetTest<Element>(Element... element) extends Value()
         return bottom;
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
-                given Other satisfies Value {
+                given Other satisfies Object {
         value sb = SequenceBuilder<Element|Other>();
         for (e in elements) {
             for (e2 in set) {
@@ -65,7 +65,7 @@ class SetTest<Element>(Element... element) extends Value()
         return SetTest(sb.sequence...);
     }
     shared actual Set<Element> complement<Other>(Set<Other> set)
-                given Other satisfies Value {
+                given Other satisfies Object {
         value sb = SequenceBuilder<Element>();
         for (e in elements) {
             for (e2 in set) {

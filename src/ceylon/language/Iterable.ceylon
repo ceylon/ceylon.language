@@ -70,7 +70,7 @@ shared interface Iterable<out Element>
     
     shared default Integer size => count((Element e) => true);
     
-    shared actual default Boolean contains(Value element) => 
+    shared actual default Boolean contains(Object element) => 
             any(ifExists(element.equals));
     
     doc "The first element returned by the iterator, if any.
@@ -324,7 +324,7 @@ shared interface Iterable<out Element>
             Boolean selecting(Element element)) {
         variable value count=0;
         for (elem in this) {
-            if (is Value elem) {
+            if (is Object elem) {
                 if (selecting(elem)) {
                     count++;
                 }
@@ -337,7 +337,7 @@ shared interface Iterable<out Element>
          original order. For null elements of the original 
          `Iterable`, there is no entry in the resulting 
          iterable object."
-    shared default {Element&Value...} coalesced =>
+    shared default {Element&Object...} coalesced =>
             { for (e in this) if (exists e) e };
     
     doc "All entries of form `index->element` where `index` 
@@ -352,14 +352,14 @@ shared interface Iterable<out Element>
              
          results in an iterable object with the entries
          `0->\"hello\"` and `2->\"world\"`."
-    shared default {Integer->Element&Value...} indexed {
-            object iterable satisfies {<Integer->Element&Value>?...} {
-                shared actual Iterator<<Integer->Element&Value>?> iterator {
+    shared default {Integer->Element&Object...} indexed {
+            object iterable satisfies {<Integer->Element&Object>?...} {
+                shared actual Iterator<<Integer->Element&Object>?> iterator {
                     value outerIterable { return outer; }
-                    object iterator satisfies Iterator<<Integer->Element&Value>?> {
+                    object iterator satisfies Iterator<<Integer->Element&Object>?> {
                         value iter = outerIterable.iterator;
                         variable value i=0;
-                        actual shared <Integer->Element&Value>?|Finished next() {
+                        actual shared <Integer->Element&Object>?|Finished next() {
                             value next = iter.next();
                             if (!is Finished next) {
                                 if (exists next) {
@@ -402,13 +402,13 @@ shared interface Iterable<out Element>
                 doc "A function that must return the key under
                      which to group the specified element."
                 Grouping grouping(Element elem))
-            given Grouping satisfies Value {
+            given Grouping satisfies Object {
         throw;
     }
     
 }
 
-Boolean ifExists(Boolean predicate(Value val))(Anything val) {
+Boolean ifExists(Boolean predicate(Object val))(Anything val) {
     if (exists val) {
         return predicate(val);
     }

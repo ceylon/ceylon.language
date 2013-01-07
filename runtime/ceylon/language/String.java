@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::Value")
+@Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({"ceylon.language::Sequential<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Summable<ceylon.language::String>",
@@ -525,7 +525,7 @@ public abstract class String
     @Override
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
@@ -557,7 +557,7 @@ public abstract class String
     @Override
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
     Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
@@ -1496,7 +1496,7 @@ public abstract class String
         }
         @Override @Ignore
         public boolean containsEvery(
-                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
             return $ceylon$language$Category$this.containsEvery(elements);
         }
         @Override @Ignore
@@ -1509,7 +1509,7 @@ public abstract class String
         }
         @Override @Ignore
         public boolean containsAny(
-                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
             return $ceylon$language$Category$this.containsAny(elements);
         }
         @Override @Ignore
@@ -1667,7 +1667,7 @@ public abstract class String
         }
         @Override @Ignore
         public boolean containsEvery(
-                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
             return $ceylon$language$Category$this.containsEvery(elements);
         }
         @Override @Ignore
@@ -1680,7 +1680,7 @@ public abstract class String
         }
         @Override @Ignore
         public boolean containsAny(
-                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
+                @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
             return $ceylon$language$Category$this.containsAny(elements);
         }
         @Override @Ignore

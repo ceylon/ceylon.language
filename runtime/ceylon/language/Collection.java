@@ -25,7 +25,7 @@ public interface Collection<Element>
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
-    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Value")
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Object")
             java.lang.Object element);
 
     @Annotations({@Annotation("actual"), @Annotation("default")})

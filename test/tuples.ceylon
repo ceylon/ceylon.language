@@ -9,7 +9,7 @@ void tuples() {
     check(t.lastIndex == 2, "tuple lastIndex");
     Integer v1 = t[0];
     String v2 = t[1];
-    Singleton<Value> v3 = t[2];
+    Singleton<Object> v3 = t[2];
     Integer t1 = t.first;
     check(t1 == 1, "tuples first");
     String t2 = t.rest.first;
@@ -44,8 +44,8 @@ void tuples() {
     check(t[...3] == {1, "2", {`3`}}, "tuple[...3] " t[...3] "...");
     //Check inherited methods work
     check(1 in t, "tuple contains");
-    check(t.find((Value x) x is Integer) exists, "tuple find");
-    check(t.any((Value x) x is String), "tuple any");
-    check(t.every((Value x) true), "tuple every");
-    check(t.count((Value x) x is String) == 1, "tuple count");
+    check(t.find((Object x) x is Integer) exists, "tuple find");
+    check(t.any((Object x) x is String), "tuple any");
+    check(t.every((Object x) true), "tuple every");
+    check(t.count((Object x) x is String) == 1, "tuple count");
 }

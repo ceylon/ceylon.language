@@ -31,7 +31,7 @@ shared interface Collection<out Element>
          recommended. (For example, the `contains()` method 
          of `String` returns `true` for any substring of the
          string.)"
-    shared actual default Boolean contains(Value element) {
+    shared actual default Boolean contains(Object element) {
         for (elem in this) {
             if (exists elem,
                     elem==element) {

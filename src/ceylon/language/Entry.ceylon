@@ -3,9 +3,9 @@ doc "A pair containing a key and an associated value
      elements of a `Map`."
 by "Gavin"
 shared class Entry<out Key, out Item>(key, item)
-        extends Value()
-        given Key satisfies Value
-        given Item satisfies Value {
+        extends Object()
+        given Key satisfies Object
+        given Item satisfies Object {
     
     doc "The key used to access the entry."
     shared Key key;
@@ -16,8 +16,8 @@ shared class Entry<out Key, out Item>(key, item)
     doc "Determines if this entry is equal to the given
          entry. Two entries are equal if they have the same
          key and the same value."
-    shared actual Boolean equals(Value that) {
-        if (is Entry<Value,Value> that) {
+    shared actual Boolean equals(Object that) {
+        if (is Entry<Object,Object> that) {
             return this.key==that.key &&
                     this.item==that.item;
         }

@@ -1,12 +1,12 @@
 void iterate<Element>(List<Element> list) 
-    given Element satisfies Value {
+    given Element satisfies Object {
     for (element in list) {
         check(element in list);
     }
 }
 
 void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String message)
-    given T satisfies Value {
+    given T satisfies Object {
     
     Iterator<T> bIterator = bIterable.iterator;
     for(T a in aIterable){

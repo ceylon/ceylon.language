@@ -45,7 +45,7 @@ public interface List<Element>
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Value")
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Object")
     java.lang.Object that);
 
     @Annotations({@Annotation("formal")})

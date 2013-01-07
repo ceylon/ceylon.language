@@ -33,12 +33,12 @@ shared interface Category {
          Therefore implementations of `contains()` which do 
          not satisfy this relationship are tolerated."
     see (containsEvery, containsAny)
-    shared formal Boolean contains(Value element);
+    shared formal Boolean contains(Object element);
     
     doc "Determines if every one of the given values belongs
          to this `Category`."
     see (contains)
-    shared default Boolean containsEvery(Value... elements) {
+    shared default Boolean containsEvery(Object... elements) {
         for (element in elements) {
             if (!contains(element)) {
                 return false;
@@ -52,7 +52,7 @@ shared interface Category {
     doc "Determines if any of the given values belongs
          to this `Category`"
     see (contains)
-    shared default Boolean containsAny(Value... elements) {
+    shared default Boolean containsAny(Object... elements) {
         for (element in elements) {
             if (contains(element)) {
                 return true;

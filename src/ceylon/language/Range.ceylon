@@ -14,7 +14,7 @@ doc "Represents the range of totally ordered, ordinal values
      "
 by "Gavin"
 shared class Range<Element>(first, last) 
-        extends Value() 
+        extends Object() 
         satisfies Sequence<Element> & Category
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
@@ -94,7 +94,7 @@ shared class Range<Element>(first, last)
     }
     
     doc "Determines if the range includes the given object."
-    shared actual Boolean contains(Value element) {
+    shared actual Boolean contains(Object element) {
         throw;
         //if (is Element element) {
         //    return includes(element);
@@ -143,7 +143,7 @@ shared class Range<Element>(first, last)
 
     doc "Determines if two ranges are the same by comparing
          their endpoints."
-    shared actual Boolean equals(Value that) {
+    shared actual Boolean equals(Object that) {
         throw;
         //if (is Range<Element> that) {
         //    //optimize for another Range
