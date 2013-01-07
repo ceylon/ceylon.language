@@ -154,7 +154,7 @@ public class FilterIterable<Element> implements Iterable<Element> {
     }
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     @Override @Ignore
@@ -167,7 +167,7 @@ public class FilterIterable<Element> implements Iterable<Element> {
     }
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     @Override @Ignore

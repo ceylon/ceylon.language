@@ -8,7 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::IdentifiableObject")
+@Class(extendsType="ceylon.language::Basic")
 @TypeParameters({@TypeParameter("Element"), @TypeParameter("Other")})
 @SatisfiedTypes({
     "ceylon.language::Iterator<Element|Other>"

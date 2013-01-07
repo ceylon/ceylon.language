@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ignore
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class ArraySequence<Element> implements Sequence<Element> {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;

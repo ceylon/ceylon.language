@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
     "ceylon.language::Exponentiable<ceylon.language::Integer,ceylon.language::Integer>",
     "ceylon.language::Castable<ceylon.language::Integer|ceylon.language::Float>"
 })
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @ValueType
 public final class Integer
     implements Scalar<Integer>, Integral<Integer>,

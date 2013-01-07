@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @SatisfiedTypes({
     "ceylon.language::Scalar<ceylon.language::Float>",
     "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>",

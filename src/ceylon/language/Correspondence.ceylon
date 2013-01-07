@@ -17,7 +17,7 @@ doc "Abstract supertype of objects which associate values
 see (Map, List, Category)
 by "Gavin"
 shared interface Correspondence<in Key, out Item>
-        given Key satisfies Object {
+        given Key satisfies Value {
     
     doc "Returns the value defined for the given key, or 
          `null` if there is no value defined for the given 
@@ -36,7 +36,7 @@ shared interface Correspondence<in Key, out Item>
     see (defines)
     shared default Category keys {
         object keys satisfies Category {
-            shared actual Boolean contains(Object key) {
+            shared actual Boolean contains(Value key) {
                 throw;
                 //if (is Key key) {
                 //    return defines(key);
@@ -90,7 +90,7 @@ shared interface Correspondence<in Key, out Item>
     }
 
     class Items(Sequence<Key> keys)
-            extends Object()
+            extends Value()
             satisfies Sequence<Item?> {
     
         shared actual Integer lastIndex => keys.lastIndex;

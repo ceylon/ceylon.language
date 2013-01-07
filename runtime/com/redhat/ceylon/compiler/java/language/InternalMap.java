@@ -281,14 +281,14 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
+    @TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Value>")
     public Iterable<? extends Entry<? extends Key, ? extends Item>> getCoalesced() {
         return iter$impl.getCoalesced();
     }
 
     @Override
     @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Value>>")
     public Iterable<? extends Entry<? extends Integer, ? extends Entry<? extends Key, ? extends Item>>> getIndexed() {
         return iter$impl.getIndexed();
     }
@@ -314,7 +314,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
         return cat$impl.containsEvery(elements);
     }
 
@@ -333,7 +333,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
         return cat$impl.containsAny(elements);
     }
 
@@ -379,7 +379,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item> {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Map<Key,Result>")
-    @TypeParameters(@TypeParameter(value="Result", satisfies="ceylon.language::Object"))
+    @TypeParameters(@TypeParameter(value="Result", satisfies="ceylon.language::Value"))
     public <Result> Map<? extends Key, ? extends Result> mapItems(
             Callable<? extends Result> mapping) {
         return map$impl.mapItems(mapping);

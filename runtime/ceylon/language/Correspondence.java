@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters({
     @TypeParameter(value = "Key", variance = Variance.IN,
-            satisfies="ceylon.language::Object"),
+            satisfies="ceylon.language::Value"),
     @TypeParameter(value = "Item", variance = Variance.OUT)
 })
 @Members(@Member(name = "Items", packageName = "ceylon.language", javaClass = "ceylon.language.Correspondence$impl.Items"))

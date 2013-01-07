@@ -73,7 +73,7 @@ shared class LazyList<out Element>({Element...} elems)
         }
     }
     
-    shared actual default Boolean equals(Object that) {
+    shared actual default Boolean equals(Value that) {
         if (is List<Anything> that) {
             value size = elems.size;
             if (that.size==size) {
@@ -106,7 +106,7 @@ shared class LazyList<out Element>({Element...} elems)
         variable value hash = 1;
         for (elem in elems) {
             hash *= 31;
-            if (is Object elem) {
+            if (exists elem) {
                 hash += elem.hash;
             }
         }

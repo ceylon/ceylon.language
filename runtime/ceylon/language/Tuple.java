@@ -22,7 +22,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
     @TypeParameter(value = "Rest", variance = Variance.OUT, 
             satisfies = "ceylon.language::Sequential<Element>")
  })
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 public class Tuple<Element, First extends Element, Rest extends Sequential<? extends Element>> 
         implements Sequence<Element> {
@@ -122,7 +122,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	@Override
 	@Annotations(@Annotation("actual"))
 	public boolean contains(@Name("element")
-	        @TypeInfo("ceylon.language::Object")
+	        @TypeInfo("ceylon.language::Value")
 	        java.lang.Object element) {
 		return collection$impl.contains(element);
 	}
@@ -226,14 +226,14 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Object>")
+	@TypeInfo("ceylon.language::Iterable<Element&ceylon.language::Value>")
 	public Iterable<? extends Element> getCoalesced() {
 		return iterable$impl.getCoalesced();
 	}
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Object>>")
+	@TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::Integer,Element&ceylon.language::Value>>")
 	public Iterable<? extends Entry<? extends Integer, ? extends Element>> getIndexed() {
 		return iterable$impl.getIndexed();
 	}
@@ -250,7 +250,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 
 	@Override
 	@Annotations(@Annotation("default"))
-	@TypeParameters(@TypeParameter(value = "Grouping", satisfies = "ceylon.language::Object"))
+	@TypeParameters(@TypeParameter(value = "Grouping", satisfies = "ceylon.language::Value"))
 	@TypeInfo("ceylon.language::Map<Grouping,ceylon.language::Sequence<Element>>")
 	public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(@Name("grouping")
 	        @TypeInfo("ceylon.language::Callable<Grouping,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
@@ -261,7 +261,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean containsEvery(@Sequenced @Name("elements")
-	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
 	Sequential<?> elements) {
 		return category$impl.containsEvery(elements);
 	}
@@ -281,7 +281,7 @@ public class Tuple<Element, First extends Element, Rest extends Sequential<? ext
 	@Override
 	@Annotations(@Annotation("default"))
 	public boolean containsAny(@Sequenced @Name("elements")
-	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+	        @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
 	Sequential<?> elements) {
 		return category$impl.containsAny(elements);
 	}

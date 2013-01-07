@@ -5,8 +5,8 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @SatisfiedTypes("ceylon.language::Identifiable")
-public abstract class IdentifiableObject implements Identifiable {
+public abstract class Basic implements Identifiable {
     
 }

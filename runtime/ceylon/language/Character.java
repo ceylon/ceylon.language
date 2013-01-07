@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @SatisfiedTypes({"ceylon.language::Comparable<ceylon.language::Character>",
 		        "ceylon.language::Ordinal<ceylon.language::Character>"})
 @ValueType

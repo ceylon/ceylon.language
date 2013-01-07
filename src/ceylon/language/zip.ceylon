@@ -12,8 +12,8 @@ doc "Given two sequences, form a new sequence consisting of
      
      for every `0<=i<min({xs.size,ys.size})`."
 shared <Key->Item>[] zip<Key,Item>({Key...} keys, {Item...} items)
-        given Key satisfies Object
-        given Item satisfies Object {
+        given Key satisfies Value
+        given Item satisfies Value {
     value iter = items.iterator;
     return [ for (key in keys) if (!is Finished item=iter.next()) key->item ];
 }

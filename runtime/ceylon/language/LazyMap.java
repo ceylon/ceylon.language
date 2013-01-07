@@ -15,8 +15,8 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters({
-    @TypeParameter(value="Key", variance=Variance.OUT, satisfies="ceylon.language::Object"),
-    @TypeParameter(value="Item", variance=Variance.OUT, satisfies="ceylon.language::Object")
+    @TypeParameter(value="Key", variance=Variance.OUT, satisfies="ceylon.language::Value"),
+    @TypeParameter(value="Item", variance=Variance.OUT, satisfies="ceylon.language::Value")
 })
 @SatisfiedTypes("ceylon.language::Map<Key,Item>")
 public class LazyMap<Key, Item> implements Map<Key, Item> {
@@ -52,7 +52,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Null|Item")
     public Item item(@Name("key")
-            @TypeInfo("ceylon.language::Object")
+            @TypeInfo("ceylon.language::Value")
             final java.lang.Object key) {
         Entry<? extends Key, ? extends Item> item = entries.find(new AbstractCallable<Boolean>("LazyMap_item") {
             @SuppressWarnings("rawtypes")
@@ -141,7 +141,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     @Annotations(@Annotation("actual"))
     @TypeInfo("ceylon.language::Boolean")
     public boolean equals(@Name("that")
-            @TypeInfo("ceylon.language::Object")
+            @TypeInfo("ceylon.language::Value")
             final java.lang.Object that) {
         return map$impl.equals(that);
     }
@@ -307,7 +307,7 @@ public class LazyMap<Key, Item> implements Map<Key, Item> {
     @Ignore @Override
     public boolean containsAny(
             @Sequenced @Name("elements")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
             Sequential<?> elements) {
         return cat$impl.containsAny(elements);
     }

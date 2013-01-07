@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters(@TypeParameter(value="Element", variance=Variance.OUT,
-    satisfies="ceylon.language::Object"))
+    satisfies="ceylon.language::Value"))
 @SatisfiedTypes("ceylon.language::Set<Element>")
 public class LazySet<Element> implements Set<Element> {
     private final ceylon.language.Collection$impl $ceylon$language$Collection$this;
@@ -68,7 +68,7 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Value"))
     @TypeInfo("ceylon.language::Set<Element|Other>")
     public <Other> Set union(Set<? extends Other> set) {
         return new LazySet(elems.chain(set));
@@ -77,7 +77,7 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Value"))
     @TypeInfo("ceylon.language::Set<Element&Other>")
     public <Other> Set intersection(Set<? extends Other> set) {
         return new LazySet(set.filter(new AbstractCallable<Boolean>("Set_intersection"){
@@ -96,7 +96,7 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Value"))
     @TypeInfo("ceylon.language::Set<Element|Other>")
     public <Other> Set exclusiveUnion(final Set<? extends Other> set) {
         Iterable<? extends Element> hereNotThere = elems.filter(new AbstractCallable<Boolean>("Set_xor1"){
@@ -122,7 +122,7 @@ public class LazySet<Element> implements Set<Element> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @Annotations(@Annotation("actual"))
-    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Object"))
+    @TypeParameters(@TypeParameter(value="Other", satisfies="ceylon.language::Value"))
     @TypeInfo("ceylon.language::Set<Element>")
     public <Other> Set<? extends Element> complement(final Set<? extends Other> set) {
         return new LazySet(this.filter(new AbstractCallable<Boolean>("Set_xor2"){
@@ -282,7 +282,7 @@ public class LazySet<Element> implements Set<Element> {
     @Override @Ignore
     public boolean containsEvery(
             @Sequenced @Name("elements")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
             Sequential<?> elements) {
         return cat$impl.containsEvery(elements);
     }
@@ -300,7 +300,7 @@ public class LazySet<Element> implements Set<Element> {
     @Override @Ignore
     public boolean containsAny(
             @Sequenced @Name("elements")
-            @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+            @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
             Sequential<?> elements) {
         return cat$impl.containsAny(elements);
     }

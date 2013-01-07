@@ -111,7 +111,7 @@ public interface Empty
     
     @Annotations(@Annotation("actual"))
     @Override
-    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Object")
+    public boolean contains(@Name("element") @TypeInfo("ceylon.language::Value")
     java.lang.Object element);
 
     @Annotations(@Annotation("actual"))

@@ -12,7 +12,7 @@ doc "A 64-bit floating point number. A `Float` is capable of
      are equal. An undefined value is not equal to any other
      value, not even to itself."
 shared abstract class Float()
-        extends Object()
+        extends Value()
         satisfies Scalar<Float> & Exponentiable<Float,Float> & 
                   Castable<Float> {
     

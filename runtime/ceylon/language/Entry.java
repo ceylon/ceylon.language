@@ -10,11 +10,11 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 3)
 @TypeParameters({
     @TypeParameter(value = "Key", variance = Variance.OUT, 
-            satisfies="ceylon.language::Object"),
+            satisfies="ceylon.language::Value"),
     @TypeParameter(value = "Item", variance = Variance.OUT, 
-            satisfies="ceylon.language::Object")
+            satisfies="ceylon.language::Value")
  })
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 public class Entry<Key, Item> {
 	
 	private final Key key;

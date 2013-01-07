@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
  * @author Enrique Zamudio
  */
 @Ignore
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @SatisfiedTypes("ceylon.language::Iterable<Element>")
 public abstract class AbstractIterable<Element> implements Iterable<Element> {
     private final ceylon.language.Iterable$impl<Element> $ceylon$language$Iterable$this;
@@ -155,7 +155,7 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     }
     @Override @Ignore
     public boolean containsEvery(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
     @Override @Ignore
@@ -168,7 +168,7 @@ public abstract class AbstractIterable<Element> implements Iterable<Element> {
     }
     @Override @Ignore
     public boolean containsAny(
-            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>") Sequential<?> elements) {
+            @Sequenced @Name("elements") @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>") Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
     @Override @Ignore

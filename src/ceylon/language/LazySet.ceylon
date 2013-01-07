@@ -4,7 +4,7 @@ doc "An implementation of Set that wraps an `Iterable` of
 by "Enrique Zamudio"
 shared class LazySet<out Element>({Element...} elems)
         satisfies Set<Element>
-        given Element satisfies Object {
+        given Element satisfies Value {
     
     shared actual LazySet<Element> clone => this;
     
@@ -27,27 +27,27 @@ shared class LazySet<out Element>({Element...} elems)
     shared actual Iterator<Element> iterator => elems.iterator;
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
-            given Other satisfies Object =>
+            given Other satisfies Value =>
         LazySet(elems.chain(set));
     
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
-            given Other satisfies Object { throw; }
+            given Other satisfies Value { throw; }
         //requires support for reified generics!
         //LazySet({ for (e in set) if (e is Other, e in this) e });
     
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
-            given Other satisfies Object {
+            given Other satisfies Value {
         value hereNotThere = { for (e in elems) if (!e in other) e };
         value thereNotHere = { for (e in other) if (!e in this) e };
         return LazySet(hereNotThere.chain(thereNotHere));
     }
     
     shared actual Set<Element> complement<Other>(Set<Other> set)
-            given Other satisfies Object =>
+            given Other satisfies Value =>
         LazySet({ for (e in this) if (!e in set) e });
     
-    shared actual default Boolean equals(Object that) {
-        if (is Set<Object> that) {
+    shared actual default Boolean equals(Value that) {
+        if (is Set<Value> that) {
             if (that.size==size) {
                 for (element in elems) {
                     if (!element in that) {

@@ -14,8 +14,8 @@ public class byItem_ {
 
     private byItem_(){}
 
-    @TypeParameters(@TypeParameter(value="Item", satisfies="ceylon.language::Object"))
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<ceylon.language::Entry<ceylon.language::Object,Item>,ceylon.language::Entry<ceylon.language::Object,Item>,ceylon.language::Tuple<ceylon.language::Entry<ceylon.language::Object,Item>,ceylon.language::Entry<ceylon.language::Object,Item>,ceylon.language::Empty>>>")
+    @TypeParameters(@TypeParameter(value="Item", satisfies="ceylon.language::Value"))
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<ceylon.language::Entry<ceylon.language::Value,Item>,ceylon.language::Entry<ceylon.language::Value,Item>,ceylon.language::Tuple<ceylon.language::Entry<ceylon.language::Value,Item>,ceylon.language::Entry<ceylon.language::Value,Item>,ceylon.language::Empty>>>")
     public static <Element> Callable<? extends Comparison> byItem(
             @Name("comparing")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<Item,Item,ceylon.language::Tuple<Item,Item,ceylon.language::Empty>>>")

@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 3) @Object
 @Name("empty")
-@Class(extendsType = "ceylon.language::Object")
+@Class(extendsType = "ceylon.language::Value")
 @SatisfiedTypes({"ceylon.language::Empty"})
 public final class empty_ implements Empty {
     private final ceylon.language.Category$impl $ceylon$language$Category$this;

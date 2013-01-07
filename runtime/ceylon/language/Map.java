@@ -12,11 +12,11 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 3)
 @TypeParameters({@TypeParameter(value="Key", variance=Variance.OUT,
-                               satisfies="ceylon.language::Object"),
+                               satisfies="ceylon.language::Value"),
                  @TypeParameter(value="Item", variance=Variance.OUT, 
-                               satisfies="ceylon.language::Object")})
+                               satisfies="ceylon.language::Value")})
 @SatisfiedTypes({"ceylon.language::Collection<ceylon.language::Entry<Key,Item>>",
-                 "ceylon.language::Correspondence<ceylon.language::Object,Item>",
+                 "ceylon.language::Correspondence<ceylon.language::Value,Item>",
                  "ceylon.language::Cloneable<ceylon.language::Map<Key,Item>>"})
 public interface Map<Key,Item> 
         extends Correspondence<java.lang.Object, Item>, 
@@ -24,7 +24,7 @@ public interface Map<Key,Item>
 
     @Annotations({@Annotation("actual"), @Annotation("default")})
     @Override
-    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Object")
+    public boolean equals(@Name("that") @TypeInfo("ceylon.language::Value")
     java.lang.Object that);
     
     @Annotations({@Annotation("actual"), @Annotation("default")})
@@ -46,7 +46,7 @@ public interface Map<Key,Item>
 
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Map<Key,Result>")
-    @TypeParameters(@TypeParameter(value="Result", satisfies="ceylon.language::Object"))
+    @TypeParameters(@TypeParameter(value="Result", satisfies="ceylon.language::Value"))
     public <Result> Map<? extends Key, ? extends Result> mapItems(
             @Name("mapping") @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Key|Item,Key,ceylon.language::Tuple<Item,Item,ceylon.language::Empty>>>")
             Callable<? extends Result> mapping);

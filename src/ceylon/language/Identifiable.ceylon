@@ -14,7 +14,7 @@ shared interface Identifiable {
          equality is more appropriate. Implementations must
          respect the constraint that if `x===y` then `x==y` 
          (equality is consistent with identity)."
-    shared default actual Boolean equals(Object that) {
+    shared default actual Boolean equals(Value that) {
         if (is Identifiable that) {
             return this===that;
         }
@@ -26,7 +26,7 @@ shared interface Identifiable {
     doc "The system-defined identity hash value of the 
          instance. Subtypes which refine `equals()` must 
          also refine `hash`, according to the general 
-         contract defined by `Object`."
+         contract defined by `Value`."
     see (identityHash)
     shared default actual Integer hash => identityHash(this);
     

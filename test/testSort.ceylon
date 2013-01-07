@@ -12,7 +12,7 @@ class StubComparable(Integer n) satisfies Comparable<StubComparable> {
     shared actual Comparison compare(StubComparable other) {
         return n<=>other.n;
     }
-    shared actual Boolean equals(Object other) {
+    shared actual Boolean equals(Value other) {
         if (is StubComparable other) {
             return n==other.n;
         }

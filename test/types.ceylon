@@ -1,9 +1,9 @@
 interface MyIdentifiable satisfies Identifiable {}
-class MyIdentifiableObject() {}
+class MyBasic() {}
 
-class T() extends Object() {
+class T() extends Value() {
     shared actual String string = "hello";
-    shared actual Boolean equals(Object that) {
+    shared actual Boolean equals(Value that) {
         return that.string==string;
     }
     shared actual Integer hash {
@@ -14,8 +14,8 @@ class T() extends Object() {
 interface Format {}
 
 class TypesPair<out X,out Y>(X x, Y y) 
-        given X satisfies Object
-        given Y satisfies Object {
+        given X satisfies Value
+        given Y satisfies Value {
     shared actual default String string {
         return "(" x.string ", " y.string ")";
     }
@@ -48,7 +48,7 @@ class ConcreteTypesList<out X>(X... xs)
 
 class TypesCouple<X>(x, y) 
         extends TypesPair<X,X>(x,y) 
-        given X satisfies Object {
+        given X satisfies Value {
     shared X x;
     shared X y;
 }
@@ -104,8 +104,8 @@ void types() {
     Anything seq = {"hello"};
     Anything empty = {};
     
-    check(bool is Object, "boolean type is object");
-    check(bool is IdentifiableObject, "boolean type is identifiable");
+    check(bool is Value, "boolean type is object");
+    check(bool is Basic, "boolean type is identifiable");
     //check(bool is Equality, "boolean type is equality");
     check(!bool is Null, "not null boolean type is not nothing");
     check(bool is Boolean, "boolean type 1");
@@ -114,89 +114,89 @@ void types() {
     
     check(nothing is Null, "null type 1");
     //check(!nothing is Equality, "null type 2");
-    check(!nothing is Object, "null type 3");
-    check(!nothing is IdentifiableObject, "null type 4");
+    check(!nothing is Value, "null type 3");
+    check(!nothing is Basic, "null type 4");
     //check(nothing is Anything, "null type 5");
         
-    check(entry is Object, "entry type 1");
-    check(!entry is IdentifiableObject, "not entry type");
+    check(entry is Value, "entry type 1");
+    check(!entry is Basic, "not entry type");
     //check(entry is Equality, "entry type 2");
     check(!entry is Null, "not null entry type");
-    check(entry is Entry<Object,Object>, "entry type 3");
+    check(entry is Entry<Value,Value>, "entry type 3");
     //check(entry is Entry<Integer,Integer>, "entry type 3");
     //check(entry is Anything, "entry type 4");
         
-    check(one is Object, "not natural type 1");
-    check(!one is IdentifiableObject, "not natural type 2");
+    check(one is Value, "not natural type 1");
+    check(!one is Basic, "not natural type 2");
     //check(one is Equality, "natural type 1");
     check(!one is Null, "not null natural type");
     check(one is Integer, "natural type 2");
     //check(nothing is Anything, "natural type 3");
         
-    check(c is Object, "not char type 1");
-    check(!c is IdentifiableObject, "not char type 1");
+    check(c is Value, "not char type 1");
+    check(!c is Basic, "not char type 1");
     //check(c is Equality, "char type 1");
     check(!c is Null, "not null char type");
     check(c is Character, "char type 2");
     //check(c is Anything, "char type 3");
         
-    check(str is Object, "not string type 1");
-    check(!str is IdentifiableObject, "not string type 1");
+    check(str is Value, "not string type 1");
+    check(!str is Basic, "not string type 1");
     //check(str is Equality, "string type 1");
     check(!str is Null, "not null string type");
     check(str is String, "string type 2");
     //check(str is Anything, "string type 3");
             
     //check(!t is Equality, "not eq custom type");
-    check(!t is IdentifiableObject, "not id custom type");
+    check(!t is Basic, "not id custom type");
     check(!t is Null, "custom type 1");
-    check(t is Object, "custom type 2");
+    check(t is Value, "custom type 2");
     check(t is T, "custom type 3");
     //check(is Anything t, "custom type 4");
                 
     //if (bool is Equality) {} else { fail("boolean type 4"); }
-    if (bool is IdentifiableObject) {} else { fail("boolean type 5"); }
-    if (bool is Object) {} else { fail("boolean type 6"); }
+    if (bool is Basic) {} else { fail("boolean type 5"); }
+    if (bool is Value) {} else { fail("boolean type 6"); }
     if (bool is Null) { fail("null type 6"); }
     if (bool is Boolean?) {} else { fail("optional boolean type 7"); }
 
     //if (one is Equality) {} else { fail("natural type 4"); }
-    if (one is IdentifiableObject) { fail("natural type 5"); }
-    if (one is Object) {} else { fail("natural type 6"); }
+    if (one is Basic) { fail("natural type 5"); }
+    if (one is Value) {} else { fail("natural type 6"); }
     if (one is Null) { fail("null type 7"); }
     if (one is Integer) {} else { fail("natural type 7"); }
     if (one is Integer?) {} else { fail("optional natural type 8"); }
 
     //if (c is Equality) {} else { fail("character type 1"); }
-    if (c is IdentifiableObject) { fail("character type 2"); }
-    if (c is Object) {} else { fail("character type 3"); }
+    if (c is Basic) { fail("character type 2"); }
+    if (c is Value) {} else { fail("character type 3"); }
     if (c is Null) { fail("null type 8"); }
     if (c is Character) {} else { fail("character type 4"); }
     if (c is Character?) {} else { fail("optional character type 5"); }
 
     //if (str is Equality) {} else { fail("string type 4"); }
-    if (str is IdentifiableObject) { fail("string type 5"); }
-    if (str is Object) {} else { fail("string type 6"); }
+    if (str is Basic) { fail("string type 5"); }
+    if (str is Value) {} else { fail("string type 6"); }
     if (str is Null) { fail("null type 9"); }
     if (str is String?) {} else { fail("optional string type 7"); }
 
     //if (t is Equality) { fail("custom type 5"); }
-    if (t is IdentifiableObject) { fail("custom type 6"); }
-    if (t is Object) {} else { fail("custom type 7"); }
+    if (t is Basic) { fail("custom type 6"); }
+    if (t is Value) {} else { fail("custom type 7"); }
     if (t is Null) { fail("null type 10"); }
     if (t is T?) {} else { fail("optional custom type 8"); }
 
     //if (entry is Equality) {} else { fail("entry type 5"); }
-    if (entry is IdentifiableObject) { fail("entry type 6"); }
-    if (entry is Object) {} else { fail("entry type 7"); }
+    if (entry is Basic) { fail("entry type 6"); }
+    if (entry is Value) {} else { fail("entry type 7"); }
     if (entry is Null) { fail("null type 11"); }
-    if (entry is Entry<Object,Object>) {} else { fail("entry type 8"); }
+    if (entry is Entry<Value,Value>) {} else { fail("entry type 8"); }
     //if (is Entry<Integer,Integer> entry) {} else { fail("entry type 8"); }
     //if (is Entry<Integer,String> entry) { fail("entry type 9 (required reified gens)"); }
     
     //if (is Equality nothing) { fail("null type 12"); }
-    if (nothing is IdentifiableObject) { fail("null type 13"); }
-    if (nothing is Object) { fail("null type 14"); }
+    if (nothing is Basic) { fail("null type 13"); }
+    if (nothing is Value) { fail("null type 14"); }
     if (nothing is Null) {} else { fail("null type 15"); }
     if (!nothing is Null) { fail("null type 15"); }
     if (nothing is Character?) {} else { fail("null is optional type"); }
@@ -205,8 +205,8 @@ void types() {
     if (is Boolean|Character|T t) {} else { fail("union type 2"); }
     if (is Boolean|Character|T str) { fail("union type 3"); } else {}
     if (is Boolean|Character|T nothing) { fail("union type 4"); } else {}
-    if (is Object&Castable<Nothing> one) {} else { fail("intersection type 1"); }
-    if (is Object&Castable<Nothing> bool) { fail("intersection type 2"); } else {}
+    if (is Value&Castable<Nothing> one) {} else { fail("intersection type 1"); }
+    if (is Value&Castable<Nothing> bool) { fail("intersection type 2"); } else {}
     if (is Category&Iterable<Anything> str) {} else { fail("intersection type 3"); }
     if (is Category&Iterable<Anything> t) { fail("intersection type 4"); } else {}
     //if (is String[] empty) {} else { fail("sequence type 1"); }
@@ -226,8 +226,8 @@ void types() {
     //from ceylon-js
     value pair = TypesPair("hello", "world");
     check(pair.string=="(hello, world)", "pair.string");
-    Object pairObj = pair;
-    check(pairObj is TypesPair<Object, Object>, "pair type");
+    Value pairObj = pair;
+    check(pairObj is TypesPair<Value, Value>, "pair type");
     //check(is TypesPair<String, String> pairObj, "pair type");
     value almostZero = TypesComplex(0.1, 0.1);
     check(almostZero.string=="0.1+0.1i", "complex.string: expected '0.1+0.1i' got " almostZero.string "");
@@ -238,15 +238,15 @@ void types() {
     TypeTestC1|TypeTestC3 c1 = TypeTestC1();
     if (is TypeTestI1&TypeTestI2|TypeTestI3&TypeTestI4 c1) {} else { fail("is A&B|C&D"); }
     
-    object myId extends Object() satisfies MyIdentifiable {}
-    object myIdo extends MyIdentifiableObject() {}
-    Object yourId = myId;
-    Object yourIdo = myIdo;
-    Object ido = MyIdentifiableObject();
+    object myId extends Value() satisfies MyIdentifiable {}
+    object myIdo extends MyBasic() {}
+    Value yourId = myId;
+    Value yourIdo = myIdo;
+    Value ido = MyBasic();
     check(yourId is Identifiable, "is identifiable");
-    check(!yourId is IdentifiableObject, "is not identifiable object");
+    check(!yourId is Basic, "is not identifiable object");
     check(yourIdo is Identifiable, "is identifiable 1");
-    check(yourIdo is IdentifiableObject, "is identifiable object 1");
+    check(yourIdo is Basic, "is identifiable object 1");
     check(ido is Identifiable, "is identifiable 2");
-    check(ido is IdentifiableObject, "is identifiable object 2");
+    check(ido is Basic, "is identifiable object 2");
 }

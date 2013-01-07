@@ -13,9 +13,9 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public class forKey_ {
     private forKey_(){}
 
-    @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language::Object"),
+    @TypeParameters({@TypeParameter(value="Key", satisfies="ceylon.language::Value"),
     		        @TypeParameter(value="Result")})
-    @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<ceylon.language::Entry<Key,ceylon.language::Value>,ceylon.language::Entry<Key,ceylon.language::Value>,ceylon.language::Empty>>")
     public static 
     <Key,Result> Callable<? extends Result> forKey(
             @Name("resulting") @TypeInfo("ceylon.language::Callable<Result,ceylon.language::Tuple<Key,Key,ceylon.language::Empty>>")

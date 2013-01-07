@@ -14,8 +14,8 @@ public class byKey_ {
 
     private byKey_(){}
 
-    @TypeParameters(@TypeParameter(value="Key", satisfies="ceylon.language::Object"))
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Tuple<ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Entry<Key,ceylon.language::Object>,ceylon.language::Empty>>>")
+    @TypeParameters(@TypeParameter(value="Key", satisfies="ceylon.language::Value"))
+    @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<ceylon.language::Entry<Key,ceylon.language::Value>,ceylon.language::Entry<Key,ceylon.language::Value>,ceylon.language::Tuple<ceylon.language::Entry<Key,ceylon.language::Value>,ceylon.language::Entry<Key,ceylon.language::Value>,ceylon.language::Empty>>>")
     public static <Element> Callable<? extends Comparison> byKey(
             @Name("comparing")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Null|ceylon.language::Comparison,ceylon.language::Tuple<Key,Key,ceylon.language::Tuple<Key,Key,ceylon.language::Empty>>>")

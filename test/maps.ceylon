@@ -1,22 +1,22 @@
 // tests for Map interface
 
 interface MapTestBase<out Key, out Item> satisfies Map<Key, Item>
-            given Key satisfies Object
-            given Item satisfies Object {
+            given Key satisfies Value
+            given Item satisfies Value {
     shared formal Entry<Key, Item>[] entries;
 }
 
 class MapTest<Key, Item>(Key->Item... entry)
-            extends Object()
+            extends Value()
             satisfies MapTestBase<Key, Item>
-            given Key satisfies Object
-            given Item satisfies Object {
+            given Key satisfies Value
+            given Item satisfies Value {
     shared actual Entry<Key, Item>[] entries = entry.sequence;
     shared actual Integer size { return entries.size; }
     shared actual Boolean empty { return entries.empty; }
     shared actual MapTest<Key, Item> clone { return this; }
     shared actual Iterator<Key->Item> iterator { return entries.iterator; }
-    shared actual Item? item(Object key) {
+    shared actual Item? item(Value key) {
         for (e in entries) {
             if (e.key == key) { return e.item; }
         }

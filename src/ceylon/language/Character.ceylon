@@ -2,7 +2,7 @@ doc "A 32-bit Unicode character."
 see (String)
 by "Gavin"
 shared abstract class Character()
-        extends Object()
+        extends Value()
         satisfies Ordinal<Character> & Comparable<Character> {
 
     doc "A string containg just this character."

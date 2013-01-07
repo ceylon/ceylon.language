@@ -34,7 +34,7 @@ shared void numbers() {
     check(-1*1.5==-1.5, "integer times float");
     check(-1.5*+2==-3.0, "integer times float");
     
-    Object? obj(Object? x) { return x; }
+    Value? obj(Value? x) { return x; }
     check(obj(1+1)  is Integer, "natural addition");
     check(obj(1-2)  is Integer, "natural subtraction");
     check(obj(+1+1) is Integer, "integer addition");

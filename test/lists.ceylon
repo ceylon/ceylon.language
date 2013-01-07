@@ -1,5 +1,5 @@
 class TestList<Element>(Element... elems) satisfies List<Element> {
-    shared actual Boolean equals(Object other) { return List::equals(other); }
+    shared actual Boolean equals(Value other) { return List::equals(other); }
     shared actual Element? item(Integer x) { return elems[x]; }
     shared actual TestList<Element> reversed { return TestList(elems.reversed...); }
     shared actual Integer hash { return List::hash; }

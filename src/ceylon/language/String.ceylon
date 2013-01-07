@@ -45,7 +45,7 @@ doc "A string of characters. Each character in the string is
 by "Gavin"
 see (string)
 shared abstract class String()
-        extends Object()
+        extends Value()
         satisfies Character[] & 
                   Comparable<String> &
                   Summable<String> & 
@@ -212,7 +212,7 @@ shared abstract class String()
          this string. That is to say, a string is considered 
          a `Category` of its substrings and of its 
          characters."
-    shared actual formal Boolean contains(Object element);
+    shared actual formal Boolean contains(Value element);
     
     doc "Determines if this string starts with the given 
          substring."
@@ -258,7 +258,7 @@ shared abstract class String()
          so, if this string has the same length, and the 
          same characters, in the same order, as the given 
          string."
-    shared actual formal Boolean equals(Object that);
+    shared actual formal Boolean equals(Value that);
     
     shared actual formal Integer hash;
     

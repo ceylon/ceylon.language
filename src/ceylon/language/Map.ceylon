@@ -21,10 +21,10 @@ doc "Represents a collection which maps _keys_ to _items_,
 see (Entry, forKey, forItem, byItem, byKey)
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
-                  Correspondence<Object,Item> &
+                  Correspondence<Value,Item> &
                   Cloneable<Map<Key,Item>>
-        given Key satisfies Object
-        given Item satisfies Object {
+        given Key satisfies Value
+        given Item satisfies Value {
     
     doc "Two `Map`s are considered equal iff they have the 
          same _entry sets_. The entry set of a `Map` is the
@@ -32,8 +32,8 @@ shared interface Map<out Key,out Item>
          maps are equal iff they have same set of `keys`, and 
          for every key in the key set, the maps have equal
          items."
-    shared actual default Boolean equals(Object that) {
-        if (is Map<Object,Object> that,
+    shared actual default Boolean equals(Value that) {
+        if (is Map<Value,Value> that,
                 that.size==size) {
             for (entry in this) {
                 if (exists item = that[entry.key],
@@ -78,12 +78,12 @@ shared interface Map<out Key,out Item>
          stored the `Item` in this map."
     shared default Map<Item, Set<Key>> inverse {
         object inverse 
-                extends Object() 
+                extends Value() 
                 satisfies Map<Item, Set<Key>> {
             
             shared actual Map<Item,Set<Key>> clone => this;
             
-            shared actual Set<Key>? item(Object key) => 
+            shared actual Set<Key>? item(Value key) => 
                     LazySet({for (k->v in outer) if (v==key) k});
             
             shared actual Iterator<Item->Set<Key>> iterator =>
@@ -105,14 +105,14 @@ shared interface Map<out Key,out Item>
                  pair, producing the item of the resulting
                  map."
             Result mapping(Key key, Item item)) 
-            given Result satisfies Object {
-        object mapped extends Object() 
+            given Result satisfies Value {
+        object mapped extends Value() 
                 satisfies Map<Key, Result> {
             shared actual Map<Key, Result> clone {
                 //TODO: should take a copy 
                 return this;
             }
-            shared actual Result? item(Object key) {
+            shared actual Result? item(Value key) {
                 throw;
                 //if (is Key key) {
                 //    if (exists item=outer[key]) {

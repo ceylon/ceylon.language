@@ -41,7 +41,7 @@ Range<Integer> range {
     last=+10;
 }*/
 
-    Entry<Object, Object> e = entry;
+    Entry<Value, Value> e = entry;
     //Entry<Equality, Equality> e = Holder().entry;
     check(e.string=="1->hello", "entry string");
     check(e.key==1, "entry key");

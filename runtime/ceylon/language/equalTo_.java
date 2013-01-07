@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 public class equalTo_ {
     private equalTo_(){}
 
-    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Object"))
+    @TypeParameters(@TypeParameter(value="Element", satisfies="ceylon.language::Value"))
     @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
     public static <Element extends Comparable<? super Element>> Callable<? extends Boolean> equalTo(
             @Name("val") @TypeInfo("Element")

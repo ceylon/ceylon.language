@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 
 @Ceylon(major = 3)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Value")
 @SatisfiedTypes({"ceylon.language::Sequence<Element>",
 	             "ceylon.language::Category"})
 @TypeParameters(@TypeParameter(value="Element",
@@ -339,7 +339,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public boolean containsEvery(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
     Sequential<?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
@@ -357,7 +357,7 @@ public class Range<Element extends Comparable<? super Element> & Ordinal<? super
     @Override
     @Ignore
     public boolean containsAny(@Sequenced @Name("elements")
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Object>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Value>")
     Sequential<?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
