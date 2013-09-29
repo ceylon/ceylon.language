@@ -571,7 +571,7 @@ public final class Integer
 
     @Override
     public long getSize() {
-        return 64;
+        return runtime_.$get().getIntegerSize();
     }
     
     @Ignore
