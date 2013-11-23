@@ -51,6 +51,13 @@ shared final annotation class FinalAnnotation()
  type analysis."
 shared annotation FinalAnnotation final() => FinalAnnotation();
 
+"The annotation class for [[partial]]."
+shared final annotation class PartialAnnotation()
+        satisfies OptionalAnnotation<PartialAnnotation, FunctionDeclaration> {}
+
+"Annotation to mark a function declaration as overloaded."
+shared annotation PartialAnnotation partial() => PartialAnnotation();
+
 "The annotation class for [[actual]]."
 shared final annotation class ActualAnnotation()
         satisfies OptionalAnnotation<ActualAnnotation, ValueDeclaration|FunctionDeclaration|ClassOrInterfaceDeclaration> {}
