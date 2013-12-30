@@ -1,7 +1,11 @@
 "Since sequences are immutable, this class is used for
  constructing a new sequence by incrementally appending 
- elements to the empty sequence. This class is mutable
- but threadsafe."
+ elements to the empty sequence.
+ 
+ This class is mutable and not threadsafe.
+ If multiples threads use the same `SequenceBuilder`
+ instance, an external synchronization mechanism
+ has to be put in place."
 see (`class SequenceAppender`, 
      `function concatenate`, 
      `class Singleton`)
@@ -35,8 +39,12 @@ shared native class SequenceBuilder<Element>() {
 "This class is used for constructing a new nonempty 
  sequence by incrementally appending elements to an
  existing nonempty sequence. The existing sequence is
- not modified, since `Sequence`s are immutable. This 
- class is mutable but threadsafe."
+ not modified, since `Sequence`s are immutable.
+ 
+ This class is mutable and not threadsafe.
+ If multiples threads use the same `SequenceAppender`
+ instance, an external synchronization mechanism
+ has to be put in place."
 see (`class SequenceBuilder`)
 shared native class SequenceAppender<Element>([Element+] elements) 
         extends SequenceBuilder<Element>() {
