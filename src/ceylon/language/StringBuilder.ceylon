@@ -1,7 +1,11 @@
 "Since strings are immutable, this class is used for
  constructing a string by incrementally appending 
- characters to the empty string. This class is mutable 
- but threadsafe."
+ characters to the empty string.
+ 
+ This class is mutable and not threadsafe.
+ If multiples threads use the same `StringBuilder`
+ instance, an external synchronization mechanism
+ has to be put in place."
 shared native class StringBuilder() {
     
     "The resulting string. If no characters have been
