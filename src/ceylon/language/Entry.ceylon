@@ -34,7 +34,7 @@ shared final class Entry<out Key, out Item>(key, item)
         }
     }
     
-    hash => (31 + key.hash) * 31 + item.hash;
+    hash => hashCode(key, item);
     
     "Returns a description of the entry in the form 
      `key->item`."

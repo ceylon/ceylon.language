@@ -95,7 +95,7 @@ shared class Singleton<out Element>(Element element)
         return false;
     }
     
-    shared actual Integer hash => 31 + (element?.hash else 0);
+    shared actual Integer hash => hashCode(element);
     
     "Returns `true` if the specified element is this 
      `Singleton`\'s element."
