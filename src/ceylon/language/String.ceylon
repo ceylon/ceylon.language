@@ -81,7 +81,7 @@ shared native final class String(characters)
     "The rest of the string, without the first element."
     shared actual native String rest;
     
-    "Join the [[strings|Object.string]] of the given objects, using this string as a 
+    "Join the [[strings|Object.string]] of the given [[objects]], using this string as a 
      separator."
     shared native String join({Object*} objects);
     
