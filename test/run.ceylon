@@ -8,6 +8,7 @@ shared void run() {
     print("Lists & sequences");
     lists();
     sequences();
+    sequential();
     print("Range");
     testRange();
     print("Characters & strings");
