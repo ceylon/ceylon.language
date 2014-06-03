@@ -9,28 +9,50 @@
 shared Element[] sequential<Element>({Element*} iterable) {
     if (is Element[] iterable) {
         return iterable;
-    } 
-    if (iterable.empty) {
-        return [];
     }
-    else {
+    value initialIt = iterable.iterator();
+    variable Iterator<Element>? firstIt = initialIt;
+    variable Element|Finished first = initialIt.next();
+    if (!is Finished firstFirst = first) {
         object notempty satisfies {Element+} {
             shared actual Iterator<Element> iterator() {
-                value it = iterable.iterator();
-                object iterator satisfies Iterator<Element> {
-                    variable value first = true;
-                    shared actual Element|Finished next() {
-                        value next = it.next();
-                        if (first) {
-                            first = false;
-                            assert (!next is Finished);
+                if (exists currentIt = firstIt) {
+                    // this is the first call to iterator()
+                    // reuse firstFirst and firstIt
+                    firstIt = null; // prevent later iterator() calls to reuse them as well
+                    object iterator satisfies Iterator<Element> {
+                        variable Element|Finished firstElement = firstFirst;
+                        shared actual Element|Finished next() {
+                            if (!is Finished theFirst = firstElement) {
+                                firstElement = finished;
+                                return theFirst;
+                            }
+                            return currentIt.next();
                         }
-                        return next;
                     }
+                    return iterator;
+                } else {
+                    // this is a later call to iterator()
+                    // do not reuse firstFirst and firstIt;
+                    // instead, get them again
+                    value it = iterable.iterator();
+                    object iterator satisfies Iterator<Element> {
+                        variable value first = true;
+                        shared actual Element|Finished next() {
+                            value next = it.next();
+                            if (first) {
+                                first = false;
+                                assert (!next is Finished);
+                            }
+                            return next;
+                        }
+                    }
+                    return iterator;
                 }
-                return iterator;
             }
         }
         return ArraySequence(notempty);
+    } else {
+        return empty;
     }
 }
