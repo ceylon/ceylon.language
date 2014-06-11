@@ -1,14 +1,12 @@
-"Obtains a Sequential containing the same elements as a given iterable.
- The effect is broadly equivalent to
-   
-     iterable.empty then empty else ArraySequence(iterable)
-
- Note in particular that `iterable.sequence()` is not used, since 
- this is used for evaluating `[*iterable]`.
-"
-shared Element[] sequential<Element>({Element*} iterable) {
+"Copy of `ceylon.language.impl.sequential`'s implementation
+ to test its `notempty` right before it is passed to [[ArraySequence]].
+ 
+ `notempty.string` is evaluated exactly three times, so `iterable`
+ should be evaluated exactly three times."
+void c_l_impl_sequential<Element>({Element*} iterable) {
     if (is Element[] iterable) {
-        return iterable;
+        // return iterable;
+        return;
     }
     value initialIt = iterable.iterator();
     variable Iterator<Element>? firstIt = initialIt;
@@ -51,8 +49,22 @@ shared Element[] sequential<Element>({Element*} iterable) {
                 }
             }
         }
-        return ArraySequence(notempty);
+        value s1 = notempty.string;
+        value s2 = notempty.string;
+        value s3 = notempty.string;
+        check(s1 == s2, "sequential: second iteration works: expected '``s1``' == '``s2``'");
+        check(s2 == s3, "sequential: third iteration works: expected '``s2``' == '``s3``'");
+        // return ArraySequence(notempty);
     } else {
-        return empty;
+        // return empty;
     }
+}
+
+@test
+shared void sequential() {
+    c_l_impl_sequential({ 1, 2, 3 }); // easy
+    variable Integer i = 0;
+    Boolean f() => i++>=0; // always true, but with side-effect
+    c_l_impl_sequential({ for (j in { 1, 2, 3, 4 }) if (f()) j });
+    check(i == 12, "sequential: should have evaluated f() 12 times but evaluated ``i`` times");
 }
