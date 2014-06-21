@@ -484,13 +484,16 @@ shared interface List<out Element>
             "The predicate function the indexed elements 
              must satisfy"
             Boolean selecting(Element&Object element)) {
+        value iter = iterator();
         variable value index = 0;
+        variable value elem = iter.next();
         while (index<size) {
-            if (exists element=getFromFirst(index), 
+            if (exists element=elem, !is Finished element,
                 selecting(element)) {
                 return index;
             }
             index++;
+            elem = iter.next();
         }
         return null;
     }
