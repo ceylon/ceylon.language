@@ -113,6 +113,17 @@ shared interface List<out Element>
     shared actual default Element? get(Integer index) 
             => getFromFirst(index);
     
+    Element getElement(Integer index) {
+        value element = getFromFirst(index);
+        if (exists element) { 
+            return element;
+        }
+        else {
+            assert (is Element null);
+            return null; 
+        }
+    }
+    
     shared actual default Iterator<Element> iterator() {
         if (size>0) {
             object listIterator
@@ -135,21 +146,27 @@ shared interface List<out Element>
      This is a lazy operation."
     shared actual default List<Integer> keys => Indexes();
     
+    "A list containing the elements of this list repeated 
+     the [[given number of times|times]], or an empty list
+     if `times<=0`. For every `index` of a repeated `list`:
+     
+         list.repeat(n)[index]==list[index%n]
+     
+     This is a lazy operation returning a view of this list."
+    shared actual default List<Element> repeat(Integer times) 
+            => Repeat(times);
+    
     "A list containing the elements of this list in reverse 
-     order. For every `index` of a `list`:
+     order to the order in which they occur in this list. 
+     For every `index` of a reversed `list`:
      
          list.reversed[index]==list[size-1-index]
      
      This is a lazy operation returning a view of this list."
-    see (`function reverse`)
     shared default List<Element> reversed => Reversed();
     
-    see (`value reversed`)
-    shared actual default List<Element> reverse() 
-            => reversed.sequence();
-    
     shared actual default List<Element> clone() 
-            => Array(this);
+            => sequence();
     
     "Two `List`s are considered equal iff they have the 
      same `size` and _entry sets_. The entry set of a list 
@@ -262,17 +279,6 @@ shared interface List<out Element>
     shared default List<Element> sublist(Integer from, Integer to) 
             => sublistTo(to).sublistFrom(from);
     
-    "Return a list formed by extending this list with the 
-     elements of the given [[list]].
-     
-     This is a lazy operation returning a view over this 
-     list and the given list."
-    see (`function append`,
-         `function chain`,
-         `function patch`)
-    shared default List<Element|Other> extend<Other>(List<Other> list) 
-            => Extend(list);
-    
     "Return a list formed by patching the given [[list]] 
      in place of a segment of this list identified by the
      given [[starting index|from]] and [[length]].
@@ -280,13 +286,17 @@ shared interface List<out Element>
      This is a lazy operations, returning a view over this 
      list and the given list.
      
-     Two special cases are interesting:
+     Four special cases are interesting:
      
-     - If `length=0`, the patched list has the given values 
+     - If `length==0`, the patched list has the given values 
        \"inserted\" into this list at the given index `from`.
-     - If the given `list` is empty, the patched last has 
-       the segment of this list identified by `from:length` 
+     - If the given `list` is empty, the patched list has 
+       the measure of this list identified by `from:length` 
        \"deleted\".
+     - If `from==size`, the patched list is formed by
+       appending the given list.
+     - If `from==0`, the patched list is formed by 
+       prepending the given list.
      
      For example:
      
@@ -294,39 +304,43 @@ shared interface List<out Element>
        and
      - `[-2, 2].patch(-1..1,1)` produces the list 
        `{-2,-1,0,1,2}`.'
+     - `0:3`.patch(2..0) produces the list `{0,1,2,2,1,0}`.
      
-     If `length<0`, return this list."
-    see (`function extend`)
+     If `length<0`, or if `from` is outside the range 
+     `0..size`, return this list."
     shared default List<Element|Other> patch<Other>(
         "The list of new elements."
         List<Other> list,
         "The index at which the elements will occur, and
          the start index of the segment to replace."
-        Integer from,
+        Integer from=size,
         "The length of the segment to replace." 
         Integer length=0)
-            => length>=0 && 0<=from<size 
+            => length>=0 && 0<=from<=size 
                     then Patch(list, from, length)
                     else this;
     
-    "Determine if the given list occurs at the start of this 
-     list."
+    "Determine if the given [[list|sublist]] occurs at the 
+     start of this list."
     see (`function endsWith`)
     shared default Boolean startsWith(List<Anything> sublist)
             => includesAt(0, sublist);
     
-    "Determine if the given list occurs at the end of this 
-     list."
+    "Determine if the given [[list|sublist]] occurs at the 
+     end of this list."
     see (`function startsWith`)
     shared default Boolean endsWith(List<Anything> sublist)
             => includesAt(size-sublist.size, sublist);
     
-    "Determine if the given list occurs at the given index 
-     of this list."
+    "Determine if the given [[list|sublist]] occurs as a 
+     sublist at the given index of this list."
     shared default Boolean includesAt(
             "The index at which the [[sublist]] might occur."
             Integer index, 
             List<Anything> sublist) {
+        if (sublist.size>size-index) {
+            return false;
+        }
         for (i in 0:sublist.size) {
             value x = getFromFirst(index+i);
             value y = sublist.getFromFirst(i);
@@ -349,13 +363,13 @@ shared interface List<out Element>
         }
     }
     
-    "Determine if the given list occurs at some index in 
-     this list."
+    "Determine if the given [[list|sublist]] occurs as a 
+     sublist at some index in this list."
     shared default Boolean includes(List<Anything> sublist) {
         if (sublist.empty) {
             return true;
         }
-        for (index in 0:size) {
+        for (index in 0:size-sublist.size+1) {
             if (includesAt(index,sublist)) {
                 return true;
             }
@@ -363,16 +377,16 @@ shared interface List<out Element>
         return false;
     }
     
-    "The indexes in this list at which the given list 
-     occurs."
+    "The indexes in this list at which the given 
+     [[list|sublist]] occurs as a sublist."
     shared default {Integer*} inclusions(List<Anything> sublist) 
-            => { for (index in 0:size) 
+            => { for (index in 0:size-sublist.size+1) 
                     if (includesAt(index,sublist)) index };
     
-    "The first index in this list at which the given list 
-     occurs."
+    "The first index in this list at which the given 
+     [[list|sublist]] occurs as a sublist."
     shared default Integer? firstInclusion(List<Anything> sublist) {
-        for (index in 0:size) {
+        for (index in 0:size-sublist.size+1) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -382,10 +396,10 @@ shared interface List<out Element>
         }
     }
     
-    "The last index in this list at which the given list 
-     occurs."
+    "The last index in this list at which the given 
+     [[list|sublist]] occurs as a sublist."
     shared default Integer? lastInclusion(List<Anything> sublist) {
-        for (index in (0:size).reversed) {
+        for (index in (0:size-sublist.size+1).reversed) {
             if (includesAt(index,sublist)) {
                 return index;
             }
@@ -426,14 +440,14 @@ shared interface List<out Element>
         return false;
     }
     
-    "The indexes in this list at which the given element 
+    "The indexes in this list at which the given [[element]] 
      occurs."
     shared default {Integer*} occurrences(Anything element)
             => { for (index in 0:size) 
                     if (occursAt(index,element)) index };
     
-    "The first index in this list at which the given element 
-     occurs."
+    "The first index in this list at which the given 
+     [[element]] occurs."
     shared default Integer? firstOccurrence(Anything element) {
         for (index in 0:size) {
             if (occursAt(index,element)) {
@@ -445,8 +459,8 @@ shared interface List<out Element>
         }
     }
     
-    "The last index in this list at which the given element 
-     occurs."
+    "The last index in this list at which the given 
+     [[element]] occurs."
     shared default Integer? lastOccurrence(Anything element) {
         for (index in (0:size).reversed) {
             if (occursAt(index,element)) {
@@ -507,8 +521,9 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given [[predicate 
-     function|trimming]] from the start and end of this list, 
-     returning a list no longer than this list.
+     function|trimming]], along with any null elements, from 
+     the start and end of this list, returning a list no 
+     longer than this list.
      
      This is an eager operation."
     shared default List<Element> trim(
@@ -547,8 +562,9 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given [[predicate 
-     function|trimming]] from the start of this list, 
-     returning a list no longer than this list.
+     function|trimming]], along with any null elements, from
+     the start of this list, returning a list no longer than 
+     this list.
      
      This is an eager operation."
     shared default List<Element> trimLeading(
@@ -568,8 +584,9 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given [[predicate 
-     function|trimming]] from the end of this list, 
-     returning a list no longer than this list.
+     function|trimming]], along with any null elements, from 
+     the end of this list, returning a list no longer than 
+     this list.
      
      This is an eager operation."
     shared default List<Element> trimTrailing(
@@ -588,108 +605,50 @@ shared interface List<out Element>
         return [];
     }
     
-    "Select the first elements of this list, returning a 
-     list no longer than the given length. If this list is 
-     shorter than the given length, return this list. 
-     Otherwise return a list of the given length.
-     
-     This is an eager operation."
-    see (`function terminal`, 
-         `function sublistTo`,
-         `function take`)
-    shared default List<Element> initial(Integer length)
-            => this[0:length];
-    
-    "Select the last elements of the list, returning a list 
-     no longer than the given length. If this list is 
-     shorter than the given length, return this list. 
-     Otherwise return a list of the given length.
-     
-     This is an eager operation."
-    see (`function initial`)
-    shared default List<Element> terminal(Integer length) {
-        if (length>=size) {
-            return this;
-        }
-        else if (size>0, length>0) {
-            return this[size-length..size-1];
-        }
-        else {
-            return [];
-        }
-    }
-    
     "Return two lists, the first containing the elements
      that occur before the given [[index]], the second with
      the elements that occur after the given `index`. If the
      given `index` is outside the range of indices of this
      list, one of the returned lists will be empty.
      
+     For any `list`, and for any integer `index`:
+     
+         list.size(index) == [list[...index-1], list[index...]]
+     
      This is an eager operation."
-    shared default [List<Element>,List<Element>] slice
-    (Integer index)
+    shared default 
+    [List<Element>,List<Element>] slice(Integer index)
             => [this[...index-1], this[index...]];
     
-    "Returns a new `List` that starts with the specified
-     [[element]], followed by the elements of this list,
-     in the order they occur in this list.
+    "Select the first elements of this list, returning a 
+     list no longer than the given length. If this list is 
+     shorter than the given length, return this list. 
+     Otherwise return a list of the given length.
+     
+     For any `list`, and for any integer `length`:
+     
+         list.initial(length) == list[...length-1] == list[0:length]
      
      This is an eager operation."
-    see (`function follow`, 
-        `function prepend`,
-        `function withTrailing`)
-    shared default [Other,Element*] withLeading<Other>(
-            "The first element of the resulting sequence."
-            Other element)
-            => [element, *this];
+    see (`function terminal`, 
+         `function sublistTo`,
+         `function take`)
+    shared default List<Element> initial(Integer length)
+            => this[...length-1];
     
-    "Returns a new `List` that starts with the elements of 
-     this list, in the order they occur in this list, and 
-     ends with the specified [[element]].
+    "Select the last elements of the list, returning a list 
+     no longer than the given length. If this list is 
+     shorter than the given length, return this list. 
+     Otherwise return a list of the given length.
+     
+     For any `list`, and for any integer `length`:
+     
+         list.terminal(length) == list[size-length...]
      
      This is an eager operation."
-    see (`function prepend`,
-        `function withLeading`)
-    shared default [Element|Other+] withTrailing<Other>(
-            "The last element of the resulting sequence."
-            Other element)
-            => [*chain(Singleton(element))];
-    
-    "Return a sequence containing the elements of this list, 
-     in the order in which they occur in this list, followed 
-     by the given [[elements]], in the order in which they 
-     occur in the given stream.
-     
-     This is an eager operation."
-    see (`function extend`, 
-        `function chain`,
-        `function withTrailing`,
-        `function concatenate`)
-    shared default [Element|Other*] append<Other>
-                            ({Other*} elements) 
-            => (this chain elements).sequence();
-    
-    "Return a sequence containing the given [[elements]], in 
-     the order in which they occur in the given stream,
-     followed by the elements of this list, in the order in 
-     which they occur in this list.
-     
-     This is an eager operation."
-    see (`function withLeading`)
-    shared default [Element|Other*] prepend<Other>
-                            ({Other*} elements) 
-            => (elements chain this).sequence();
-    
-    Element getElement(Integer index) {
-        value element = getFromFirst(index);
-        if (exists element) { 
-            return element;
-        }
-        else {
-            assert (is Element null);
-            return null; 
-        }
-    }
+    see (`function initial`)
+    shared default List<Element> terminal(Integer length) 
+            => this[size-length...];
     
     shared actual default List<Element> span
                             (Integer from, Integer to) {
@@ -913,30 +872,32 @@ shared interface List<out Element>
         
     }
     
-    class Extend<Other>(List<Other> list)
+    class Repeat(Integer times)
             extends Object()
-            satisfies List<Element|Other> {
+            satisfies List<Element> {
         
-        size => outer.size+list.size;
+        size => outer.size*times;
         
         shared actual Integer? lastIndex {
             value size = this.size;
             return size>0 then size-1;
         }
         
-        shared actual <Element|Other>? getFromFirst(Integer index) {
+        shared actual Element? getFromFirst(Integer index) {
             value size = outer.size;
-            if (index<size) {
-                return outer.getFromFirst(index);
+            if (index<size*times) {
+                return outer.getFromFirst(index%size);
             }
             else {
-                return list.getFromFirst(index-size);
+                return null;
             }
         }
         
-        clone() => outer.clone().Extend(list.clone());
+        clone() => outer.clone().Repeat(times);
         
-        iterator() => ChainedIterator(outer,list);
+        iterator() => CycledIterator(outer,times);
+        
+        string => "(``outer.string``).repeat(``times``)";
         
     }
     
@@ -946,7 +907,7 @@ shared interface List<out Element>
             satisfies List<Element|Other> {
         
         assert (length>=0);
-        assert (0<=from<outer.size);
+        assert (0<=from<=outer.size);
         
         size => outer.size+list.size-length;
         
@@ -1003,7 +964,6 @@ shared interface List<out Element>
         first => outer.last;
         last => outer.first;
         
-        reverse() => outer;
         reversed => outer;
         
         shared actual Element? getFromFirst(Integer index) {

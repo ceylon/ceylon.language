@@ -33,6 +33,7 @@ shared interface Map<out Key,out Item>
     
     "Determines if the given [[value|entry]] is an [[Entry]]
      belonging to this map."
+    see(`function defines`)
     shared actual default Boolean contains(Object entry) {
         if (is Key->Object entry, 
             exists item = get(entry.key)) {
@@ -45,12 +46,13 @@ shared interface Map<out Key,out Item>
     
     "Determines if the given [[value|key]] is a [[Key]] of
      an entry in this map."
+    see(`function contains`)
     shared actual default Boolean defines(Object key) 
             => super.defines(key);
     
     shared actual formal Map<Key,Item> clone();
     
-    "Two `Map`s are considered equal iff they have the same 
+    "Two maps are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
      `Entry`s belonging to the map. Therefore, the maps are 
      equal iff they have same set of `keys`, and for every 
@@ -90,7 +92,7 @@ shared interface Map<out Key,out Item>
                 satisfies Collection<Key> {
             contains(Object key) => outer.defines(key);
             iterator() => { for (k->v in outer) k }.iterator();
-            clone() => outer.clone().keys; //TODO: not efficient
+            clone() => [*this];
             size => outer.size;
         }
         return keys;
@@ -112,24 +114,26 @@ shared interface Map<out Key,out Item>
                 return false;
             }
             iterator() => { for (k->v in outer) v }.iterator();
-            clone() => outer.clone().values; //TODO: not efficient
+            clone() => [*this];
             size => outer.size;
         }
         return values;
     }
     
-    "Produces a `Map` with the same keys as this map. For
-     every key, the item is the result of applying the given 
-     transformation function to its associated item in this 
-     map. This is a lazy operation, returning a view of this
-     map."
+    "Produces a map with the same [[keys]] as this map. 
+     For every key, the item is the result of applying the 
+     given [[transformation|Map.mapItems.mapping]] function 
+     to its associated item in this map. This is a lazy 
+     operation, returning a view of this map."
     shared default Map<Key,Result> mapItems<Result>(
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
         Result mapping(Key key, Item item)) 
             given Result satisfies Object {
         object map
+                extends Object()
                 satisfies Map<Key,Result> {
+            
             shared actual Result? get(Object key) {
                 if (is Key key, 
                     exists item=outer[key]) {
@@ -139,26 +143,35 @@ shared interface Map<out Key,out Item>
                     return null;
                 }
             }
-            defines(Object key) => outer.defines(key);
-            iterator() => outer.map((Key->Item entry) 
-                    => entry.key->mapping(entry.key, entry.item))
-                            .iterator();
+            
+            defines(Object key) => outer defines key;
+            
+            function mapEntry(Key->Item entry) 
+                    => entry.key -> 
+                        mapping(entry.key, entry.item);
+            
+            iterator() => (outer map mapEntry).iterator();
+            
             size => outer.size;
-            equals(Object that) 
-                    => (super of Map<Key,Result>).equals(that);
-            hash => (super of Map<Key,Result>).hash;
-            clone() => outer.clone().mapItems(mapping);
+            
+            clone() => outer.clone() mapItems mapping;
+            
         }
         return map;
     }
     
-    "Produces a `Map` by applying a filtering function to 
-     the keys of this map. This is a lazy operation, 
+    "Produces a map by applying a [[filtering]] function 
+     to the [[keys]] of this map. This is a lazy operation, 
      returning a view of this map."
     shared default Map<Key,Item> filterKeys(
+        "The predicate function that filters the keys of 
+         this map, determining if there is a corresponding
+         entry in the resulting map."
         Boolean filtering(Key key)) {
         object map
+                extends Object()
                 satisfies Map<Key,Item> {
+            
             shared actual Item? get(Object key) {
                 if (is Key key, filtering(key)) {
                     return outer[key];
@@ -167,6 +180,7 @@ shared interface Map<out Key,out Item>
                     return null;
                 }
             }
+            
             shared actual Boolean defines(Object key) {
                 if (is Key key, filtering(key)) {
                     return outer.defines(key);
@@ -175,15 +189,69 @@ shared interface Map<out Key,out Item>
                     return false;
                 }
             }
-            iterator() => outer.filter((Key->Item entry) 
-                    => filtering(entry.key))
-                        .iterator();
-            equals(Object that)
-                    => (super of Map<Key,Item>).equals(that);
-            hash => (super of Map<Key,Item>).hash;
-            clone() => outer.clone().filterKeys(filtering); //TODO: not efficient
+            
+            function filterEntry(Key->Item entry) 
+                    => filtering(entry.key);
+            
+            iterator() => (outer filter filterEntry).iterator();
+            
+            clone() => outer.clone() filterKeys filtering;
+            
         }
         return map;
+    }
+    
+    "Produces a map whose keys are the union of the keys
+     of this map, with the keys of the given [[map|other]].
+     For any given key in the resulting map, its associated
+     item is the item associated with the key in the given
+     map, if any, or the item associated with the key in 
+     this map otherwise.
+     
+     That is, for any `key` in the resulting patched map:
+     
+         map.patch(other)[key] == other[key] else map[key]
+     
+     This is a lazy operation producing a view of this map
+     and the given map."
+    shared default
+    Map<Key|OtherKey,Item|OtherItem> patch<OtherKey,OtherItem>
+            (Map<OtherKey,OtherItem> other) 
+            given OtherKey satisfies Object 
+            given OtherItem satisfies Object {
+        object patch 
+                extends Object()
+                satisfies Map<Key|OtherKey,Item|OtherItem> {
+            
+            get(Object key) => other[key] else outer[key];
+            
+            clone() => outer.clone() patch other.clone();
+            
+            defines(Object key) 
+                    => (other defines key) || 
+                       (outer defines key);
+            
+            shared actual Boolean contains(Object entry) {
+                if (is Entry<Object,Object> entry) {
+                    return entry in other || 
+                            !(other defines entry.key) 
+                                && entry in outer;
+                }
+                else {
+                    return false;
+                }
+            }
+            
+            //efficient when map is much smaller than outer,
+            //which is probably the common case 
+            size => outer.size +
+                    (other.keys count not(outer.defines));
+            
+            iterator() => ChainedIterator(other,
+                outer filter not(other.contains));
+            
+        }
+        return patch;
     }
     
 }

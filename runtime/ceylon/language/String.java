@@ -533,7 +533,7 @@ public final class String
                         null;
         }
         else {
-            return super.firstInclusion(sublist);
+            return super.lastInclusion(sublist);
         }
     }
     
@@ -1024,8 +1024,7 @@ public final class String
         int start = value.offsetByCodePoints(0, Util.toInt(from));
         int end = value.offsetByCodePoints(start, 
                 Util.toInt(toIndex - from + 1));
-        java.lang.String result = value.substring(start, end);
-        return result;
+        return value.substring(start, end);
     }
     
     @Override
@@ -1049,8 +1048,7 @@ public final class String
         }
         int start = 0;
         int end = value.offsetByCodePoints(start, Util.toInt(toIndex + 1));
-        java.lang.String result = value.substring(start, end);
-        return result;
+        return value.substring(start, end);
     }
     
 
@@ -1080,21 +1078,16 @@ public final class String
         int end = value.offsetByCodePoints(start, 
                 Util.toInt(toIndex - from + 1));
         java.lang.String result = value.substring(start, end);
-        return reverse ? reverse(result) : result;
-    }
-    
-    @Ignore
-    public static List<? extends Character> getReversed(java.lang.String value) {
-        return instance(value).getReversed();
+        return reverse ? getReversed(result) : result;
     }
     
     @Override
-    public String reverse() {
-        return instance(reverse(value));
+    public String getReversed() {
+        return instance(getReversed(value));
     }
     
     @Ignore
-    public static java.lang.String reverse(java.lang.String value) {
+    public static java.lang.String getReversed(java.lang.String value) {
         long len = getSize(value);
         if (len < 2) {
             return value;
@@ -1121,7 +1114,8 @@ public final class String
         int len = value.length();
         if (times<=0 || len==0) return "";
         if (times==1) return value;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder(Util.toInt(len*times));
+        java.lang.StringBuilder builder = 
+        		new java.lang.StringBuilder(Util.toInt(len*times));
         for (int i=0; i<times; i++) {
             builder.append(value);
         }
@@ -1629,37 +1623,6 @@ public final class String
         return instance(value).follow($reifiedOther, other);    
     }
     
-    @Ignore
-    public static <Other>Tuple<java.lang.Object,? extends Other,? extends Sequential<? extends Character>>
-    withLeading(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, Other e) {
-        return instance(value).withLeading($reifiedOther, e);
-    }
-
-    @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, Other e) {
-        return instance(value).withTrailing($reifiedOther, e);
-    }
-
-    @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>Sequential append(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, Iterable<? extends Other, ?> es) {
-        return instance(value).append($reifiedOther, es);
-    }
-
-    @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>Sequential prepend(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, Iterable<? extends Other, ?> es) {
-        return instance(value).prepend($reifiedOther, es);
-    }
-
-    @Ignore @SuppressWarnings({ "rawtypes" })
-    public static <Other>List extend(@Ignore TypeDescriptor $reifiedOther, 
-            java.lang.String value, List<? extends Other> list) {
-        return instance(value).extend($reifiedOther, list);
-    }
-
     @Ignore @SuppressWarnings({ "rawtypes" })
     public static <Other>List patch(@Ignore TypeDescriptor $reifiedOther, 
             java.lang.String value, List<? extends Other> list, long from, long length) {
@@ -1676,12 +1639,6 @@ public final class String
     public static Iterable<? extends Character,?> 
     getCycled(java.lang.String value) {
         return instance(value).getCycled();
-    }
-    
-    @Ignore
-    public static Iterable<? extends Character,?> 
-    cycle(java.lang.String value, long times) {
-        return instance(value).cycle(times);
     }
     
     @Override
@@ -1873,6 +1830,13 @@ public final class String
             builder.appendCodePoint(character);
         }
         return builder.toString();
+    }
+    
+    @Ignore
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Character,ceylon.language::Tuple<ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>>")
+    public static Iterable<? extends Tuple<Character,? extends Character,? extends Tuple<Character,? extends Character,? extends Sequential<? extends Character>>>, ?>
+    getPaired(java.lang.String value) {
+    	return instance(value).getPaired();
     }
     
 }

@@ -50,7 +50,7 @@
    certain operations are expensive, requiring iteration of 
    the characters of the string. In particular, [[size]]
    requires iteration of the whole string, and `get()`,
-   `span()`, and `segment()` require iteration from the 
+   `span()`, and `measure()` require iteration from the 
    beginning of the string to the given index."""
 by ("Gavin")
 shared native final class String(characters)
@@ -156,7 +156,7 @@ shared native final class String(characters)
     shared native String normalized;
     
     "This string, with the characters in reverse order."
-    shared native actual String reverse();
+    shared native actual String reversed;
     
     shared native actual Boolean defines(Integer index);
     

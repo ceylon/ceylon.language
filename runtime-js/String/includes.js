@@ -1,9 +1,10 @@
 function (e) {
+  if (e.size===0)return true;
   if (is$(e, {t:$_String})) {
-    return this.indexOf(e)>=0;
+    var fi=this.firstInclusion(e);
+    return fi!==null && fi>=0;
   }
   else {
-    //TODO: fix
-    return this.tipo.$crtmm$['super'].includes(e);
+    return List.$$.prototype.includes.call(this,e);
   }
 }

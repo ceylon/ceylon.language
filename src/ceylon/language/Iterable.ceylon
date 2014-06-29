@@ -18,9 +18,9 @@
    of elements, which must be the [[size]] of the stream.
    
    The type `Iterable<Element,Null>`, usually abbreviated
-   `{Element*}` represents a possibly-empty iterable 
+   `{Element*}`, represents a possibly-empty iterable 
    container. The type `Iterable<Element,Nothing>`, usually 
-   abbreviated `{Element+}` represents a nonempty iterable 
+   abbreviated `{Element+}`, represents a nonempty iterable 
    container.
    
    A value list in braces produces a new instance of 
@@ -79,22 +79,22 @@
    
    - sorting operations, for example [[sort]], which are 
      eager by nature,
-   - operations which preserve emptiness/nonemptiness of
-     the receiving iterable object, for example [[reverse]]
-     and [[collect]].
+   - operations which result in a subset or subrange of the 
+     receiving stream, where structural sharing would or
+     could result in unnecessary memory retention.
    
    Certain operations come in both lazy and eager flavors,
    for example:
    
    - [[map]] vs [[collect]],
    - [[filter]] vs [[select]],
-   - [[List.reversed]] vs [[reverse]],
-   - [[follow]] vs [[List.withLeading]], and
    - [[List.sublist]] vs [[List.measure]].
    
    Lazy operations normally return an instance of `Iterable`, 
    or even a [[List]], [[Map]], or [[Set]]. Eager operations 
-   usually return a [[sequence|Sequential]]."""
+   usually return a [[sequence|Sequential]]. The method
+   [[sequence]] materializes the current elements of a
+   stream into a sequence."""
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
@@ -294,6 +294,8 @@ shared interface Iterable<out Element, out Absent=Null>
          (1..100).fold(0, plus<Integer>)
      
      results in the integer `5050`."
+    see (`function reduce`, 
+         `function scan`)
     shared default Result fold<Result>(Result initial,
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -314,6 +316,7 @@ shared interface Iterable<out Element, out Absent=Null>
          (1..100).reduce(plus<Integer>)
      
      results in the integer `5050`." 
+    see (`function fold`)
     shared default Result|Element|Absent reduce<Result>(
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -331,6 +334,56 @@ shared interface Iterable<out Element, out Absent=Null>
             assert (is Absent null);
             return null;
         }
+    }
+    
+    "The stream of results obtained by iteratively applying
+     the given [[accumulating|accumulating]] function to
+     each element of this iterable in turn.
+     
+         x.scan(z, f) == { z, f(z, x[0]), f(f(z, x[0]), x[1]), ... }
+     
+     The following identities explain the relationship 
+     between `scan` and [[fold]]:
+     
+         x.scan(z, f)[i] == x.taking(i).fold(z, f)
+         x.scan(z, f).last == x.fold(z, f)
+         x.scan(z, f).first == {}.fold(z, f) == z
+     
+     For example, the expression
+     
+         (1..4).scan(0, plus<Integer>)
+     
+     results in the stream `{ 0, 1, 3, 6, 10 }`."
+    see (`function fold`)
+    shared default {Result+} scan<Result>(Result initial,
+            "The accumulating function that accepts
+             the running total and the next element."
+            Result accumulating(Result partial, Element element)) {
+        object iterable satisfies {Result+} {
+            first => initial;
+            shared actual Iterator<Result> iterator() {
+                value iter = outer.iterator();
+                object iterator satisfies Iterator<Result> {
+                    variable value returnInitial = true;
+                    variable value partial = initial;
+                    shared actual Result|Finished next() {
+                        if (returnInitial) {
+                            returnInitial = false;
+                            return initial;
+                        }
+                        else if (!is Finished element = iter.next()) {
+                            partial = accumulating(partial, element);
+                            return partial;
+                        }
+                        else {
+                            return finished;
+                        }
+                    }
+                }
+                return iterator;
+            }
+        }
+        return iterable;
     }
     
     "The first element of this stream which satisfies the 
@@ -379,7 +432,7 @@ shared interface Iterable<out Element, out Absent=Null>
             => flatten((Args args) 
                 => { for (elem in this) method(elem)(*args) });
     
-    "Produce a new [[sequence|Sequential]] containing the 
+    /*"Produce a new [[sequence|Sequential]] containing the 
      elements of this stream, in the reverse order to the 
      order in which they occur in this stream.
      
@@ -400,16 +453,7 @@ shared interface Iterable<out Element, out Absent=Null>
             array.reverseInPlace();
             return ArraySequence(array);
         }
-    }
-    
-    "Produces a list formed by repeating the elements of 
-     this stream the [[given number of times|times]], or an 
-     empty list if `times<=0`. 
-     
-     This operation is an eager counterpart to [[cycle]]."
-    see (`function cycle`)
-    shared default List<Element> repeat(Integer times)
-            => cycle(times).sequence();
+    }*/
     
     "Produce a new [[sequence|Sequential]] containing the 
      elements of this stream, sorted according to the given 
@@ -418,9 +462,9 @@ shared interface Iterable<out Element, out Absent=Null>
      
      For convenience, the functions [[byIncreasing]] and 
      [[byDecreasing]] produce suitable comparator functions:
-     
-         \"Hello World!\".sort(byIncreasing(Character.lowercased))
-     
+    
+        \"Hello World!\".sort(byIncreasing(Character.lowercased))
+    
      This operation is eager by nature."
     see (`function byIncreasing`, 
          `function byDecreasing`)
@@ -655,6 +699,20 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
+    "Produces a stream formed by repeating the elements of 
+     this stream the [[given number of times|times]], or an 
+     empty stream if `times<=0`."
+    see (`value cycled`)
+    shared default {Element*} repeat(Integer times) {
+        object iterable satisfies {Element*} {
+            value orig => outer;
+            size => times * outer.size;
+            string => "(``outer.string``).repeat(``times``)";
+            iterator() => CycledIterator(outer,times);
+        }
+        return iterable;
+    }
+    
     "Produces a stream containing every [[step]]th element 
      of this stream. If the step size is `1`, the resulting
      stream contains the same elements as this stream.
@@ -759,10 +817,14 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    //TODO: add when backend bug is fixed
-    /*shared default {[Element,Element]*} paired {
+    "For a stable stream, this operation is equivalent to
+     `zipPairs(stream,stream.rest)`."
+    shared default {[Element,Element]*} paired {
          object pairs satisfies {[Element,Element]*} {
-             size => (outer.size/2)*2;
+             shared actual Integer size {
+                 value size =  outer.size-1;
+                 return size<0 then 0 else size;
+             }
              shared actual Iterator<[Element, Element]> iterator() {
                  value iter = outer.iterator();
                  object iterator 
@@ -783,39 +845,76 @@ shared interface Iterable<out Element, out Absent=Null>
              }
          }
          return pairs;
-    }*/
+    }
     
-    "Produces a stream with a given [[initial element|head]], 
-     followed by the elements of this stream."
-    shared default {Element|Other+} follow<Other>(Other head) {
-        //TODO: should be {leading,*outer} when that is efficient
-        object cons satisfies {Element|Other+} {
-            shared actual Iterator<Element|Other> iterator() {
+    "Produces a stream of sequences of the given [[length]],
+     containing elements of this stream. Each sequence in 
+     the stream contains the next [[length]] elements of 
+     this sequence that have not yet been assigned to a 
+     previous sequence, in the same order that they occur
+     in this stream. The very last sequence in the stream
+     may be shorter than the given `length`.
+     
+     For any `stream` and for any positive integer 
+     [[length]]:
+     
+         expand { stream.sequences(length) } == stream"
+    throws (`class AssertionError`,
+            "if `length<0`")
+    shared default 
+    Iterable<Element[],Absent> sequences(Integer length) {
+        assert (length>=0);
+        if (length==0) {
+            return {[]}.cycled;
+        }
+        object sequences 
+                satisfies Iterable<Element[],Absent> {
+            //TODO: size => outer.size / length;
+            shared actual Iterator<Element[]> iterator() {
                 value iter = outer.iterator();
-                object iterator satisfies Iterator<Element|Other> {
-                    variable Boolean first = true;
-                    shared actual Element|Other|Finished next() {
-                        if (first) {
-                            first=false;
-                            return head;
+                object iterator satisfies Iterator<Element[]> {
+                    shared actual Element[]|Finished next() {
+                        if (!is Finished next = iter.next()) {
+                            value array = arrayOfSize(length, next);
+                            variable value index = 0;
+                            while (++index<length) {
+                                if (!is Finished current = iter.next()) {
+                                    array.set(index, current);
+                                }
+                                else {
+                                    return ArraySequence(array[...index-1]);
+                                }
+                            }
+                            return ArraySequence(array);
                         }
                         else {
-                            return iter.next();
+                            return finished;
                         }
                     }
-                    string => outer.string + ".iterator()";
                 }
                 return iterator;
             }
         }
-        return cons;
+        return sequences;
     }
+    
+    "Produces a stream with a given [[initial element|head]], 
+     followed by the elements of this stream, in the order 
+     in which they occur in this stream. 
+     
+     Note that the expression `stream.follow(head)` may be 
+     written as:
+     
+         { head, *stream }"
+    see (`function chain`)
+    shared default {Element|Other+} follow<Other>(Other head) 
+            => { head, *this };
     
     "The elements of this stream, in the order in which they 
      occur in this stream, followed by the elements of the 
      [[given stream|other]] in the order in which they occur 
      in the given stream."
-    see (`function expand`, `function List.append`)
+    see (`function expand`)
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {
@@ -826,6 +925,12 @@ shared interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
+    //TODO: uncomment when backend bug is fixed
+    /*shared default Iterable<[Element,Other],Absent|OtherAbsent>
+    product<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
+            given OtherAbsent satisfies Null
+            => { for (x in this) for (y in other) [x,y] };*/
+    
     "An infinite stream that produces the elements of this 
      stream, repeatedly.
      
@@ -834,7 +939,7 @@ shared interface Iterable<out Element, out Absent=Null>
          {6, 9}.cycled.taking(5)
      
      evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
-    see (`function cycle`)
+    see (`function repeat`)
     shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
             value orig => outer;
@@ -864,78 +969,26 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produces a stream formed by repeating the elements of 
-     this stream the [[given number of times|times]], or an 
-     empty stream if `times<=0`."
-    see (`value cycled`, 
-         `function repeat`)
-    shared default Iterable<Element,Absent> cycle(Integer times) {
-        object iterable satisfies Iterable<Element,Absent> {
-            value orig => outer;
-            size => times * outer.size;
-            string => "(``outer.string``).cycle(``times``)";
-            shared actual Iterator<Element> iterator() {
-                object iterator satisfies Iterator<Element> {
-                    variable Iterator<Element> iter = emptyIterator;
-                    variable Integer count=0;
-                    shared actual Element|Finished next() {
-                        if (!is Finished next = iter.next()) {
-                            return next;
-                        }
-                        else {
-                            if (count<times) {
-                                count++;
-                                iter = orig.iterator();
-                            }
-                            else {
-                                iter = emptyIterator;
-                            }
-                            return iter.next();
-                        }
-                        
-                    }
-                    string => outer.string + ".iterator()";
-                }
-                return iterator;
-            }
-        }
-        return iterable;
-    }
-    
-    "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
+   "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
      this collection, as produced by the iterator of the 
      stream, or the string `\"{}\"` if this stream is empty. 
      If the stream is very long, the list of elements might 
      be truncated, as indicated by an ellipse."
     shared actual default String string {
-        value sb = StringBuilder();
-        sb.append("{");
-        value it = iterator();
-        variable value current = it.next();
-        if (!is Finished c1 = current) {
-            sb.append(" ")
-                    .append(current?.string else "<null>");
-            variable value count = 1;
-            while (true) {
-                current = it.next();
-                if (is Finished c2 = current) {
-                    sb.append(" ");
-                    break;
-                }
-                else if (count == 30) {
-                    sb.append(", ... "); // TODO use Unicode ellipse '…'?
-                    break;
-                }
-                else {
-                    sb.append(", ")
-                            .append(current?.string else "<null>");
-                    count++;
-                }
-            }
+        value strings = take(31)
+                .map((Element e) => e?.string else "<null>")
+                .sequence();
+        if (strings.empty) {
+            return "{}";
         }
-        sb.append("}");
-        return sb.string;
+        else if (strings.size==31) {
+            return "{ " + ", ".join(strings.take(30)) + 
+                    ", ... }";
+        }
+        else {
+            return "{ " + ", ".join(strings) + " }";
+        }
     }
     
 }

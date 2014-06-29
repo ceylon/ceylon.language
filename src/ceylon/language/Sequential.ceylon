@@ -26,13 +26,7 @@ shared interface Sequential<out Element>
     
     shared actual formal Element[] reversed;
     
-    shared actual formal Element[] reverse();
-    
-    "Returns a sequence formed by repeating the elements of 
-     this sequence the given number of times, or an empty 
-     sequence if `times<=0`."
-    shared actual default Element[] repeat(Integer times)
-            => cycle(times).sequence();
+    shared actual formal Element[] repeat(Integer times);
     
     "Select the first elements of this sequence, returning 
      a sequence no longer than the given length. If this 
@@ -40,21 +34,15 @@ shared interface Sequential<out Element>
      sequence. Otherwise return a sequence of the given 
      length."
     shared actual default Element[] initial(Integer length)
-            => this[0:length];
+            => this[...length-1];
     
     "Select the last elements of the sequence, returning a 
      sequence no longer than the given length. If this 
      sequence is shorter than the given length, return this 
      sequence. Otherwise return a sequence of the given 
      length."
-    shared actual default Element[] terminal(Integer length) {
-        if (exists l = lastIndex, length>0) {
-            return this[l-length+1..l];
-        }
-        else {
-            return [];
-        }
-    }
+    shared actual default Element[] terminal(Integer length) 
+            => this[size-length...]; 
     
     "Trim the elements satisfying the given predicate
      function from the start and end of this sequence, 
@@ -84,7 +72,47 @@ shared interface Sequential<out Element>
      list, one of the returned sequences will be empty."
     shared actual default [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];
-        
+    
+    "Returns a new sequence that starts with the specified
+     [[element]], followed by the elements of this sequence,
+     in the order they occur in this sequence."
+    see (`function prepend`,
+         `function withTrailing`,
+         `function follow`)
+    shared formal [Other,Element*] withLeading<Other>(
+            "The first element of the resulting sequence."
+            Other element);
+    
+    "Returns a new sequence that starts with the elements of 
+     this sequence, in the order they occur in this sequence, 
+     and ends with the specified [[element]]."
+    see (`function append`,
+         `function withLeading`)
+    shared formal [Element|Other+] withTrailing<Other>(
+            "The last element of the resulting sequence."
+            Other element);
+    
+    "Return a sequence containing the elements of this 
+     sequence, in the order in which they occur in this 
+     sequence, followed by the given [[elements]], in the 
+     order in which they occur in the given sequence."
+    see (`function prepend`,
+         `function withTrailing`,
+         `function concatenate`,
+         `function chain`)
+    shared formal 
+    [Element|Other*] append<Other>(Other[] elements);
+    
+    "Return a sequence containing the given [[elements]], in 
+     the order in which they occur in the given sequence,
+     followed by the elements of this sequence, in the order 
+     in which they occur in this sequence."
+    see (`function append`,
+         `function withLeading`,
+         `function concatenate`)
+    shared formal 
+    [Element|Other*] prepend<Other>(Other[] elements);
+    
     "This sequence."
     shared actual default Element[] clone() => this;
     

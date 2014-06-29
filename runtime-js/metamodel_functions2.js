@@ -77,11 +77,12 @@ function tupleize$params(ps,aux) {
   }
   return tupa;
 }
-function $qname(mm) {
+function qname$(mm) {
   if (mm.t) {
     mm=mm.t;
   }
   if (mm.$crtmm$)mm=getrtmm$$(mm);
+  if (!mm.d && mm._alias)mm=getrtmm$$(mm._alias);
   if (!mm.d)return "[unnamed type]";
   var qn=mm.d[0];
   if (qn==='$')qn='ceylon.language';
@@ -103,7 +104,7 @@ function resolve$typearg(ta,mm) {
       return r.satisfies.length==1?r.satisfies[0]:{t:'i',l:r.satisfies};
     return {t:Anything};
   }
-  console.log("MISSING definition of type argument " + ta + " in " + $qname(mm));
+  console.log("MISSING definition of type argument " + ta + " in " + qname$(mm));
   return {t:Anything};
 }
 

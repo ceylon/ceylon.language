@@ -64,9 +64,20 @@ shared sealed interface Sequence<out Element>
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
     
-    shared default actual [Element+] reversed => reverse();
+    shared default actual [Element+] reversed => Reverse();
     
-    shared default actual [Element+] reverse() => Reverse();
+    shared default actual Element[] repeat(Integer times) 
+            => times<=0 then [] else Repeat(times);
+    
+    /*shared actual default Element[] repeat(Integer times) {
+        value resultSize = size*times;
+        value array = arrayOfSize(resultSize, first);
+        variable value i = 1;
+        while (i < resultSize) {
+            array.set(i, getElement(i%size));
+        }
+        return ArraySequence(array); 
+    }*/
     
     "A nonempty sequence containing the elements of this
      container, sorted according to a function imposing a 
@@ -104,21 +115,40 @@ shared sealed interface Sequence<out Element>
     "Return a nonempty sequence containing the given 
      [[element]], followed by the elements of this 
      sequence."
-    shared actual default [Other,Element+]
-    withLeading<Other>(Other element)
+    shared actual default 
+    [Other,Element+] withLeading<Other>(Other element)
             => [element, *this];
     
     "Return a nonempty sequence containing the elements of 
-     this sequence, followed by the given [[elements]]."
-    shared actual default [Element,Element|Other*]
-    append<Other>({Other*} elements)
-            => [first, *(rest chain elements)];
+     this sequence, followed by the given [[element]]."
+    shared actual default
+    [Element|Other+] withTrailing<Other>(Other element) 
+            => JoinedSequence(this, Singleton(element));
     
     "Return a nonempty sequence containing the elements of 
      this sequence, followed by the given [[elements]]."
-    shared actual default [Element|Other+]
-    prepend<Other>({Other*} elements)
-            => [*(elements chain this)];
+    shared actual default 
+    [Element|Other+] append<Other>(Other[] elements) {
+        if (nonempty elements) {
+            return JoinedSequence(this, elements);
+        }
+        else {
+            return this;
+        }
+    }
+    
+    "Return a nonempty sequence containing the given 
+     [[elements]], followed by the elements of this 
+     sequence."
+    shared actual default 
+    [Element|Other+] prepend<Other>(Other[] elements) {
+        if (nonempty elements) {
+            return JoinedSequence(elements, this);
+        }
+        else {
+            return this;
+        }
+    }
     
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
@@ -140,11 +170,20 @@ shared sealed interface Sequence<out Element>
                 (Boolean selecting(Element&Object elem))
             => (super of List<Element>).findLast(selecting);
     
-    shared actual default Element[] repeat(Integer times)
-            => (super of Element[]).repeat(times);
-    
     shared actual default [Element[],Element[]] slice(Integer index)
             => [this[...index-1], this[index...]];
+    
+    shared actual default Element[] measure(Integer from, Integer length) 
+            => sublist(from, from+length-1).sequence();
+    
+    shared actual default Element[] span(Integer from, Integer to) 
+            => sublist(from, to).sequence();
+    
+    shared actual default Element[] spanFrom(Integer from) 
+            => sublistFrom(from).sequence();
+    
+    shared actual default Element[] spanTo(Integer to) 
+            => sublistTo(to).sequence();
     
     shared actual default String string 
             => (super of Sequential<Element>).string;
@@ -169,7 +208,6 @@ shared sealed interface Sequence<out Element>
         last => outer.first;
         rest => outer[size-2..0]; //TODO!
         
-        reverse() => outer;
         reversed => outer;
         
         getFromFirst(Integer index) 
@@ -220,6 +258,32 @@ shared sealed interface Sequence<out Element>
 
     }
     
+    class Repeat(Integer times)
+            extends Object()
+            satisfies [Element+] {
+        
+        assert (times>0);
+        
+        shared actual Element last => outer.last;
+        
+        first => outer.first;
+        size => outer.size*times;
+        rest => sublistFrom(1).sequence(); //TODO!
+        
+        shared actual Element? getFromFirst(Integer index) {
+            value size = outer.size;
+            if (index<size*times) {
+                return outer.getFromFirst(index%size);
+            }
+            else {
+                return null;
+            }
+        }
+        
+        iterator() => CycledIterator(outer,times);
+        
+    }
+    
 }
 
 "A [[nonempty sequence|Sequence]] of the given [[elements]], 
@@ -240,5 +304,82 @@ shared [Element+]|Absent sequence<Element,Absent=Null>
         assert (is Absent null);
         return null;
     }
+}
+
+class JoinedSequence<Element>
+        ([Element+] firstSeq, [Element+] secondSeq)
+        extends Object()
+        satisfies [Element+] {
+    
+    size => firstSeq.size + secondSeq.size;
+    
+    first => firstSeq.first;
+    last => secondSeq.last;
+    
+    rest => firstSeq.rest.append(secondSeq);
+    
+    shared actual Element? getFromFirst(Integer index) {
+        value cutover = firstSeq.size;
+        if (index < cutover) {
+            return firstSeq.getFromFirst(index);
+        }
+        else {
+            return secondSeq.getFromFirst(index-cutover);
+        }
+    }
+    
+    shared actual [Element[], Element[]] slice(Integer index) {
+        if (index==firstSeq.size) {
+            return [firstSeq,secondSeq];
+        }
+        else {
+            return super.slice(index);
+        }
+    }
+    
+    shared actual Element[] spanTo(Integer to) {
+        if (to==firstSeq.size-1) {
+            return firstSeq;
+        }
+        else {
+            return super.spanTo(to);
+        }
+    }
+    
+    shared actual Element[] spanFrom(Integer from) {
+        if (from==firstSeq.size) {
+            return secondSeq;
+        }
+        else {
+            return super.spanFrom(from);
+        }
+    }
+    
+    shared actual Element[] measure(Integer from, Integer length) {
+        if (from==0 && length==firstSeq.size) {
+            return firstSeq;
+        }
+        else if (from==firstSeq.size && length>=secondSeq.size) {
+            return secondSeq;
+        }
+        else {
+            return super.measure(from, length);
+        }
+    }
+    
+    shared actual Element[] span(Integer from, Integer to) {
+        if (from<=0 && to==firstSeq.size-1) {
+            return firstSeq;
+        }
+        else if (from==firstSeq.size && to>=size-1) {
+            return secondSeq;
+        }
+        else {
+            return super.span(from, to);
+        }
+    }
+    
+    iterator() => ChainedIterator(firstSeq,secondSeq);
+    
 }
 

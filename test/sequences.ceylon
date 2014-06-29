@@ -230,8 +230,8 @@ shared void arraySequence() {
     check(abc[2] exists, "abc[2]");
     check(!(abc[3] exists), "abc[3]");
     
-    check(abc.reverse().string=="[c, b, a]", "abc.reverse ``abc.reversed``");
-    check(abc.reverse().reverse()==abc, "abc.reverse.reverse");
+    check(abc.reversed.string=="[c, b, a]", "abc.reverse ``abc.reversed``");
+    check(abc.reversed.reversed==abc, "abc.reverse.reverse");
     check(abc.reversed.string=="[c, b, a]", "abc.reversed ``abc.reversed``");
     check(abc.reversed.reversed.sequence()==abc, "abc.reversed.reversed");
     
@@ -308,13 +308,9 @@ shared void arraySequence() {
     check(abc.measure(3, 2)=={}, "abc.measure(3,1)");
     check(abc.measure(3, 3)=={}, "abc.measure(3,3)");
     
-    check(abc.reverse().rest==["b","a"], "abc.reverse().rest");
     check(abc.reversed.rest==["b","a"], "abc.reversed.rest");
-    check(abc.reverse()==["c","b","a"], "abc.reverse()");
     check(abc.reversed==["c","b","a"], "abc.reversed");
-    check(abc.reverse().first=="c", "abc.reverse().first");
     check(abc.reversed.first=="c", "abc.reversed.first");
-    check(abc.reverse().last=="a", "abc.reverse().last");
     check(abc.reversed.last=="a", "abc.reversed.last");
 }
 
@@ -543,5 +539,8 @@ shared void sequences() {
     check(![1,2,3].longerThan(3), "Sequence.longerThan");
     check([1,2,3,4,5].shorterThan(6), "Sequence.shorterThan");
     check(![1,2,3].shorterThan(3), "Sequence.shorterThan");
+    
+    check((1..4).paired.sequence()==[[1,2],[2,3],[3,4]], "sequence paired");
+    check((1..4).paired.by(2).sequence()==[[1,2],[3,4]], "sequence paired by");
         
 }

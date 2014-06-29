@@ -50,9 +50,6 @@ shared interface Empty of e
     shared actual Integer size => 0; 
     
     "Returns an `Empty`."
-    shared actual [] reverse() => this;
-    
-    "Returns an `Empty`."
     shared actual [] reversed => this;
     
     "Returns an `Empty`."
@@ -92,8 +89,6 @@ shared interface Empty of e
     shared actual [] defaultNullElements<Default>
             (Default defaultValue) 
             => this;
-    
-    shared actual [] cycle(Integer times) => this;
     
     shared actual [] repeat(Integer times) => this;
     
@@ -169,17 +164,14 @@ shared interface Empty of e
     shared actual [Other] withTrailing<Other>(Other element)
             => [element];
     
-    shared actual [Other*] append<Other>({Other*} elements)
-            => [*elements];
+    shared actual Other[] append<Other>(Other[] elements)
+            => elements;
     
-    shared actual [Other*] prepend<Other>({Other*} elements)
-            => [*elements];
+    shared actual Other[] prepend<Other>(Other[] elements)
+            => elements;
     
     shared actual {Other+} follow<Other>(Other head)
             => { head };
-    
-    shared actual List<Other> extend<Other>(List<Other> list)
-            => list;
     
     shared actual [] sublist(Integer from, Integer to) => this;
     
@@ -216,6 +208,9 @@ shared interface Empty of e
             => this;
     
     shared actual [[],[]] slice(Integer index) => [this, this];
+    
+    shared actual [] paired => this;
+    
 }
 
 "A sequence with no elements, abbreviated `[]`. The unique 

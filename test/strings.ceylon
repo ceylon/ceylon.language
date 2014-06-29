@@ -23,21 +23,22 @@ shared void strings() {
     value hello = "hello";
     
     check(hello.includes("lo"), "string includes string");
-    //check(hello.includes("lo".sequence()), "string includes list");
-    check(hello.includesAt(3,"lo"), "string includesAt string");
-    //check(hello.includesAt(3,"lo".sequence()), "string includesAt list");
+    check(hello.includes(['l','o']), "string includes list");
+    check(hello.includesAt(3,"lo"), "string includesAt string 1");
+    check(hello.includesAt(3,['l','o']), "string includesAt list 1");
     check(!hello.includesAt(2,"lo"), "string not includesAt string");
-    //check(!hello.includesAt(2,"lo".sequence()), "string not includesAt list");
-    check(hello.includesAt(0,"hell"), "string includesAt string");
-    //check(hello.includesAt(0,"hell".sequence()), "string includesAt list");
+    check(!hello.includesAt(2,['l','o']), "string not includesAt list");
+    check(hello.includesAt(0,"hell"), "string includesAt string 2");
+    check(hello.includesAt(0,['h','e','l','l']), "string includesAt list 2");
     
     check(hello.occurs('l'), "string occurs");
-    check(!hello.occurs('x'), "not string occurs");
-    check(hello.occursAt(3,'l'), "string occursAt");
-    check(hello.occursAt(2,'l'), "string occursAt");
-    check(!hello.occursAt(2,'x'), "string occursAt");
+    check(!hello.occurs('x'), "not string occurs 1");
+    check(!hello.occurs("e"), "not string occurs 2");
+    check(hello.occursAt(3,'l'), "string occursAt 1");
+    check(hello.occursAt(2,'l'), "string occursAt 2");
+    check(!hello.occursAt(2,'x'), "string occursAt 3");
+    check(!hello.occursAt(0,"h"), "string occursAt 4");
     
-    print(hello.occurrences('l'));
     check(hello.occurrences('l').sequence()==[2,3], "string occurrences");
     check(hello.inclusions("l").sequence()==[2,3], "string inclusions");
     check(hello.inclusions("hell").sequence()==[0], "string inclusions");
@@ -164,11 +165,31 @@ shared void strings() {
     if (exists nocc = hello.firstInclusion("x")) {
         fail("string no first occurrence");
     }
+    if (exists occ = hello.firstInclusion(['l', 'l'])) {
+        check(occ==2, "string.firstInclusion{l,l} ``occ`` expected 2");
+    } else {
+        fail("String.firstInclusion{l,l} not found");
+    }
+    if (exists nocc = hello.firstInclusion(['x'])) {
+        fail("string no first occurrence");
+    }
     if (exists locc = "hello hello".lastInclusion("hell")) {
         check(locc==6, "string last inclusion ``locc`` expected 6");
     }
     else {
         fail("string last inclusion not found");
+    }
+    if (exists locc = "hello hello".lastInclusion(['h', 'e', 'l', 'l'])) {
+        check(locc==6, "string last inclusion ``locc`` expected 6");
+    }
+    else {
+        fail("string last inclusion not found");
+    }
+    if (exists nlocc = "hello".lastInclusion("le")) {
+        fail("String.lastInclusion(le) should not be found");
+    }
+    if (exists nlocc = "hello".lastInclusion(['l','e'])) {
+        fail("String.lastInclusion(l,e) should not be found");
     }
         
     if (exists occ = hello.firstOccurrence('l')) {
@@ -228,7 +249,7 @@ shared void strings() {
     
     check(hello.hash==("HE"+"LLO").lowercased.hash, "string hash");
     
-    value builder = StringBuilder();
+    /*value builder = StringBuilder();
     check(builder.string=="", "StringBuilder 1");
     builder.append("hello");
     check(builder.string=="hello", "StringBuilder 2");
@@ -254,7 +275,7 @@ shared void strings() {
 
     check(builder.append("so|me").size==5);
     check(builder.deleteInitial(2).string == "|me", "StringBuilder.deleteInitial");
-    check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");
+    check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");*/
 
     check("hello world".initial(0)=="", "string initial 1");
     check("hello world".terminal(0)=="", "string terminal 1");
@@ -309,7 +330,6 @@ shared void strings() {
     check("hello world".split('l'.equals, false, true).sequence()=={"he","ll","o wor", "l", "d"}.sequence(), "string split including [6]");
     //With strings
     check("hello world".split("eo".contains).sequence() == "hello world".split({'e','o'}.contains).sequence(), "string split chars [1]");
-    check("hello world".split("eo".contains).sequence() == "hello world".split(StringBuilder().append("o").append("e").string.contains).sequence(), "string split chars");
     variable value count=0;
     for (tok in "hello world goodbye".split()) {
         count++;
@@ -334,14 +354,10 @@ shared void strings() {
     compareIterables({"𐒄𐒅", "𐒁"}, "𐒄𐒅 𐒁".split((Character c) => c==' ', true), "High-surrogate Unicode string");
     compareIterables({"𐒄", "𐒁", ""}, "𐒄𐒅𐒁𐒕".split((Character c) => c in "𐒅𐒕", true), "High-surrogate Unicode delimiters");
     
-    check("".reversed==[], "string reversed 1");
-    check("x".reversed==['x'], "string reversed 2");
-    check(hello.reversed=="olleh".sequence(), "string reversed 3");
-    
-    check("".reverse()=="", "string reverse 1");
-    check("x".reverse()=="x", "string reverse 2");
-    check(hello.reverse()=="olleh", "string reverse 3");
-    
+    check("".reversed=="", "string reversed 1");
+    check("x".reversed=="x", "string reversed 2");
+    check(hello.reversed=="olleh", "string reversed 3");
+        
     check("hello".repeat(0)=="", "string repeat 1");
     check("hello".repeat(1)=="hello", "string repeat 2");
     check("hello".repeat(3)=="hellohellohello", "string repeat 3");
@@ -358,15 +374,14 @@ shared void strings() {
     check("sanitize.*me".replace(".*", "$")=="sanitize$me", "string replace regex js: [``"sanitize.*me".replace(".*", "$")``]");
     check("sanitize.*me".replaceFirst(".*", "$")=="sanitize$me", "string replaceFirst regex js: [``"sanitize.*me".replaceFirst(".*", "$")``]");
     
-    value nlb = StringBuilder();
+    iterate(hello);
+    
+    /*value nlb = StringBuilder();
     nlb.appendNewline();
     nlb.append("hello");
     nlb.appendNewline();
-
-    iterate(hello);
-    
     check(nlb.string.size==7, "string builder newline 1");
-    check(nlb.string=="\nhello\n", "string builder newline 2");
+    check(nlb.string=="\nhello\n", "string builder newline 2");*/
 
     value s1 = "as it should";
     value interp = "String part `` 1 `` interpolation `` 2 `` works`` s1 ``";
@@ -446,8 +461,7 @@ shared void strings() {
     check("\{#0001F638}\{#0001f63e}".rest.size==1, "1 cats");
     check(("\{#0001F638}\{#0001f63e}".first else ' ')=='\{#0001F638}', "first cats");
     check(("\{#0001F638}\{#0001f63e}".rest.first else ' ')=='\{#0001f63e}', "second cats");
-    check("\{#0001F638}\{#0001f63e}".reversed==['\{#0001f63e}','\{#0001F638}'], "cats reversed");
-    check("\{#0001F638}\{#0001f63e}".reverse()=="\{#0001f63e}\{#0001F638}", "cats reverse");
+    check("\{#0001F638}\{#0001f63e}".reversed=="\{#0001f63e}\{#0001F638}", "cats reverse");
     
     check("helloworld".slice(5)==["hello","world"], "string slice 1");
     check("helloworld".slice(0)==["","helloworld"], "string slice 2");
@@ -481,4 +495,8 @@ shared void strings() {
     check(!"".any(Character.digit), "empty string any");
     check(!"asd".any(Character.digit), "string any");
     check("asd1".any(Character.digit), "string any");
+    
+    check("hello world".paired.map(([Character, Character] element) => String { element[0], element[1] }).sequence()==
+    ["he", "el", "ll", "lo", "o ", " w", "wo", "or", "rl", "ld"], "string paired");
+    
 }

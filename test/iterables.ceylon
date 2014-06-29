@@ -4,7 +4,7 @@ shared void testIterables() {
     value s2 = { "Hello", "World" };
     //Map
     check(s1.map((Integer i) => i*2).sequence() == { 2, 4, 6, 8, 10 }.sequence(), "Iterable.map 1");
-    check(s2.map((String s) => s.reverse()).sequence() == { "olleH", "dlroW" }.sequence(), "Iterable.map 2");
+    check(s2.map((String s) => s.reversed).sequence() == { "olleH", "dlroW" }.sequence(), "Iterable.map 2");
     check("hola".map((Character c) => c.uppercased).sequence() == {'H', 'O', 'L', 'A'}.sequence(), "String.map");
 
     //Filter
@@ -14,7 +14,7 @@ shared void testIterables() {
 
     //Collect (like map, but it's already T[])
     check(s1.collect((Integer i) => i*2) == [2, 4, 6, 8, 10], "Iterable.map 1");
-    check(s2.collect((String s) => s.reverse()) == ["olleH", "dlroW"], "Iterable.map 2");
+    check(s2.collect((String s) => s.reversed) == ["olleH", "dlroW"], "Iterable.map 2");
     check("hola".collect((Character c) => c.uppercased) == ['H', 'O', 'L', 'A'], "String.map");
 
     //Select
@@ -192,8 +192,6 @@ shared void testIterables() {
     check((1..10).coalesced == 1..10, "Range.coalesced");
     check({1,2,3,null,4,5}.coalesced.sequence()=={1,2,3,4,5}.sequence(), "Sequence.coalesced");
     check(String({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence())=="HL", "Iterable.coalesced");
-    print(Array{1,2,3,null,5}.coalesced);
-    print({1,2,3,null,5}.coalesced);
     check(Array{1,2,3,null,5}.coalesced.sequence()=={1,2,3,5}.sequence(), "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
@@ -264,8 +262,6 @@ shared void testIterables() {
 	value ix = mapPairs(plus<Integer>, ia, ia);
 	{Integer+} iy = mapPairs(plus<Integer>, ib, ib);
 	{Integer+} iz = mapPairs(plus<Integer>, ic, ic);
-	print(ix);
-	print(iy);
     check(ix.string=="{}", "Iterable.string [1]");
     check(iy.string=="{ 2, 4, 6, 8, 10 }", "Iterable.string [2]");
     check(iz.string=="{ 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, ... }", "Iterable.string [3]");
@@ -286,7 +282,7 @@ shared void testIterables() {
     check({null, "foo", "bar", null}.defaultNullElements(0).sequence()=={0, "foo", "bar", 0}.sequence(), "defaultNullElements [1]");
     check({"foo", null, "bar"}.defaultNullElements("-").sequence()=={"foo", "-", "bar"}.sequence(), "defaultNullElements [2]");
     
-    check((0..2).cycle(3).fold(0,plus<Integer>)==9, "cycle");
+    check((0..2).repeat(3).fold(0,plus<Integer>)==9, "cycle");
 
     //more tests for fold/reduce
     check("1234".fold(5,(Integer a, Character b)=>a+b.integer-48)==15, "String.fold");
@@ -301,7 +297,7 @@ shared void testIterables() {
       fail("String.reduce returned null");
     }
     
-    check({for (i in 1..4) i*i}.reverse()==[16,9,4,1], "iterable reverse");
+    //check({for (i in 1..4) i*i}.reversed==[16,9,4,1], "iterable reverse");
     
     value itfun = iterable(1, (Integer i) => i<5 then i*2 else finished);
     check([*itfun]==[1,2,4,8], "iterable function ``itfun``");
