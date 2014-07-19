@@ -17,7 +17,7 @@ shared Iterable<Element,Absent>
         (Iterable<Element,Absent>+ iterables) 
         given Absent satisfies Null {
     object interleaved satisfies Iterable<Element,Absent> {
-        size => min { for (it in iterables) it.size } * iterables.size;
+        size => package.min { for (it in iterables) it.size } * iterables.size;
         empty => package.any { for (it in iterables) it.empty };
         shared actual Iterator<Element> iterator() {
             object iterator satisfies Iterator<Element> {
