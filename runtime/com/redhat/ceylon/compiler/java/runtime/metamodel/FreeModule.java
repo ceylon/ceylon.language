@@ -1,10 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -16,14 +13,12 @@ import ceylon.language.meta.declaration.Import;
 import ceylon.language.meta.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.ByteArrayResource;
 import com.redhat.ceylon.compiler.java.language.FileResource;
 import com.redhat.ceylon.compiler.java.language.ObjectArray.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ZipResource;
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -31,8 +26,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.loader.ModelLoader;
-import com.redhat.ceylon.compiler.loader.model.LazyModule;
 
 public class FreeModule implements ceylon.language.meta.declaration.Module,
         AnnotationBearing,
@@ -147,75 +140,9 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
             if (moduleManager != null) {
                 RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
                 if (modelLoader != null) {
-                    final byte[] contents = modelLoader.getContents(fullPath);
-                    final String resourcePath = fullPath;
+                    final byte[] contents = modelLoader.getContents(declaration, fullPath);
                     if (contents != null) {
-                        @Ceylon(major = 7)
-                        @Class(extendsType="ceylon.language::Object")
-                        @SatisfiedTypes({
-                            "ceylon.language::Resource"
-                        })
-                        
-                        class ClasspathResource implements Resource {
-    
-                            @Ignore
-                            protected final ceylon.language.Resource$impl $ceylon$language$Resource$this = new ceylon.language.Resource$impl(this);
-    
-                            @Ignore @Override
-                            public ceylon.language.Resource$impl $ceylon$language$Resource$impl() {
-                                return $ceylon$language$Resource$this;
-                            }
-    
-                            @Override
-                            public java.lang.String getName() {
-                                return $ceylon$language$Resource$this.getName();
-                            }
-    
-                            @Override
-                            public long getSize() {
-                                return contents.length;
-                            }
-    
-                            @Override
-                            public java.lang.String getUri() {
-                                return "classpath:" + resourcePath;
-                            }
-    
-                            @Override
-                            public java.lang.String textContent() {
-                                return textContent(textContent$encoding());
-                            }
-    
-                            @Override
-                            public java.lang.String textContent(java.lang.String enc) {
-                                final java.lang.StringBuilder sb = new java.lang.StringBuilder();
-                                try (ByteArrayInputStream fis = new ByteArrayInputStream(contents);
-                                        InputStreamReader reader = new InputStreamReader(fis, enc)) {
-                                    char[] buf = new char[16384];
-                                    while (reader.ready()) {
-                                        int read = reader.read(buf);
-                                        if (read > 0) {
-                                            sb.append(buf, 0, read);
-                                        }
-                                    }
-                                    return sb.toString();
-                                } catch (IOException ex) {
-                                    throw new ceylon.language.Exception(new ceylon.language.String(
-                                            "Reading file resource " + getUri()), ex);
-                                }
-                            }
-    
-                            @Override
-                            public java.lang.String textContent$encoding() {
-                                return $ceylon$language$Resource$this.textContent$encoding();
-                            }
-                            
-                            @Override
-                            public String toString() {
-                                return $ceylon$language$Resource$this.toString();
-                            }
-                        }
-                        return new ClasspathResource();
+                        return new ByteArrayResource(contents, "classpath:" + fullPath);
                     }
                 }
             }
