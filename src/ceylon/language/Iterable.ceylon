@@ -1016,7 +1016,9 @@ shared interface Iterable<out Element, out Absent=Null>
      results in the stream `{ 123, 456 }`."
     shared default 
     {Element&Object*} coalesced 
-            => { for (e in this) if (exists e) e };
+            => if (is {Object*} result = this)
+               then result
+               else { for (e in this) if (exists e) e };
     
     "A stream containing all [[entries|Entry]] of form 
      `index->element` where `element` is an element of this
