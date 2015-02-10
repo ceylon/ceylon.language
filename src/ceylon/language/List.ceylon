@@ -232,12 +232,6 @@ shared interface List<out Element>
         return hash;
     }
     
-    shared actual default
-    Boolean shorterThan(Integer length) => size<length;
-    
-    shared actual default 
-    Boolean longerThan(Integer length) => size>length;
-    
     "A list containing the elements of this list repeated 
      the [[given number of times|times]], or an empty list
      if `times<=0`. For every `index` of a repeated `list`:
