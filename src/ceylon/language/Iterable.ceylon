@@ -1002,7 +1002,9 @@ shared interface Iterable<out Element, out Absent=Null>
     defaultNullElements<Default>(
             "A default value that replaces `null` elements."
             Default defaultValue)
-            => { for (elem in this) elem else defaultValue };
+            => if (is {Object*} result = this)
+               then result
+               else { for (elem in this) elem else defaultValue };
     
     "The non-null elements of this stream, in the order in
      which they occur in this stream. For null elements of 
