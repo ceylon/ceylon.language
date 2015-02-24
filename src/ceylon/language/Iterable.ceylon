@@ -1002,7 +1002,9 @@ shared interface Iterable<out Element, out Absent=Null>
     defaultNullElements<Default>(
             "A default value that replaces `null` elements."
             Default defaultValue)
-            => { for (elem in this) elem else defaultValue };
+            => if (is {Object*} result = this)
+               then result
+               else { for (elem in this) elem else defaultValue };
     
     "The non-null elements of this stream, in the order in
      which they occur in this stream. For null elements of 
@@ -1016,7 +1018,9 @@ shared interface Iterable<out Element, out Absent=Null>
      results in the stream `{ 123, 456 }`."
     shared default 
     {Element&Object*} coalesced 
-            => { for (e in this) if (exists e) e };
+            => if (is {Object*} result = this)
+               then result
+               else { for (e in this) if (exists e) e };
     
     "A stream containing all [[entries|Entry]] of form 
      `index->element` where `element` is an element of this

@@ -257,7 +257,9 @@ shared interface Map<out Key,out Item>
      non-null."
     shared default
     Map<Key,Item&Object> coalescedMap 
-            => object
+        => if (is Map<Key,Object> result = this)
+           then result
+           else object
             extends Object()
             satisfies Map<Key,Item&Object> {
         

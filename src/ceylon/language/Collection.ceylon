@@ -54,7 +54,19 @@ shared interface Collection<out Element>
             return false;
         }
     }
-    
+
+    "Determines if this stream has fewer elements than the
+     given [[length]]. This operation is equivalent to
+     [[size]] < [[length]]."
+    shared actual default
+    Boolean shorterThan(Integer length) => size<length;
+
+    "Determines if this stream has more elements than the
+     given [[length]]. This operation is equivalent to
+     [[size]] > [[length]]."
+    shared actual default
+    Boolean longerThan(Integer length) => size>length;
+
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
      this collection, as produced by the iterator of the 
