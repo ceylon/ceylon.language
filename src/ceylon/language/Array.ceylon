@@ -23,7 +23,7 @@ shared final native class Array<Element>
     see (`value runtime.maxArraySize`)
     shared native new OfSize(
             "The size of the resulting array. If the size is 
-             non-positive, an empty array will be created."
+             negative, an exception will be thrown."
             Integer size, 
             "The element value with which to populate the array.
              All elements of the resulting array will have the 
