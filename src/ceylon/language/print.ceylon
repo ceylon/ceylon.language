@@ -19,15 +19,7 @@ by ("Gavin")
 see (`function process.write`)
 shared void printAll({Anything*} values,
         "A character sequence to use to separate the values"
-        String separator=", ") {
-    if (exists first = values.first) {
-        process.write(stringify(first));
-        for (val in values.rest) {
-            process.write(separator);
-            process.write(stringify(val));
-        }
-    }
-    process.write(operatingSystem.newline);
-}
+        String separator=", ")
+        => print(separator.join(values.map(stringify)));
 
 String stringify(Anything val) => val?.string else "<null>";
