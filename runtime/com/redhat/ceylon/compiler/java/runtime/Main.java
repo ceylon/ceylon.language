@@ -752,7 +752,7 @@ public class Main {
     public void run(String module, String version, String runClass, String... arguments){
         setup(module, version);
         try {
-            Class<?> klass = ClassLoader.getSystemClassLoader().loadClass(runClass);
+            Class<?> klass = Configuration.class.getClassLoader().loadClass(runClass);
             invokeMain(klass, arguments);
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException 
                  | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -874,7 +874,7 @@ public class Main {
         // skip JDK modules which are already in the metamodel
         if(module.type == ClassPath.Type.JDK)
             return;
-        Metamodel.loadModule(name, version, module, ClassLoader.getSystemClassLoader());
+        Metamodel.loadModule(name, version, module, Configuration.class.getClassLoader());
         // also register its dependencies
         for(ClassPath.Dependency dep : module.dependencies)
             registerInMetamodel(dep.name(), dep.version(), dep.optional);
