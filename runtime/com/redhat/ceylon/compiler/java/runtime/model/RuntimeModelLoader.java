@@ -10,6 +10,7 @@ import org.jboss.modules.ModuleClassLoader;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.loader.LoaderJULLogger;
 import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
@@ -170,10 +171,32 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             String jdkModuleName = JDKUtils.getJDKModuleNameForPackage(pkgName);
             if(jdkModuleName != null)
                 return findModule(jdkModuleName, JDKUtils.jdk.version);
-            return lookupModuleByPackageName(pkgName);
+            return lookupModuleByPackageNameAndClassLoader(pkgName, cl);
         }
     }
-    
+
+    protected Module lookupModuleByPackageNameAndClassLoader(
+            String packageName, ClassLoader cl) {
+        Module module = lookupModuleByPackageName(packageName);
+        if (module.equals(modules.getDefaultModule())) {
+            if (cl.equals(classLoaders.get(module))) {
+                return module;
+            }
+            // search for a better match based on ClassLoader
+            for (Map.Entry<Module, ClassLoader> entry : classLoaders.entrySet()) {
+                // skip modules we're not loading things from (per lookupModuleByPackageName)
+                if(!Decl.equalModules(module,getLanguageModule())
+                        && !isModuleInClassPath(module)) {
+                    continue;
+                }
+                if (cl.equals(entry.getValue())) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return module;
+    }
+
     @Override
     protected String cacheKeyByModule(Module module, String name) {
         if(module == null)
