@@ -367,9 +367,6 @@ shared interface List<out Element=Anything>
             "The index at which the [[sublist]] might occur."
             Integer index, 
             List<> sublist) {
-        if (sublist.size>size-index) {
-            return false;
-        }
         for (i in 0:sublist.size) {
             value x = getFromFirst(index+i);
             value y = sublist.getFromFirst(i);
