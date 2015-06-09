@@ -21,5 +21,4 @@ shared void testPredicates() {
     check(or(hell, llo)("xllo"), "or/xllo");
     check(!or(hell, llo)("x"), "or/x");
     check(!or(hell, llo)("llohell"), "or/llohell");
-    
 }

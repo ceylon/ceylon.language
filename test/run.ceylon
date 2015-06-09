@@ -1,5 +1,4 @@
 shared void run() {
-    testInlineExpressions();
     print("Equality");
     equality();
     //complex();
@@ -9,10 +8,12 @@ shared void run() {
     bytes();
     characters();
     strings();
-    print("Lists, sequences, tuples");
+    print("Iterables, comprehensions, List, Sequences, Tuples");
+    testIterables();
     lists();
     sequences();
     tuples();
+    comprehensions();
     print("Iterators, Entries, Ranges, spans & measures");
     iterators();
     entriesAndRanges();
@@ -29,8 +30,10 @@ shared void run() {
     testUseSiteVariance();
     print("Exceptions");
     exceptions();
-    print("Operators");
+    print("Operators, inline expressions, constructors");
     operators();
+    testInlineExpressions();
+    testConstructors();
     print("Miscellaneous");
     misc();
     switches();
@@ -40,9 +43,6 @@ shared void run() {
     print("Map & Set tests");
     testMaps();
     testSets();
-    print("Iterables & comprehensions");
-    testIterables();
-    comprehensions();
     print("Process, runtime, system, operatingSystem");
     testProcess();
     testRuntime();
@@ -53,9 +53,8 @@ shared void run() {
     testCurries();
     print("Resources");
     testResources();
-    print("Predicates");
+    print("Predicates, Destructuring");
     testPredicates();
-    print("Destructuring");
     testDestructuring();
 
     // ATTENTION!
