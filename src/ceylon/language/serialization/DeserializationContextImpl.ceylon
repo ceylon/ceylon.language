@@ -10,12 +10,12 @@ import ceylon.language.meta.model {
     MemberClass,
     Class
 }
-import com.redhat.ceylon.compiler.java.runtime.model{
+/*import com.redhat.ceylon.compiler.java.runtime.model{
     TypeDescriptor
 }
 import com.redhat.ceylon.model.typechecker.model{
     ProducedType=Type
-}
+}*/
 import ceylon.language.serialization {
     DeserializationException
 }
@@ -33,9 +33,9 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     """
     NativeMap<Id,Anything> instances = NativeMap<Id,Anything>();
     
-    """a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
+    /*"""a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
        to its type"""
-    shared NativeMap<TypeDescriptor.Class->String, ProducedType> memberTypeCache = NativeMap<TypeDescriptor.Class->String, ProducedType>();
+    shared NativeMap<TypeDescriptor.Class->String, ProducedType> memberTypeCache = NativeMap<TypeDescriptor.Class->String, ProducedType>();*/
     
     """Get the [[Partial]] or instance with the given id"""
     shared Anything leakInstance(Id id) => instances.get(id);

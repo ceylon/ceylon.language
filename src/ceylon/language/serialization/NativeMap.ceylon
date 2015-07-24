@@ -18,7 +18,7 @@ native class NativeMap<Key,Element>() {
 
 native("jvm") class NativeMap<Key,Element>() {
     
-    HashMap<Key, Element> m = HashMap<Key, Element>();
+    native("jvm") HashMap<Key, Element> m = HashMap<Key, Element>();
     
     shared native("jvm") void put(Key id, Element instance) {
         m.put(id, instance);

@@ -1,4 +1,4 @@
-import ceylon.language.serialization{RealizableReference}
+import ceylon.language.serialization{ReachableReference}
 
 "A native way to find out about the references an instance holds
  and to get an instance."
