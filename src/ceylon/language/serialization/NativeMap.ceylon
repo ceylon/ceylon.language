@@ -145,7 +145,7 @@ native("js") class NativeMap<Key,Element>() {
         return object extends BaseIterable<Element,Null>() satisfies Identifiable {
             
             shared actual Iterator<Element> iterator() {
-                variable value i=0;
+                variable value i=1;
                 return object extends BaseIterator<Element>() satisfies Identifiable {
                     
                     shared actual Element|Finished next() {
@@ -168,7 +168,7 @@ native("js") class NativeMap<Key,Element>() {
         return object extends BaseIterable<Key,Null>() satisfies Identifiable {
             
             shared actual Iterator<Key> iterator() {
-                variable value i=0;
+                variable value i=1;
                 return object extends BaseIterator<Key>() satisfies Identifiable {
                     
                     shared actual Key|Finished next() {
@@ -191,6 +191,9 @@ native("js") class NativeMap<Key,Element>() {
         sb.append("{");
         dynamic {
             for (i in 0:ks.length) {
+                if (sb.size > 1) {
+                    sb.append(", ");
+                }
                 sb.append(ks[i]).append("->").append(vs[i]);
             }
         }
