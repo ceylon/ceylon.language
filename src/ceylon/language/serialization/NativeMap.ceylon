@@ -79,3 +79,117 @@ native("jvm") class NativeMap<Key,Element>() {
         return m.string;
     }
 }
+
+native("js") class NativeMap<Key,Element>() {
+
+    dynamic {
+        dynamic ks = dynamic[null]; //revisar
+        dynamic vs = dynamic[null];
+    }
+
+    "Find the index of the specified key, or -1 if it isn't in the map"
+    Integer find(Key id) {
+        if (exists id) {
+            dynamic {
+                for (i in 0:ks.length) {
+                    if (id == ks[i]) {
+                      return i;
+                    }
+                }
+            }
+        } else {
+            return 0;
+        }
+        return -1;
+    }
+
+    shared native("js") void put(Key id, Element instance) {
+        value i = find(id);
+        if (i >= 0) {
+            //replace
+            dynamic {
+                ks.push(id);
+                vs.push(instance);
+            }
+        } else if (i < 0) {
+            //new entry
+            dynamic {
+                ks.set(ks.length, id);
+                vs.set(vs.length, instance);
+            }
+        }
+    }
+    
+    shared native("js") Element? get(Key id) {
+        value i = find(id);
+        dynamic {
+            return i > 0 then vs[i] else null;
+        }
+    }
+    
+    shared native("js") Boolean contains(Key id) =>
+        find(id) >= 0;
+    
+    shared native("js") Integer size {
+        dynamic {
+            return ks.length;
+        }
+    }
+    
+    shared native("js") Iterable<Element, Null> items {
+        return object extends BaseIterable<Element,Null>() satisfies Identifiable {
+            
+            shared actual Iterator<Element> iterator() {
+                variable value i=0;
+                return object extends BaseIterator<Element>() satisfies Identifiable {
+                    
+                    shared actual Element|Finished next() {
+                        dynamic {
+                            if (i >= vs.length) {
+                                return finished;
+                            }
+                            Element e = vs[i];
+                            i++;
+                            return e;
+                        }
+                    }
+                };
+            }
+        };
+    }
+    
+    
+    shared native("js") Iterable<Key, Null> keys {
+        return object extends BaseIterable<Key,Null>() satisfies Identifiable {
+            
+            shared actual Iterator<Key> iterator() {
+                variable value i=0;
+                return object extends BaseIterator<Key>() satisfies Identifiable {
+                    
+                    shared actual Key|Finished next() {
+                        dynamic {
+                            if (i >= ks.length) {
+                                return finished;
+                            }
+                            Key e = ks[i];
+                            i++;
+                            return e;
+                        }
+                    }
+                };
+            }
+        };
+    }
+    
+    shared native("js") actual String string {
+        value sb=StringBuilder();
+        sb.append("{");
+        dynamic {
+            for (i in 0:ks.length) {
+                sb.append(ks[i]).append("->").append(vs[i]);
+            }
+        }
+        sb.append("}");
+        return sb.string;
+    }
+}
