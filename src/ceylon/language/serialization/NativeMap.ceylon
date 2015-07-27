@@ -82,16 +82,21 @@ native("jvm") class NativeMap<Key,Element>() {
 
 native("js") class NativeMap<Key,Element>() {
 
+    dynamic ks;
+    dynamic vs;
     dynamic {
-        dynamic ks = dynamic[null]; //revisar
-        dynamic vs = dynamic[null];
+        ks = dynamic[null];
+        vs = dynamic[null];
     }
-
     "Find the index of the specified key, or -1 if it isn't in the map"
     Integer find(Key id) {
         if (exists id) {
             dynamic {
-                for (i in 0:ks.length) {
+                Integer len=ks.length;
+                if (len < 2) {
+                    return -1;
+                }
+                for (i in 1..(len-1)) {
                     if (id == ks[i]) {
                       return i;
                     }
@@ -108,14 +113,14 @@ native("js") class NativeMap<Key,Element>() {
         if (i >= 0) {
             //replace
             dynamic {
-                ks.push(id);
-                vs.push(instance);
+                ks.set(ks.length, id);
+                vs.set(vs.length, instance);
             }
         } else if (i < 0) {
             //new entry
             dynamic {
-                ks.set(ks.length, id);
-                vs.set(vs.length, instance);
+                ks.push(id);
+                vs.push(instance);
             }
         }
     }
