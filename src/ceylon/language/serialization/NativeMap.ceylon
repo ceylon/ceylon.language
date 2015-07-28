@@ -137,7 +137,7 @@ native("js") class NativeMap<Key,Element>() {
     
     shared native("js") Integer size {
         dynamic {
-            return ks.length;
+            return ks.length-1;
         }
     }
     
