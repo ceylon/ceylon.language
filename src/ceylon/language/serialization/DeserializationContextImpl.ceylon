@@ -33,9 +33,10 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     """
     NativeMap<Id,Anything> instances = NativeMap<Id,Anything>();
     
-    /*"""a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
+    """a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
        to its type"""
-    shared NativeMap<TypeDescriptor.Class->String, ProducedType> memberTypeCache = NativeMap<TypeDescriptor.Class->String, ProducedType>();*/
+    shared NativeMap<Object->String, Object> memberTypeCache = NativeMap<Object->String, Object>();
+    //shared NativeMap<TypeDescriptor.Class->String, ProducedType> memberTypeCache = NativeMap<TypeDescriptor.Class->String, ProducedType>();
     
     """Get the [[Partial]] or instance with the given id"""
     shared Anything leakInstance(Id id) => instances.get(id);
