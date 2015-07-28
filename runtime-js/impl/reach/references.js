@@ -1,11 +1,11 @@
-function references(instance){
+function references(o){
   var index=-1;
-  var refs = instance.ser$refs$();
+  var refs = o.getT$all()[o.getT$name()].ser$refs$(o);
   return for$iter(function(){
     index++;
     if (refs.length>index) {
       return refs[index];
-    } else if (is$(instance,{t:$_Array}) && index<instance.size) {
+    } else if (is$(o,{t:$_Array}) && index<o.size) {
       return ElementImpl$impl(index);
     }
     return finished();
