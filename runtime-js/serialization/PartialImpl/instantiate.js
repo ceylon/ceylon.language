@@ -8,9 +8,14 @@ function instantiate(){
     outer=null;
     outerClass=null;
   } else if (is$(classModel,{t:AppliedMemberClass$jsint})) {
-    console.log("TODO! outer para " + classModel.string);
+    outer=this.container;
+    if (is$(outer,{t:Partial$serialization}))outer=outer.instance_;
+    outerClass=type$meta(outer,{Type$type:classModel.$$targs$$.Container$AppliedMemberClass});
   } else {
     throw AssertionError("unexpected class model " + (classModel&&classModel.string||"NULL"));
   }
   this.instance_=classModel.tipo.inst$$(classModel);
+  if (outer) {
+    this.instance_.outer$=outer;
+  }
 }

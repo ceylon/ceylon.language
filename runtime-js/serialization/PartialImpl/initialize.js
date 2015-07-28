@@ -39,19 +39,17 @@ function initialize(context,$mpt){
           }
         }
       }
-      throw DeserializationException("lacking sufficient state for instance with id " + me.id + ": " + missingNames.string);
+      throw DeserializationException$serialization("lacking sufficient state for instance with id " + me.id + ": " + missingNames.string);
     }
     for (var i=0;i<reachables.length;i++) {
       var ref=reachables[i];
       if (is$(ref,{t:Member$serialization})) {
-        if (ref.attribute.late && !me.state.contains(member)
-            || state.$_get(member) === uninitializedLateValue$serialization()) {
+        if (ref.attribute.late && !me.state.contains(ref)
+            || me.state.$_get(ref) === uninitializedLateValue$serialization()) {
           continue;
         }
-        console.log("TODO get the type of the member " + ref.string);
         var referredInstance = getReferredInstance(context, me.state, ref);
-        console.log("TODO get type of instance " + referredInstance.string);
-        inst.ser$set$(ref, referredInstance);
+        inst.getT$all()[inst.getT$name()].ser$set$(ref, inst, referredInstance);
       } else if (is$(ref,{t:Outer$serialization})) {
         continue;
       } else {
@@ -59,9 +57,32 @@ function initialize(context,$mpt){
       }
     }
   }
+
+  function initializeArray(inst) {
+    var sizeAttr = $_Array.ser$refs$(inst)[0];
+    var size = getReferredInstance(context, me.state, sizeAttr);
+    if (size === null || size === undefined) {
+      throw DeserializationException$serialization("lacking sufficient state for array with id " + me.id + ": " + sizeAttr.string);
+    }
+    var type=inst.getT$all()[inst.getT$name()];
+    type.ser$set$(sizeAttr,inst,size);
+    for (var i=0;i<size;i++) {
+      var index=ElementImpl$impl(i);
+      var id=me.state.$_get(index);
+      if (id===null||id===undefined) {
+        throw DeserializationException$serialization("lacking sufficient state for array with id " + me.id + " element " + i);
+      }
+      var elem=getReferredInstance2(context,id);
+      type.ser$set$(i,inst,elem);
+    }
+    if (me.state.size != size+1) {
+      throw DeserializationException$serialization("lacking sufficient state for array with id " + me.id);
+    }
+  }
+
   var inst=me.instance_;
   if (is$(inst,{t:$_Array})) {
-    console.log("TODO! initialize array");
+    initializeArray(inst);
   } else if (is$(inst,{t:Tuple})) {
     console.log("TODO! initialize tuple");
   } else {
