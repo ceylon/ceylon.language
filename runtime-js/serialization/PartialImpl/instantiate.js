@@ -12,10 +12,5 @@ function instantiate(){
   } else {
     throw AssertionError("unexpected class model " + (classModel&&classModel.string||"NULL"));
   }
-  var typeArgs=classModel.typeArgumentList.items;
-  var types = [];
-  var args = [];
-  var ii = 0;
-  //Build $$targs$$ map
   this.instance_=classModel.tipo.inst$$(classModel);
 }

@@ -1,5 +1,5 @@
 function initialize(context,$mpt){
-  var me=partialImpl$;
+  var me=this;
 
   function getReferredInstance2(ctxt, refid) {
     var referred = ctxt.leakInstance(refid);
@@ -17,6 +17,7 @@ function initialize(context,$mpt){
     var reachables = inst.getT$all()[inst.getT$name()].ser$refs$(inst);
     var numLate = 0;
     for (var i=0;i<reachables.length;i++) {
+      var r=reachables[i];
       if (is$(r,{t:Member$serialization}) && r.attribute.late) {
         numLate++;
       } else if (is$(r,{t:Outer$serialization})) {
@@ -54,7 +55,7 @@ function initialize(context,$mpt){
       } else if (is$(ref,{t:Outer$serialization})) {
         continue;
       } else {
-        throw AssertionException("unexpected ReachableReference " + ref.string);
+        throw AssertionError("unexpected ReachableReference " + ref.string);
       }
     }
   }
