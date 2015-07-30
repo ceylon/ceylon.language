@@ -128,7 +128,7 @@ native("js") class NativeMap<Key,Element>() {
     shared native("js") Element? get(Key id) {
         value i = find(id);
         dynamic {
-            return i > 0 then vs[i] else null;
+            return i >= 0 then vs[i] else null;
         }
     }
     
