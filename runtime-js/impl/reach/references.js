@@ -1,12 +1,14 @@
 function references(o){
-  var index=-1;
+  var idx1=-1,idx2=0;
   var refs = o.getT$all()[o.getT$name()].ser$refs$(o);
   return for$iter(function(){
-    index++;
-    if (refs.length>index) {
-      return refs[index];
-    } else if (is$(o,{t:$_Array}) && index<o.size) {
-      return ElementImpl$impl(index);
+    idx1++;
+    if (refs.length>idx1) {
+      return refs[idx1];
+    } else if (is$(o,{t:$_Array}) && idx2<o.size) {
+      var r=ElementImpl$impl(idx2);
+      idx2++;
+      return r;
     }
     return finished();
   },{Element$Iterator:{t:ReachableReference$serialization}});

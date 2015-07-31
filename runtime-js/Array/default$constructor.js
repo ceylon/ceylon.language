@@ -23,5 +23,5 @@ $_Array.ser$get$=function(ref,o){
   return o.size;
 }
 $_Array.ser$refs$=function(o){
-  return [MemberImpl$impl(OpenValue$jsint(lmp$(ex$,'$'),$_Array.$$.prototype.$prop$getSize))];
+  return [MemberImpl$impl(OpenValue$jsint(lmp$(ex$,'$'),o.$prop$getSize))];
 }

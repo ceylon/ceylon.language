@@ -48,6 +48,7 @@ function initialize(context,$mpt){
             || me.state.$_get(ref) === uninitializedLateValue$serialization()) {
           continue;
         }
+        //TODO membertypecache
         var referredInstance = getReferredInstance(context, me.state, ref);
         inst.getT$all()[inst.getT$name()].ser$set$(ref, inst, referredInstance);
       } else if (is$(ref,{t:Outer$serialization})) {

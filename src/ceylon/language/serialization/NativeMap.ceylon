@@ -90,22 +90,21 @@ native("js") class NativeMap<Key,Element>() {
     }
     "Find the index of the specified key, or -1 if it isn't in the map"
     Integer find(Key id) {
-        if (exists id) {
+        if (id exists) {
             dynamic {
                 Integer len=ks.length;
                 if (len < 2) {
                     return -1;
                 }
-                for (i in 1..(len-1)) {
+                for (i in 1:len-1) {
                     if (id == ks[i]) {
-                      return i;
+                        return i;
                     }
                 }
             }
-        } else {
-            return 0;
+            return -1;
         }
-        return -1;
+        return 0;
     }
 
     shared native("js") void put(Key id, Element instance) {
@@ -113,8 +112,7 @@ native("js") class NativeMap<Key,Element>() {
         if (i >= 0) {
             //replace
             dynamic {
-                ks.set(ks.length, id);
-                vs.set(vs.length, instance);
+                vs.set(i, instance);
             }
         } else if (i < 0) {
             //new entry
@@ -190,11 +188,21 @@ native("js") class NativeMap<Key,Element>() {
         value sb=StringBuilder();
         sb.append("{");
         dynamic {
-            for (i in 0:ks.length) {
-                if (sb.size > 1) {
-                    sb.append(", ");
+            if (vs[0] exists) {
+                sb.append("<null> ->").append(vs[0].string);
+            }
+            if (ks.length>1) {
+                for (i in 1:ks.length-1) {
+                    if (sb.size > 1) {
+                        sb.append(", ");
+                    }
+                    sb.append(ks[i]).append("->");
+                    if (vs[i] exists) {
+                        sb.append(vs[i].string);
+                    } else {
+                        sb.append("[null]");
+                    }
                 }
-                sb.append(ks[i]).append("->").append(vs[i]);
             }
         }
         sb.append("}");
