@@ -338,7 +338,7 @@ function coistr$(coi) {
     } else if (t.t==='T') {
       s+= '[';
       for (var tttt=0; tttt<t.l.length;tttt++) {
-        if (tttt>0)tttt+=',';
+        if (tttt>0)s+=',';
         s+=qname$(t.l[tttt]);
       }
       s+=']';
