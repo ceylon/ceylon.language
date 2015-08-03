@@ -180,6 +180,9 @@ function tpl$(elems,types,spread){
   atr$(that,'rest',function(){
     return elems.size===1?spread||empty():tpl$(elems.slice(1),{t:'T',l:types.l.slice(1)},spread);
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
+  atr$(that,'rest_',function(){
+    return that.rest;
+  },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   atr$(that,'size',function(){
     return elems.size+(spread?spread.size:0);
   },undefined,Tuple.$$.prototype.$prop$getSize.$crtmm$);
