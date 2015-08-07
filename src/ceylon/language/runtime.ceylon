@@ -1,3 +1,9 @@
+import java.lang {
+    System { getProperty },
+    Long { MIN_VALUE, MAX_VALUE },
+    Integer { intMAX_VALUE=MAX_VALUE }
+}
+
 "Represents the machine and virtual machine on which the 
  current process is executing.
  
@@ -54,4 +60,61 @@ shared native object runtime  {
     shared native Integer maxArraySize;
     
     string => "runtime [``name`` / ``version``]";
+}
+
+shared native("jvm") object runtime  {
+    
+    shared native("jvm") String name => "jvm";
+    
+    shared native("jvm") String version => getProperty("java.specification.version");
+    
+    shared native("jvm") Integer integerSize => 64;
+    
+    shared native("jvm") Integer integerAddressableSize => 64;
+    
+    shared native("jvm") Integer minIntegerValue => \iMIN_VALUE;
+    
+    shared native("jvm") Integer maxIntegerValue => \iMAX_VALUE;
+    
+    shared native("jvm") Integer maxArraySize => intMAX_VALUE - 8;
+    
+}
+
+shared native("js") object runtime  {
+    
+    shared native("js") String name {
+        dynamic {
+            dynamic p = process;
+            if (typeof(p) != "undefined"
+                    && typeof(p.execPath) == "string"
+                    && p.execPath.contains("node")) {
+                return "node.js";
+            } else if (typeof(window) == "object") {
+                return "Browser";
+            }
+        }
+        return "Unknown JavaScript environment";
+    }
+    
+    shared native("js") String version {
+        dynamic {
+            dynamic p = process;
+            if (typeof(p) != "undefined"
+                    && typeof(p.version) == "string") {
+                return p.version;
+            }
+        }
+        return "Unknown";
+    }
+    
+    shared native("js") Integer integerSize => 53;
+    
+    shared native("js") Integer integerAddressableSize => 32;
+    
+    shared native("js") Integer minIntegerValue => -9007199254740991;
+    
+    shared native("js") Integer maxIntegerValue => 9007199254740991;
+    
+    shared native("js") Integer maxArraySize => 4294967295;
+    
 }
