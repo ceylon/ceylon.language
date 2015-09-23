@@ -1,3 +1,11 @@
+import java.lang {
+    StrBuilder=StringBuilder,
+    Char=Character,
+    Str=String
+}
+import java.util {
+    Locale
+}
 """A string of characters. Each character in the string is a 
    [[32-bit Unicode character|Character]]. The internal 
    UTF-16 encoding is hidden from clients.
@@ -54,15 +62,20 @@
    beginning of the string to the given index."""
 by ("Gavin")
 tagged("Basic types", "Strings")
-shared native final class String(characters)
-        extends Object()
-        satisfies SearchableList<Character> &
+shared native final class String
+        extends Object
+        satisfies List<Character> &
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,Character,String> {
     
-    "The characters that form this string."
-    {Character*} characters;
+    shared native new (
+        "The characters that form this string."
+        {Character*} characters) 
+            extends Object() {}
+    
+    shared native new instance(String string) 
+            extends Object() {}
     
     "This string, with all characters in lowercase.
      
@@ -316,7 +329,7 @@ shared native final class String(characters)
      UTF-16 encoding. For any nonempty string:
      
          string.lastIndex == string.size-1"
-    shared actual Integer? lastIndex {
+    shared actual native Integer? lastIndex {
         if (size==0) {
             return null;
         }
@@ -487,7 +500,7 @@ shared native final class String(characters)
     shared actual native Integer hash;
     
     "This string."
-    shared actual String string => this;
+    shared actual native String string => this;
     
     "Determines if this string has no characters, that is, 
      if it has zero [[size]]. This is a _much_ more 
@@ -496,10 +509,10 @@ shared native final class String(characters)
     shared actual native Boolean empty;
     
     "This string."
-    shared actual String coalesced => this;
+    shared actual native String coalesced => this;
     
     "This string."
-    shared actual String clone() => this;
+    shared actual native String clone() => this;
     
     "Pad this string with the given [[character]], producing 
      a string of the given minimum [[size]], centering the
@@ -539,7 +552,12 @@ shared native final class String(characters)
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
     
-    shared actual native Boolean occurs(Character element, Integer from, Integer length);
+    shared native Integer? firstOccurrence(Character element, 
+        Integer from=0, Integer length=size-from);
+    shared native Integer? lastOccurrence(Character element, 
+        Integer from=0, Integer length=size-from);
+    
+    /*shared actual native Boolean occurs(Character element, Integer from, Integer length);
     shared actual native Boolean occursAt(Integer index, Character element);
     shared actual native Boolean includes(List<Character> sublist, Integer from);
     shared actual native Boolean includesAt(Integer index, List<Character> sublist);
@@ -550,14 +568,14 @@ shared native final class String(characters)
     shared actual native Integer? lastInclusion(List<Character> sublist, Integer from);
     
     shared actual native Integer countOccurrences(Character sublist, Integer from, Integer length);
-    shared actual native Integer countInclusions(List<Character> sublist, Integer from);
+    shared actual native Integer countInclusions(List<Character> sublist, Integer from);*/
         
     shared actual native Boolean largerThan(String other); 
     shared actual native Boolean smallerThan(String other); 
     shared actual native Boolean notSmallerThan(String other); 
     shared actual native Boolean notLargerThan(String other);
     
-    shared actual native void each(void step(Character element));
+    /*shared actual native void each(void step(Character element));
     shared actual native Integer count(Boolean selecting(Character element));
     shared actual native Boolean every(Boolean selecting(Character element));
     shared actual native Boolean any(Boolean selecting(Character element));
@@ -566,5 +584,598 @@ shared native final class String(characters)
     shared actual native Character? find(Boolean selecting(Character element));
     shared actual native Character? findLast(Boolean selecting(Character element));
     shared actual native <Integer->Character>? locate(Boolean selecting(Character element));
-    shared actual native <Integer->Character>? locateLast(Boolean selecting(Character element));
+    shared actual native <Integer->Character>? locateLast(Boolean selecting(Character element));*/
+}
+
+shared native("jvm") final class String
+        extends Object
+        satisfies List<Character> &
+        Comparable<String> &
+        Summable<String> & 
+        Ranged<Integer,Character,String> {
+    
+    Str str;
+    
+    shared native("jvm") new ({Character*} characters) 
+            extends Object() {
+        
+        if (is String characters) {
+            str = characters.str;
+        }
+        else {
+            StrBuilder sb = StrBuilder();
+            characters.each((char) {
+                sb.appendCodePoint(char.integer);
+            });
+            str = sb.string.str;
+        }
+    }
+    
+    shared native("jvm") new instance(String string) 
+            extends Object() {
+        str = string.str;
+    }
+    
+    shared native("jvm") String lowercased 
+            => str.toLowerCase(Locale.\iROOT);
+    
+    shared native("jvm") String uppercased
+            => str.toUpperCase(Locale.\iROOT);
+    
+    shared native("jvm") {String+} split(
+        Boolean splitting(Character ch) => ch.whitespace,
+        Boolean discardSeparators=true,
+        //TODO!
+        Boolean groupSeparators=true) 
+            => object satisfies {String+} {
+        iterator() 
+                => object satisfies Iterator<String> {
+            variable value index = 0;
+            shared actual String|Finished next() {
+                value len = str.length();
+                if (index>=len) {
+                    return finished;
+                }
+                value builder = StrBuilder();
+                while (index<len) {
+                    value cp = str.codePointAt(index);
+                    if (splitting(cp.character)) {
+                        if (discardSeparators) {
+                            index += Char.charCount(cp);
+                            break;
+                        }
+                        else {
+                            if (builder.length()==0) {
+                                index += Char.charCount(cp);
+                                return cp.character.string;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        index += Char.charCount(cp);
+                        builder.appendCodePoint(cp);
+                    }
+                }
+                return builder.string;
+            }
+        };
+    };
+    
+    shared actual native("jvm") Character? first
+            => str.length()>0 then str.charAt(0);
+    
+    shared actual native("jvm") Character? last
+            => str.length()>0 then str.charAt(str.length()-1);
+    
+    shared actual native("jvm") String rest
+            => str.length()>0 then str.substring(1) else "";
+    
+    shared native("jvm") String join({Object*} objects) {
+        StrBuilder sb = StrBuilder();
+        for (element in objects) {
+            if (sb.length()>0) {
+                sb.append(str);
+            }
+            sb.append(element);
+        }
+        return sb.string;
+    }
+    
+    shared actual native("jvm") String trim(
+        Boolean trimming(Character element))
+            //TODO:
+            => trimLeading(trimming).trimTrailing(trimming);
+    
+    shared actual native("jvm") String trimLeading(
+        Boolean trimming(Character element)) {
+        variable value from = 0;
+        while (from < str.length()) {
+            value cp = Char.codePointAt(str, from);
+            if (!trimming(cp.character)) {
+                break;
+            }
+            from += Char.charCount(cp);
+        }
+        return str.substring(from);
+    }
+    shared actual native("jvm") String trimTrailing(
+        Boolean trimming(Character element)) {
+        variable value to = str.length();
+        while (to > 0) {
+            value cp = Char.codePointBefore(str, to);
+            if (!trimming(cp.character)) {
+                break;
+            }
+            to -= Char.charCount(cp);
+        }
+        return str.substring(0, to);
+    }
+    
+    shared native("jvm") String normalized {
+        value result = StrBuilder(str.length());
+        variable value previousWasWhitespace=false;
+        variable value i=0;
+        while (i<str.length()) {
+            value c = Char.codePointAt(str, i);
+            value isWhitespace = Char.isWhitespace(c);
+            if (!isWhitespace) {
+                result.appendCodePoint(c);
+            }
+            else if (!previousWasWhitespace) {
+                result.append(" ");
+            }
+            previousWasWhitespace = isWhitespace;
+            i+=Char.charCount(c);
+        }
+        // TODO Should be able to figure out the indices to 
+        //      substring on while iterating
+        return result.string.trimmed;
+    }
+    
+    shared native("jvm") actual String reversed {
+        value len = size;
+        if (len < 2) {
+            return this;
+        }
+        // FIXME: this would be better to directly build the Sequence<Character>
+        value builder = StrBuilder(str.length());
+        variable value offset = str.length();
+        while (offset > 0) {
+            value cp = str.codePointBefore(offset);
+            builder.appendCodePoint(cp);
+            offset -= Char.charCount(cp);
+        }
+        return builder.string;
+    }
+    
+    shared native("jvm") actual Boolean defines(Integer index)
+            => 0<=index<size;
+    
+    shared actual native("jvm") String span(
+        variable Integer from, variable Integer to) {
+        value len = size;
+        if (len == 0) {
+            return "";
+        }
+        value reverse = to < from;
+        if (reverse) {
+            value _tmp = to;
+            to = from;
+            from = _tmp;
+        }
+        if (to < 0 || from >= len) {
+            return "";
+        }
+        if (to >= len) {
+            to = len - 1;
+        }
+        if (from < 0) {
+            from = 0;
+        }
+        value start = str.offsetByCodePoints(0, from);
+        value end = str.offsetByCodePoints(start, to - from + 1);
+        value result = str.substring(start, end);
+        return if (reverse) then result.reversed else result;
+    }
+    
+    shared actual native("jvm") String spanFrom(Integer from)
+            => from<size then span(from, size) else "";
+    
+    shared actual native("jvm") String spanTo(Integer to)
+            => to>=0 then span(0, to) else "";
+    
+    shared native("jvm") actual String measure(
+        Integer from, Integer length) {
+        value fromIndex = from;
+        value len = size;
+        if (fromIndex >= len || length <= 0) {
+            return "";
+        }
+        value resultLength = 
+                if (fromIndex + length > len)
+        then len - fromIndex else length;
+        value start = str.offsetByCodePoints(0, fromIndex);
+        value end = str.offsetByCodePoints(start, resultLength);
+        return str.substring(start, end);
+    }
+    
+    shared native("jvm") actual String initial(Integer length) {
+        if (length <= 0) {
+            return "";
+        }
+        else if (length >= size) {
+            return this;
+        }
+        else {
+            value offset = str.offsetByCodePoints(0, length);
+            return str.substring(0, offset);
+        }
+    }
+    
+    shared native("jvm") actual String terminal(Integer length) {
+        if (length <= 0) {
+            return "";
+        }
+        else if (length >= size) {
+            return this;
+        }
+        else {
+            value offset = 
+                    str.offsetByCodePoints(0, str.length()-length);
+            return str.substring(offset, str.length());
+        }
+    }
+    
+    shared native("jvm") actual [String,String] slice(Integer index) {
+        String first;
+        String second;
+        if (index<=0) {
+            first = "";
+            second = this;
+        }
+        else if (index>=str.length()) {
+            first = this;
+            second = "";
+        }
+        else {
+            value i = str.offsetByCodePoints(0, index);
+            first = str.substring(0, i);
+            second = str.substring(i);
+        }
+        return [first,second];
+    }
+    
+    shared actual native("jvm") Integer size
+            => str.codePointCount(0, str.length());
+    
+    //TODO: why did I have to implement this?
+    shared actual native("jvm") Integer? lastIndex 
+            => let (len=size) (len>0 then len-1);
+    
+    shared actual native("jvm") Iterator<Character> iterator()
+            => object satisfies Iterator<Character> {
+        variable value offset = 0;
+        shared actual Character|Finished next() {
+            if (offset < str.length()) {
+                value codePoint = str.codePointAt(offset);
+                offset += Char.charCount(codePoint);
+                return codePoint.character;
+            }
+            else {
+                return finished;
+            }
+        }
+    };
+    
+    shared actual native("jvm") Character? getFromFirst(Integer index) {
+        try {
+            return str.codePointAt(
+                str.offsetByCodePoints(0, index))
+                    .character;
+        }
+        catch (iobe) {
+            return null;
+        }
+    }
+    
+    shared actual native("jvm") Character? getFromLast(Integer index) {
+        try {
+            return str.codePointAt(
+                str.offsetByCodePoints(str.length(), -index-1))
+                    .character;
+        }
+        catch (iobe) {
+            return null;
+        }
+    }
+    
+    shared actual native("jvm") Boolean contains(Object element) {
+        if (is String element) {
+            return str.indexOf(element) >= 0;
+        }
+        else if (is Character element) {
+            return str.indexOf(element.integer) >= 0;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    shared actual native("jvm") Boolean startsWith(List<Anything> substring) 
+            => if (is String substring) 
+    then str.startsWith(substring) 
+    else super.startsWith(substring);
+    
+    shared actual native("jvm") Boolean endsWith(List<Anything> substring) 
+            => if (is String substring) 
+    then str.endsWith(substring) 
+    else super.startsWith(substring);
+    
+    shared actual native("jvm") String plus(String other)
+            => StrBuilder().append(this).append(other).string;
+    
+    shared actual native("jvm") String repeat(Integer times) {
+        value len = str.length();
+        if (times<=0 || len==0) {
+            return "";
+        }
+        if (times==1) {
+            return this;
+        }
+        value builder = StrBuilder(len*times);
+        for (i in 0:times) {
+            builder.append(this);
+        }
+        return builder.string;
+        
+    }
+    
+    shared native("jvm") String replace(String substring, 
+        String replacement) {
+        variable Integer index = str.indexOf(substring);
+        if (index<0) {
+            return this;
+        }
+        value builder = StrBuilder(str);
+        while (index>=0) {
+            builder.replace(index, 
+                index+substring.str.length(), 
+                replacement);
+            index = 
+                    str.indexOf(substring, 
+                index+replacement.str.length());
+        }
+        return builder.string;
+    }
+    
+    shared native("jvm") String replaceFirst(String substring, 
+        String replacement) {
+        Integer index = str.indexOf(substring);
+        if (index<0) {
+            return this;
+        }
+        value builder = StrBuilder(str);
+        builder.replace(index, 
+            index+substring.str.length(), 
+            replacement);
+        return builder.string;
+    }
+    
+    shared native("jvm") String replaceLast(String substring, 
+        String replacement) {
+        Integer index = str.lastIndexOf(substring);
+        if (index<0) {
+            return this;
+        }
+        value builder = StrBuilder(str);
+        builder.replace(index, 
+            index+substring.str.length(), 
+            replacement);
+        return builder.string;
+    }
+    
+    shared actual native("jvm") Comparison compare(String other) 
+            => str.compareTo(other) <=> 0;
+    
+    shared native("jvm") Comparison compareIgnoringCase(String other)
+            => str.compareToIgnoreCase(other) <=> 0;
+    
+    shared actual native("jvm") Boolean longerThan(Integer length) {
+        try {
+            str.offsetByCodePoints(0, length+1);
+            return true;
+        }
+        catch (iobe) {
+            return false;
+        }
+    }
+    
+    shared actual native("jvm") Boolean shorterThan(Integer length) {
+        try {
+            str.offsetByCodePoints(0, length);
+            return false;
+        }
+        catch (iobe) {
+            return true;
+        }
+    }
+    
+    shared actual native("jvm") Boolean equals(Object that) 
+            => if (is String that) then str.equals(that) else false;
+    
+    shared native("jvm") Boolean equalsIgnoringCase(String that)
+            => str.equalsIgnoreCase(that);
+    
+    shared actual native("jvm") Integer hash => str.hash;
+    
+    shared actual native("jvm") Boolean empty => str.empty;
+    
+    shared native("jvm") String pad(Integer size, 
+        Character character=' ') {
+        value length = str.length();
+        if (size<=length) {
+            return this;
+        }
+        value leftPad = (size-length)/2;
+        value rightPad = leftPad + (size-length)%2;
+        value builder = StrBuilder();
+        for (i in 0:leftPad) {
+            builder.appendCodePoint(character.integer);
+        }
+        builder.append(str);
+        for (i in 0:rightPad) {
+            builder.appendCodePoint(character.integer);
+        }
+        return builder.string;
+    }
+    
+    shared native("jvm") String padLeading(Integer size, 
+        Character character=' ') {
+        value length = str.length();
+        if (size<=length) {
+            return this;
+        }
+        value leftPad = size-length;
+        value builder = StrBuilder();
+        for (i in 0:leftPad) {
+            builder.appendCodePoint(character.integer);
+        }
+        builder.append(str);
+        return builder.string;
+    }
+    
+    shared native("jvm") String padTrailing(Integer size, 
+        Character character=' ') {
+        value length = str.length();
+        if (size<=length) {
+            return this;
+        }
+        value rightPad = size-length;
+        value builder = StrBuilder(str);
+        for (i in 0:rightPad) {
+            builder.appendCodePoint(character.integer);
+        }
+        return builder.string;
+    }
+    
+    shared native("jvm") 
+    void copyTo(
+        Array<Character> destination,
+        Integer sourcePosition = 0,
+        Integer destinationPosition = 0,
+        Integer length 
+                = smallest(size - sourcePosition,
+            destination.size - destinationPosition)) {
+        variable Integer count = 0;
+        variable value index = 
+                str.offsetByCodePoints(0,sourcePosition);
+        while (count<length) {
+            value codePoint = str.codePointAt(index);
+            //TODO!!!!
+            //((int[])destination.toArray())[count+dest] = codePoint;
+            destination.set(
+                count+destinationPosition, 
+                codePoint.character);
+            index += Char.charCount(codePoint);
+            count++;
+        }
+    }
+    
+    shared native("jvm") Integer? firstOccurrence(Character element, 
+            variable Integer from, variable Integer length) {
+        if (from>=str.length() || length<=0) {
+            return null;
+        }
+        if (from<0) {
+            length+=from;
+            from = 0;
+        }
+        Integer start;
+        try {
+            start = str.offsetByCodePoints(0, from);
+        }
+        catch (e) {
+            return null;
+        }
+        value index = str.indexOf(element.integer, start);
+        if (index >= 0) {
+            value result = str.codePointCount(0, index);
+            return result<from+length then result;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    shared native("jvm") Integer? lastOccurrence(Character element, 
+            variable Integer from, variable Integer length) {
+        if (from>=str.length() || length<=0) {
+            return null;
+        }
+        if (from<0) {
+            length+=from;
+            from = 0;
+        }
+        Integer start;
+        try {
+            start = str.offsetByCodePoints(str.length(), -from - 1);
+        }
+        catch (e) {
+            return null;
+        }
+        value index = str.lastIndexOf(element.integer, start);
+        if (index >= 0) {
+            value dist = str.codePointCount(index, str.length());
+            return dist<from+length then str.codePointCount(0, index);
+        }
+        else {
+            return null;
+        }
+    }
+    
+    /*shared actual native("jvm") Boolean occurs(Character element, Integer from, Integer length);
+     shared actual native("jvm") Boolean occursAt(Integer index, Character element);
+     shared actual native("jvm") Boolean includes(List<Character> sublist, Integer from);
+     shared actual native("jvm") Boolean includesAt(Integer index, List<Character> sublist);
+     
+     shared actual native("jvm") Integer? firstOccurrence(Character element, Integer from, Integer length);
+     shared actual native("jvm") Integer? lastOccurrence(Character element, Integer from, Integer length);
+     shared actual native("jvm") Integer? firstInclusion(List<Character> sublist, Integer from);
+     shared actual native("jvm") Integer? lastInclusion(List<Character> sublist, Integer from);
+     
+     shared actual native("jvm") Integer countOccurrences(Character sublist, Integer from, Integer length);
+     shared actual native("jvm") Integer countInclusions(List<Character> sublist, Integer from);*/
+     
+     shared actual native("jvm") Boolean largerThan(String other) 
+            => str.compareTo(other)>0; 
+     shared actual native("jvm") Boolean smallerThan(String other) 
+             => str.compareTo(other)<0; 
+     shared actual native("jvm") Boolean notSmallerThan(String other) 
+             => str.compareTo(other)>=0; 
+     shared actual native("jvm") Boolean notLargerThan(String other) 
+             => str.compareTo(other)<=0;
+    
+    /*shared actual native("jvm") void each(void step(Character element));
+     shared actual native("jvm") Integer count(Boolean selecting(Character element));
+     shared actual native("jvm") Boolean every(Boolean selecting(Character element));
+     shared actual native("jvm") Boolean any(Boolean selecting(Character element));
+     shared actual native("jvm") Result|Character|Null reduce<Result>
+            (Result accumulating(Result|Character partial, Character element));
+     shared actual native("jvm") Character? find(Boolean selecting(Character element));
+     shared actual native("jvm") Character? findLast(Boolean selecting(Character element));
+     shared actual native("jvm") <Integer->Character>? locate(Boolean selecting(Character element));
+     shared actual native("jvm") <Integer->Character>? locateLast(Boolean selecting(Character element));*/
+
+    shared actual native("jvm") String coalesced => this;
+    
+    shared actual native("jvm") String clone() => this;
+    
+    shared actual native("jvm") Integer[] keys => 0:size;
+    
+    shared actual native("jvm") String string => this;
+
+    
 }

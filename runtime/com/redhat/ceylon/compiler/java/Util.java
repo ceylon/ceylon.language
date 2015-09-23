@@ -6,6 +6,15 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
 import ceylon.language.Callable;
@@ -22,15 +31,6 @@ import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
-
-import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
-import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
-import com.redhat.ceylon.compiler.java.metadata.Class;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
@@ -538,8 +538,19 @@ public class Util {
             size++;
         }
         
-        void appendCeylonString(ceylon.language.String javaString) {
-            appendString(javaString.value);
+        void appendCeylonString(ceylon.language.String string) {
+            appendString(javaString(string));
+        }
+    }
+    
+    public static java.lang.String javaString(ceylon.language.String string) {
+        try {
+            Field field = ceylon.language.String.class.getDeclaredField("str");
+            field.setAccessible(true);
+            return (java.lang.String) field.get(string);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
     
@@ -894,7 +905,7 @@ public class Util {
         Iterator<? extends ceylon.language.String> iterator = sequence.iterator();
         Object o;
         while (!((o = iterator.next()) instanceof Finished)) {
-            builder.appendString(((ceylon.language.String)o).value);
+            builder.appendString(javaString((ceylon.language.String)o));
         }
         return builder.build();
     }
@@ -1042,7 +1053,7 @@ public class Util {
         java.lang.Object[] newArray = new java.lang.Object[total];
         int i = 0;
         for(java.lang.String element : elements) {
-            newArray[i++] = ceylon.language.String.instance(element);
+            newArray[i++] = null;//TODO!!! ceylon.language.String.instance(element);
         }
         return new Tuple(ceylon.language.String.$TypeDescriptor$, newArray);
     }
