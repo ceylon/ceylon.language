@@ -10,7 +10,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
-import ceylon.language.meta.declaration.ConstructorDeclaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
@@ -34,7 +33,7 @@ import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
-public class FreeClass 
+public abstract class FreeClass 
     extends FreeClassOrInterface
     implements ceylon.language.meta.declaration.ClassDeclaration {
 
@@ -66,10 +65,10 @@ public class FreeClass
             if (parameterList != null) {
                 this.parameters = FunctionalUtil.getParameters(classDeclaration);
             } else {
-                this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
+                this.parameters = null;
             }
         }else{
-            this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
+            this.parameters = null;
         }
         if (((Class)declaration).hasConstructors()
                 ||((Class)declaration).hasEnumerated()) {
@@ -132,17 +131,21 @@ public class FreeClass
     }
 
     @Override
-    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::FunctionOrValueDeclaration>")
+    @TypeInfo("ceylon.language.meta.declaration::FunctionOrValueDeclaration[]?")
     public Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){
         checkInit();
-        return parameters;
+        return this.parameters;
     }
 
     @Override
     @TypeInfo("ceylon.language.meta.declaration::FunctionOrValueDeclaration|ceylon.language::Null")
     public ceylon.language.meta.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
         checkInit();
-        return FunctionalUtil.getParameterDeclaration(this.parameters, name);
+        if (this.parameters == null) {
+            return null;
+        } else {
+            return FunctionalUtil.getParameterDeclaration(this.parameters, name);
+        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
