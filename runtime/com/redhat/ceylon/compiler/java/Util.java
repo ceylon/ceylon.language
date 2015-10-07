@@ -50,6 +50,18 @@ public class Util {
     private static final int INIT_ARRAY_SIZE = 10;
     private static final Object[] NO_ELEMENTS = new Object[0];
     
+    @SuppressWarnings("unchecked")
+    private static Sequential<? extends ceylon.language.String> arguments =
+            (Sequential) empty_.get_();
+
+    public static Sequential<? extends ceylon.language.String> getProgramArguments() {
+        return arguments;
+    }
+    
+    public static void setProgramArguments(String[] arguments) {
+        Util.arguments = sequentialWrapperBoxed(arguments);
+    }
+    
     public static String declClassName(String name) {
         return name.replace("::", ".");
     }
