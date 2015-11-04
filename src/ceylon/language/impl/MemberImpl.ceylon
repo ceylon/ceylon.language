@@ -10,9 +10,7 @@ import ceylon.language.serialization {
 shared class MemberImpl satisfies Member {
     shared actual ValueDeclaration attribute;
     
-    shared new (FunctionOrValueDeclaration attribute) {
-        "Classes with specified methods cannot be serialized"
-        assert(is ValueDeclaration attribute);
+    shared new (ValueDeclaration attribute) {
         this.attribute = attribute;
     }
     
