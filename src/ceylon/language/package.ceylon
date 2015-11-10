@@ -39,4 +39,5 @@
  [sdk]: https://modules.ceylon-lang.org/categories/SDK"
 by ("Gavin King", "Tom Bentley", "Tako Schotanus", 
     "Stephane Epardaud", "Enrique Zamudio")
+suppressWarnings("ceylonNamespace")
 shared package ceylon.language;

@@ -135,4 +135,5 @@
    """
 by ("Gavin King", "Stephane Epardaud", "Tom Bentley")
 tagged("Metamodel")
+suppressWarnings("ceylonNamespace")
 shared package ceylon.language.meta;
