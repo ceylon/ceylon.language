@@ -13,6 +13,7 @@ import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
@@ -109,6 +110,14 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         }
     }
     
+    @Override
+    public Module getOrCreateModule(List<String> moduleName, String version) {
+        ModuleLoader contextModuleLoader = org.jboss.modules.Module.getContextModuleLoader();
+        if (contextModuleLoader instanceof RuntimeResolver) {
+            version = ((RuntimeResolver)contextModuleLoader).resolveVersion(ModelUtil.formatPath(moduleName), version);
+        }
+        return super.getOrCreateModule(moduleName, version);
+    }
     @Override
     public RuntimeModelLoader getModelLoader() {
         return (RuntimeModelLoader) super.getModelLoader();
