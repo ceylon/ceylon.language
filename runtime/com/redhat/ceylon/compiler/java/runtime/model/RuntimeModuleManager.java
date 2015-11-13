@@ -112,12 +112,28 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     
     @Override
     public Module getOrCreateModule(List<String> moduleName, String version) {
-        ModuleLoader contextModuleLoader = org.jboss.modules.Module.getContextModuleLoader();
-        if (contextModuleLoader instanceof RuntimeResolver) {
-            version = ((RuntimeResolver)contextModuleLoader).resolveVersion(ModelUtil.formatPath(moduleName), version);
-        }
+        // Override to support getting the runtime version of the Module
+        version = runtimeVersion(ModelUtil.formatPath(moduleName), version);
         return super.getOrCreateModule(moduleName, version);
     }
+
+    protected String runtimeVersion(String moduleName, String version) {
+        Object contextModuleLoader;
+        try {
+            contextModuleLoader= org.jboss.modules.Module.getContextModuleLoader();
+        } catch (NullPointerException e) {
+            contextModuleLoader = null;
+        }
+        if (contextModuleLoader instanceof RuntimeResolver) {
+            version = ((RuntimeResolver)contextModuleLoader).resolveVersion(moduleName, version);
+        }
+        return version;
+    }
+    
+    public Module findLoadedModule(String moduleName, String searchedVersion) {
+        return super.findLoadedModule(moduleName, runtimeVersion(moduleName, searchedVersion));
+    }
+    
     @Override
     public RuntimeModelLoader getModelLoader() {
         return (RuntimeModelLoader) super.getModelLoader();
