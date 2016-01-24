@@ -294,8 +294,8 @@ shared native final class String(characters)
     
     "Return two strings, the first containing the characters
      that occur before the given [[index]], the second with
-     the characters that occur after the given `index`. If 
-     the given `index` is outside the range of indices of 
+     the characters that occur starting from the given `index`. 
+     If the given `index` is outside the range of indices of 
      this string, one of the returned strings will be empty."
     shared native actual [String,String] slice(Integer index);
     
